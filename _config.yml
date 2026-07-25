@@ -1,7 +1,7 @@
 title: Agent Engineering Notes
 description: Notes on agent frameworks, runtimes, harnesses, and coding agents.
 url: https://eddiee-wei.github.io
-baseurl: /agent-tech-share
+baseurl: /agent-engineering-notes
 lang: zh-CN
 timezone: Asia/Shanghai
 markdown: kramdown
