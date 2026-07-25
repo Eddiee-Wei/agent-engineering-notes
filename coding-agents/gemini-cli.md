@@ -4,7 +4,7 @@ title: Gemini CLI
 
 # 42｜Gemini CLI
 
-> 状态：🟡 研究范围已定义，内容开发中
+> 状态：todo
 
 ## 研究范围
 

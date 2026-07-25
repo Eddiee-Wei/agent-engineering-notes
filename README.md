@@ -21,61 +21,61 @@
 
 ### Agent
 
-- [01｜Agent](docs/01-agent-primer.md) — 🟡 开发中
+- [01｜Agent](docs/01-agent-primer.md) — todo
 - [02｜Framework Lens](docs/02-comparison-methodology.md) — 🟢 第一版已完成
 - [03｜Layers](docs/03-layer-model.md) — 🟢 第一版已完成
 
 ### tRPC-Agent-Go
 
-- [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — 🟡 框架已搭建，源码分析开发中
-- Runner、Agent 与 Event Stream — 🟡 开发中
-- Model 与 Tool Calling — 🟡 开发中
-- Session、Memory、Knowledge 与 Artifact — 🟡 开发中
-- GraphAgent 与多 Agent 编排 — 🟡 开发中
-- MCP、A2A 与 AG-UI — 🟡 开发中
-- Evaluation、Telemetry 与生产化 — 🟡 开发中
+- [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — todo
+- Runner、Agent 与 Event Stream — todo
+- Model 与 Tool Calling — todo
+- Session、Memory、Knowledge 与 Artifact — todo
+- GraphAgent 与多 Agent 编排 — todo
+- MCP、A2A 与 AG-UI — todo
+- Evaluation、Telemetry 与生产化 — todo
 
 ### Frameworks
 
-- [20｜LangChain](frameworks/langchain.md) — 🟡 提纲已完成，内容开发中
-- [21｜LangGraph](frameworks/langgraph.md) — 🟡 提纲已完成，内容开发中
-- [22｜AutoGen](frameworks/autogen.md) — 🟡 提纲已完成，内容开发中
-- [23｜Google ADK](frameworks/google-adk.md) — 🟡 提纲已完成，内容开发中
-- [24｜Agno](frameworks/agno.md) — 🟡 提纲已完成，内容开发中
-- [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — 🟡 用于解释 AutoGen 的后续演进
-- LangChain、LangGraph 与 Deep Agents 的关系 — 🟡 开发中
+- [20｜LangChain](frameworks/langchain.md) — todo
+- [21｜LangGraph](frameworks/langgraph.md) — todo
+- [22｜AutoGen](frameworks/autogen.md) — todo
+- [23｜Google ADK](frameworks/google-adk.md) — todo
+- [24｜Agno](frameworks/agno.md) — todo
+- [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — todo
+- LangChain、LangGraph 与 Deep Agents 的关系 — todo
 
 ### Frameworks in China
 
-- [30｜AgentScope](frameworks/agentscope.md) — 🟡 提纲已完成，内容开发中
-- [31｜DeerFlow](frameworks/deerflow.md) — 🟡 提纲已完成，内容开发中
-- 国内框架横向比较 — 🟡 开发中
+- [30｜AgentScope](frameworks/agentscope.md) — todo
+- [31｜DeerFlow](frameworks/deerflow.md) — todo
+- 国内框架横向比较 — todo
 
 ### Coding Agents
 
-- [40｜Codex](coding-agents/codex.md) — 🟡 研究范围已定义，内容开发中
-- [41｜Claude Code](coding-agents/claude-code.md) — 🟡 研究范围已定义，内容开发中
-- [42｜Gemini CLI](coding-agents/gemini-cli.md) — 🟡 研究范围已定义，内容开发中
-- [43｜OpenCode](coding-agents/opencode.md) — 🟡 研究范围已定义，内容开发中
-- Coding Agent 统一架构比较 — 🟡 开发中
-- 权限、Sandbox 与 Prompt Injection — 🟡 开发中
-- Context Engineering 与长任务 — 🟡 开发中
+- [40｜Codex](coding-agents/codex.md) — todo
+- [41｜Claude Code](coding-agents/claude-code.md) — todo
+- [42｜Gemini CLI](coding-agents/gemini-cli.md) — todo
+- [43｜OpenCode](coding-agents/opencode.md) — todo
+- Coding Agent 统一架构比较 — todo
+- 权限、Sandbox 与 Prompt Injection — todo
+- Context Engineering 与长任务 — todo
 
 ### Experiments
 
-- 最小 Agent Loop — 🟡 开发中
-- 用 tRPC-Agent-Go 实现 Tool Agent — 🟡 开发中
-- 用 GraphAgent 实现可恢复 Workflow — 🟡 开发中
-- 同一任务的跨框架实现 — 🟡 开发中
-- Coding Agent 最小原型 — 🟡 开发中
-- 统一 Benchmark 与 Trace 对比 — 🟡 开发中
+- 最小 Agent Loop — todo
+- 用 tRPC-Agent-Go 实现 Tool Agent — todo
+- 用 GraphAgent 实现可恢复 Workflow — todo
+- 同一任务的跨框架实现 — todo
+- Coding Agent 最小原型 — todo
+- 统一 Benchmark 与 Trace 对比 — todo
 
 ## 内容状态
 
 | 标记 | 含义 |
 | --- | --- |
 | 🟢 | 已形成可阅读的第一版 |
-| 🟡 | 开发中：已有提纲或正在研究、实验 |
+| todo | 待补充或正在整理 |
 | 🔄 | 正在更新 |
 
 ## Notes

@@ -4,7 +4,7 @@ title: LangChain
 
 # 20｜LangChain
 
-> 状态：🟡 提纲已完成，内容开发中
+> 状态：todo
 
 ## 本章重点
 

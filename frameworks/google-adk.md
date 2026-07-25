@@ -4,7 +4,7 @@ title: Google ADK
 
 # 23｜Google ADK
 
-> 状态：🟡 提纲已完成，内容开发中
+> 状态：todo
 
 ## 官方定位
 

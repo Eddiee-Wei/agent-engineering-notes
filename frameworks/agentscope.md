@@ -4,7 +4,7 @@ title: AgentScope
 
 # 30｜AgentScope
 
-> 状态：🟡 提纲已完成，内容开发中
+> 状态：todo
 
 ## 研究范围
 

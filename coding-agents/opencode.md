@@ -4,7 +4,7 @@ title: OpenCode
 
 # 43｜OpenCode
 
-> 状态：🟡 研究范围已定义，内容开发中
+> 状态：todo
 
 ## 仓库辨识
 

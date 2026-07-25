@@ -4,7 +4,7 @@ title: Microsoft Agent Framework
 
 # 延伸｜Microsoft Agent Framework
 
-> 状态：🟡 作为 AutoGen 后续演进补充，开发中
+> 状态：todo
 
 ## 官方定位
 

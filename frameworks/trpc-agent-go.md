@@ -4,7 +4,7 @@ title: tRPC-Agent-Go
 
 # 10｜tRPC-Agent-Go
 
-> 状态：🟡 开发中
+> 状态：todo
 
 ## Why tRPC-Agent-Go
 
