@@ -6,7 +6,7 @@
 - [x] 建立分层模型
 - [x] 建立统一分析维度
 - [x] 列出框架层与 Coding Agent 应用层
-- [ ] 发布 GitHub 仓库
+- [x] 发布 GitHub 仓库
 
 ## Milestone 1：Agent 与 tRPC-Agent-Go 基础
 
@@ -45,4 +45,3 @@
 - [ ] Context Engineering
 - [ ] Evaluation 与 Benchmark
 - [ ] 最小 Coding Agent 原型
-
