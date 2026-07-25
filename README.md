@@ -19,7 +19,7 @@
 ## Scope
 
 - 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
-- 横向看 LangChain、LangGraph、AutoGen、Google ADK、Agno、AgentScope 与 DeerFlow 的不同选择。
+- 横向看 LangChain、LangGraph、AutoGen、CrewAI、Google ADK、Agno、AgentScope 与 DeerFlow 的不同选择。
 - 向上看 Codex、Claude Code、Gemini CLI、OpenCode 如何把框架能力变成可用的 Coding Agent。
 - 通过项目和实验验证其中的设计取舍。
 
@@ -48,6 +48,7 @@
 - [22｜AutoGen](frameworks/autogen.md) — todo
 - [23｜Google ADK](frameworks/google-adk.md) — todo
 - [24｜Agno](frameworks/agno.md) — todo
+- [25｜CrewAI](frameworks/crewai.md) — todo
 - [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — todo
 - LangChain、LangGraph 与 Deep Agents 的关系 — todo
 
@@ -91,6 +92,7 @@
 - AutoGen 代表事件驱动、多 Agent 消息协作与分层 Runtime 的重要路线；目前已进入维护模式。
 - Google ADK 强调 Agent、Runner、Event、Session 和多 Agent 组合，与本项目的 tRPC-Agent-Go 基准很适合做结构对照。
 - Agno 已从单一 Agent SDK 扩展为构建、运行和管理 Agent Platform 的完整工程路线。
+- CrewAI 以 Crews 组织自主的多 Agent 协作，以 Flows 提供事件驱动、有状态的精确编排。
 - AgentScope 提供 Agent、工具、记忆、多 Agent、评测与部署能力。
 - DeerFlow 2.0 更接近带 Sandbox、Memory、Skill 和 Subagent 的 SuperAgent Harness。
 - tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。

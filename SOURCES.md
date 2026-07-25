@@ -18,6 +18,8 @@ title: 官方资料索引
 - [Google ADK for Python](https://github.com/google/adk-python)
 - [Google ADK for Go](https://github.com/google/adk-go)
 - [Agno](https://github.com/agno-agi/agno)
+- [CrewAI Documentation](https://docs.crewai.com/)
+- [CrewAI](https://github.com/crewAIInc/crewAI)
 - [Microsoft Agent Framework（AutoGen 后续演进）](https://github.com/microsoft/agent-framework)
 
 ## 国内框架与 Harness

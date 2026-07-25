@@ -79,6 +79,11 @@ description: Notes from the day-to-day work of an Agent engineer.
     <p data-i18n data-en="From Agent, Team, and Workflow to APIs, storage, traces, RBAC, and the control plane." data-zh="从 Agent、Team、Workflow 延伸到 API、Storage、Trace、RBAC 与 Control Plane。">From Agent, Team, and Workflow to APIs, storage, traces, RBAC, and the control plane.</p>
     <span class="status">todo</span>
   </a>
+  <a class="card" href="{{ '/frameworks/crewai/' | relative_url }}">
+    <span class="card-kicker">Multi-Agent Automation</span><h3>CrewAI</h3>
+    <p data-i18n data-en="Role-based agents and tasks organized through autonomous Crews and event-driven, stateful Flows." data-zh="以角色化 Agent 与 Task 为基础，通过自主协作的 Crews 和事件驱动、有状态的 Flows 组织多 Agent 自动化。">Role-based agents and tasks organized through autonomous Crews and event-driven, stateful Flows.</p>
+    <span class="status">todo</span>
+  </a>
 </div>
 
 <div class="section-heading">

@@ -20,5 +20,6 @@ description: Engineering notes, source reading, and comparisons across Agent fra
 - [AutoGen](../frameworks/autogen.md) — todo
 - [Google ADK](../frameworks/google-adk.md) — todo
 - [Agno](../frameworks/agno.md) — todo
+- [CrewAI](../frameworks/crewai.md) — todo
 - [AgentScope](../frameworks/agentscope.md) — todo
 - [DeerFlow](../frameworks/deerflow.md) — todo
