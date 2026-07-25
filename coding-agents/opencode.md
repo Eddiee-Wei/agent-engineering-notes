@@ -1,3 +1,7 @@
+---
+title: OpenCode
+---
+
 # 43｜OpenCode
 
 > 状态：🟡 研究范围已定义，未完待续
@@ -16,4 +20,3 @@
 - Tool、Permission 和文件编辑
 - TUI / Client-Server 架构
 - LSP、MCP 与扩展生态
-

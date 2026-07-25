@@ -1,0 +1,31 @@
+title: Agent 技术图谱
+description: 以 tRPC-Agent-Go 为工程参照，从 Agent Framework 走向 Coding Agent。
+url: https://eddiee-wei.github.io
+baseurl: /agent-tech-share
+lang: zh-CN
+timezone: Asia/Shanghai
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+plugins:
+  - jekyll-relative-links
+
+relative_links:
+  enabled: true
+  collections: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - .git
+  - .github
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+

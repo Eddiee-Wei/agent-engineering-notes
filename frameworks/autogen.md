@@ -1,3 +1,7 @@
+---
+title: AutoGen
+---
+
 # 22｜AutoGen
 
 > 状态：🟡 提纲完成，未完待续
@@ -61,4 +65,3 @@ Microsoft Agent Framework
 - [ ] 实现最小双 Agent 协作
 - [ ] 分析事件与终止机制
 - [ ] 记录迁移到 Microsoft Agent Framework 的变化
-

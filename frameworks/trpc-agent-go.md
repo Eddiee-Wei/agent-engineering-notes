@@ -1,3 +1,7 @@
+---
+title: tRPC-Agent-Go
+---
+
 # 10｜tRPC-Agent-Go：本项目的参考范式
 
 > 状态：🟡 框架已搭建，源码分析未完待续
@@ -49,4 +53,3 @@ tRPC-Agent-Go 是一个 Go 原生的生产级 Agent 框架，也是本项目作�
 - [ ] 分析取消、错误和 Event Drain
 - [ ] 完成 GraphAgent 示例
 - [ ] 增加真实工程经验与限制
-

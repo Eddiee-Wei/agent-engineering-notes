@@ -1,3 +1,7 @@
+---
+title: DeerFlow
+---
+
 # 31｜DeerFlow
 
 > 状态：🟡 提纲完成，未完待续
@@ -25,4 +29,3 @@ DeerFlow 1.x 与 2.0 架构不同，研究时必须明确版本。
 - [ ] 分析 Sandbox 生命周期
 - [ ] 分析 Subagent 与 Memory
 - [ ] 与 tRPC-Agent-Go 的层级对照
-

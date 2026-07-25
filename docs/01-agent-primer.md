@@ -1,3 +1,7 @@
+---
+title: Agent 到底是什么
+---
+
 # 01｜Agent 到底是什么
 
 > 状态：🟡 提纲已完成，正文未完待续
@@ -75,4 +79,3 @@ Coding Agent 在通用框架之上增加了代码库理解、文件编辑、Shel
 - [ ] 使用 tRPC-Agent-Go 术语映射组成部分
 - [ ] 加入 Workflow / Agent / Harness 对比图
 - [ ] 增加生产系统失败案例
-

@@ -1,3 +1,7 @@
+---
+title: AgentScope
+---
+
 # 30｜AgentScope
 
 > 状态：🟡 提纲完成，未完待续
@@ -21,4 +25,3 @@ AgentScope 与 tRPC-Agent-Go 都覆盖较完整的生产 Agent 能力，但语�
 - [ ] 最小 Agent
 - [ ] Multi-Agent 示例
 - [ ] 部署与观测对比
-

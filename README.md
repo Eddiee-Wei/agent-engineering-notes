@@ -2,6 +2,8 @@
 
 > 以 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 为工程参照，系统理解主流 Agent 框架，并追踪它们如何演进为 Codex、Claude Code、Gemini CLI、OpenCode 等完整应用。
 
+🌐 **在线阅读：** [Agent 技术图谱](https://eddiee-wei.github.io/agent-tech-share/)
+
 ## 为什么写这个项目
 
 Agent 领域的项目很多，但名称相似、抽象层次不同，容易陷入“会调用 API，却说不清系统为什么这样设计”的状态。

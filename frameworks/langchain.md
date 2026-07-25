@@ -1,3 +1,7 @@
+---
+title: LangChain
+---
+
 # 20｜LangChain
 
 > 状态：🟡 提纲完成，未完待续
@@ -24,4 +28,3 @@ LangChain 不应简单等同于 LangGraph。需要分别理解：
 - [ ] 最小示例
 - [ ] Agent 执行链路
 - [ ] 与 tRPC-Agent-Go 对照表
-

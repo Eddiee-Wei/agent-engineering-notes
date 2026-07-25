@@ -1,3 +1,7 @@
+---
+title: 从框架到 Coding Agent 的分层模型
+---
+
 # 03｜从框架到 Coding Agent 的分层模型
 
 > 状态：🟢 第一版
@@ -67,4 +71,3 @@
 - Codex、Claude Code、Gemini CLI、OpenCode 重点位于 L4–L6。
 
 后续研究会验证并修正这些初步定位。
-

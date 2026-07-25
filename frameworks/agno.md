@@ -1,3 +1,7 @@
+---
+title: Agno
+---
+
 # 24｜Agno
 
 > 状态：🟡 提纲完成，未完待续
@@ -55,4 +59,3 @@ Agno 当前将自己定位为构建 Agent Platform 的 SDK：不仅创建 Agent�
 - [ ] 完成最小 Agent 与 Team 示例
 - [ ] 对比 Storage 与 Session
 - [ ] 对比生产 API 和可观测性
-

@@ -1,3 +1,7 @@
+---
+title: Google ADK
+---
+
 # 23｜Google ADK
 
 > 状态：🟡 提纲完成，未完待续
@@ -71,4 +75,3 @@ ADK 的核心术语与 tRPC-Agent-Go 非常接近：
 - [ ] 实现相同 Tool Agent
 - [ ] 对比 Session 与 Event
 - [ ] 对比 Multi-Agent 组合方式
-
