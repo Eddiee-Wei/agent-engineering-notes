@@ -4,7 +4,7 @@ title: LangGraph
 
 # 21｜LangGraph
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 官方定位
 
@@ -19,7 +19,7 @@ LangGraph 是用于构建长时间运行、有状态 Agent 的低层编排框架
 - Subgraph 与 Multi-Agent
 - LangGraph 与 tRPC-Agent-Go GraphAgent 的同异
 
-## 未完待续
+## 开发中
 
 - [ ] 绘制状态迁移图
 - [ ] 实现同一 Workflow 的 Python / Go 版本

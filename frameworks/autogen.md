@@ -4,7 +4,7 @@ title: AutoGen
 
 # 22｜AutoGen
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 为什么仍然研究 AutoGen
 
@@ -58,7 +58,7 @@ Microsoft Agent Framework
 
 这不是简单的版本升级，需要比较抽象、API 稳定性和生产化目标的变化。
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定 AutoGen 分析版本
 - [ ] 绘制 Core / AgentChat / Extensions 分层图

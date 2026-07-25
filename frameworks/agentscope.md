@@ -4,7 +4,7 @@ title: AgentScope
 
 # 30｜AgentScope
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 研究范围
 
@@ -19,7 +19,7 @@ title: AgentScope
 
 AgentScope 与 tRPC-Agent-Go 都覆盖较完整的生产 Agent 能力，但语言、抽象边界和生态选择不同。本章将用相同任务而不是功能清单进行比较。
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定版本
 - [ ] 最小 Agent

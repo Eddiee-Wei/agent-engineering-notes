@@ -4,7 +4,7 @@ title: tRPC-Agent-Go
 
 # 10｜tRPC-Agent-Go：本项目的参考范式
 
-> 状态：🟡 框架已搭建，源码分析未完待续
+> 状态：🟡 框架已搭建，源码分析开发中
 
 ## 为什么从它开始
 
@@ -45,7 +45,7 @@ tRPC-Agent-Go 是一个 Go 原生的生产级 Agent 框架，也是本项目作�
 - DeerFlow 在通用 Runtime 上增加了哪些 Harness 能力？
 - Coding Agent 又增加了哪些代码执行与权限边界？
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定分析版本和 Commit
 - [ ] 绘制执行时序图

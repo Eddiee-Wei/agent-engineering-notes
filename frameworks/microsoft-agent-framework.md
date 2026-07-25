@@ -4,7 +4,7 @@ title: Microsoft Agent Framework
 
 # 延伸｜Microsoft Agent Framework
 
-> 状态：🟡 作为 AutoGen 后续演进补充，未完待续
+> 状态：🟡 作为 AutoGen 后续演进补充，开发中
 
 ## 官方定位
 
@@ -20,7 +20,7 @@ Microsoft Agent Framework 面向 Python 与 .NET 的生产级 Agent 和 Multi-Ag
 - OpenTelemetry Observability
 - 从 AutoGen / Semantic Kernel 迁移的设计变化
 
-## 未完待续
+## 开发中
 
 - [ ] 梳理 AutoGen、Semantic Kernel 与 Agent Framework 时间线
 - [ ] Python 最小示例

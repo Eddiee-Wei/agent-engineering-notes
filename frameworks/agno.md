@@ -4,7 +4,7 @@ title: Agno
 
 # 24｜Agno
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 定位
 
@@ -52,7 +52,7 @@ Agno 当前将自己定位为构建 Agent Platform 的 SDK：不仅创建 Agent�
 - API Serving、Streaming 与 Observability
 - 控制面能力是否属于框架本体
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定版本
 - [ ] 绘制 Agent / Team / Workflow / AgentOS 关系图

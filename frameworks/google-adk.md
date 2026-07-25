@@ -4,7 +4,7 @@ title: Google ADK
 
 # 23｜Google ADK
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 官方定位
 
@@ -68,7 +68,7 @@ ADK 的核心术语与 tRPC-Agent-Go 非常接近：
 - Tool Confirmation 与权限控制
 - Evaluation 与部署路径
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定 Python / Go 分析版本
 - [ ] 绘制 Runner 执行时序

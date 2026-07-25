@@ -39,62 +39,61 @@ Codex / Claude Code / Gemini CLI / OpenCode
 
 ### 第一部分：先建立共同语言
 
-- [01｜Agent 到底是什么](docs/01-agent-primer.md) — 🟡 提纲已完成，正文未完待续
+- [01｜Agent 到底是什么](docs/01-agent-primer.md) — 🟡 提纲已完成，正文开发中
 - [02｜统一分析框架](docs/02-comparison-methodology.md) — 🟢 第一版已完成
 - [03｜从框架到 Coding Agent 的分层模型](docs/03-layer-model.md) — 🟢 第一版已完成
 
 ### 第二部分：以 tRPC-Agent-Go 建立参考坐标
 
-- [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — 🟡 框架已搭建，源码分析未完待续
-- Runner、Agent 与 Event Stream — ⚪ 未开始
-- Model 与 Tool Calling — ⚪ 未开始
-- Session、Memory、Knowledge 与 Artifact — ⚪ 未开始
-- GraphAgent 与多 Agent 编排 — ⚪ 未开始
-- MCP、A2A 与 AG-UI — ⚪ 未开始
-- Evaluation、Telemetry 与生产化 — ⚪ 未开始
+- [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — 🟡 框架已搭建，源码分析开发中
+- Runner、Agent 与 Event Stream — 🟡 开发中
+- Model 与 Tool Calling — 🟡 开发中
+- Session、Memory、Knowledge 与 Artifact — 🟡 开发中
+- GraphAgent 与多 Agent 编排 — 🟡 开发中
+- MCP、A2A 与 AG-UI — 🟡 开发中
+- Evaluation、Telemetry 与生产化 — 🟡 开发中
 
 ### 第三部分：国外通用框架
 
-- [20｜LangChain](frameworks/langchain.md) — 🟡 提纲完成，未完待续
-- [21｜LangGraph](frameworks/langgraph.md) — 🟡 提纲完成，未完待续
-- [22｜AutoGen](frameworks/autogen.md) — 🟡 提纲完成，未完待续
-- [23｜Google ADK](frameworks/google-adk.md) — 🟡 提纲完成，未完待续
-- [24｜Agno](frameworks/agno.md) — 🟡 提纲完成，未完待续
+- [20｜LangChain](frameworks/langchain.md) — 🟡 提纲已完成，内容开发中
+- [21｜LangGraph](frameworks/langgraph.md) — 🟡 提纲已完成，内容开发中
+- [22｜AutoGen](frameworks/autogen.md) — 🟡 提纲已完成，内容开发中
+- [23｜Google ADK](frameworks/google-adk.md) — 🟡 提纲已完成，内容开发中
+- [24｜Agno](frameworks/agno.md) — 🟡 提纲已完成，内容开发中
 - [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — 🟡 用于解释 AutoGen 的后续演进
-- LangChain、LangGraph 与 Deep Agents 的关系 — ⚪ 未开始
+- LangChain、LangGraph 与 Deep Agents 的关系 — 🟡 开发中
 
 ### 第四部分：国内框架与 Harness
 
-- [30｜AgentScope](frameworks/agentscope.md) — 🟡 提纲完成，未完待续
-- [31｜DeerFlow](frameworks/deerflow.md) — 🟡 提纲完成，未完待续
-- 国内框架横向比较 — ⚪ 未开始
+- [30｜AgentScope](frameworks/agentscope.md) — 🟡 提纲已完成，内容开发中
+- [31｜DeerFlow](frameworks/deerflow.md) — 🟡 提纲已完成，内容开发中
+- 国内框架横向比较 — 🟡 开发中
 
 ### 第五部分：Coding Agent 应用层
 
-- [40｜Codex](coding-agents/codex.md) — 🟡 研究范围已定义，未完待续
-- [41｜Claude Code](coding-agents/claude-code.md) — 🟡 研究范围已定义，未完待续
-- [42｜Gemini CLI](coding-agents/gemini-cli.md) — 🟡 研究范围已定义，未完待续
-- [43｜OpenCode](coding-agents/opencode.md) — 🟡 研究范围已定义，未完待续
-- Coding Agent 统一架构比较 — ⚪ 未开始
-- 权限、Sandbox 与 Prompt Injection — ⚪ 未开始
-- Context Engineering 与长任务 — ⚪ 未开始
+- [40｜Codex](coding-agents/codex.md) — 🟡 研究范围已定义，内容开发中
+- [41｜Claude Code](coding-agents/claude-code.md) — 🟡 研究范围已定义，内容开发中
+- [42｜Gemini CLI](coding-agents/gemini-cli.md) — 🟡 研究范围已定义，内容开发中
+- [43｜OpenCode](coding-agents/opencode.md) — 🟡 研究范围已定义，内容开发中
+- Coding Agent 统一架构比较 — 🟡 开发中
+- 权限、Sandbox 与 Prompt Injection — 🟡 开发中
+- Context Engineering 与长任务 — 🟡 开发中
 
 ### 第六部分：动手验证
 
-- 最小 Agent Loop — ⚪ 未开始
-- 用 tRPC-Agent-Go 实现 Tool Agent — ⚪ 未开始
-- 用 GraphAgent 实现可恢复 Workflow — ⚪ 未开始
-- 同一任务的跨框架实现 — ⚪ 未开始
-- Coding Agent 最小原型 — ⚪ 未开始
-- 统一 Benchmark 与 Trace 对比 — ⚪ 未开始
+- 最小 Agent Loop — 🟡 开发中
+- 用 tRPC-Agent-Go 实现 Tool Agent — 🟡 开发中
+- 用 GraphAgent 实现可恢复 Workflow — 🟡 开发中
+- 同一任务的跨框架实现 — 🟡 开发中
+- Coding Agent 最小原型 — 🟡 开发中
+- 统一 Benchmark 与 Trace 对比 — 🟡 开发中
 
 ## 内容状态
 
 | 标记 | 含义 |
 | --- | --- |
 | 🟢 | 已形成可阅读的第一版 |
-| 🟡 | 已有提纲，仍需研究或实验 |
-| ⚪ | 未开始 |
+| 🟡 | 开发中：已有提纲或正在研究、实验 |
 | 🔄 | 正在更新 |
 
 ## 写作原则
@@ -103,7 +102,7 @@ Codex / Claude Code / Gemini CLI / OpenCode
 2. **优先引用官方文档、官方仓库和可复现实验。**
 3. **明确区分事实、个人理解和推测。**
 4. **所有框架使用同一套分析维度。**
-5. **没有验证的章节明确写“未完待续”。**
+5. **没有验证的章节明确写“开发中”。**
 6. **不使用或转载疑似泄露的专有源码。**
 7. **项目体现真实学习过程，不伪装成已经完成的研究。**
 

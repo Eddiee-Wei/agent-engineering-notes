@@ -4,7 +4,7 @@ title: DeerFlow
 
 # 31｜DeerFlow
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 提纲已完成，内容开发中
 
 ## 定位提醒
 
@@ -22,7 +22,7 @@ DeerFlow 1.x 与 2.0 架构不同，研究时必须明确版本。
 - Research、Coding 与 Content Creation 的统一入口
 - 它在通用框架之上增加了什么
 
-## 未完待续
+## 开发中
 
 - [ ] 锁定 2.x Commit
 - [ ] 绘制后端执行链路

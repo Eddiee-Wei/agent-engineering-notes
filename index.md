@@ -34,7 +34,7 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
     <span class="card-kicker">Reference Paradigm</span>
     <h3>tRPC-Agent-Go</h3>
     <p>从 Agent、Runner、Event、Session、Graph 到 Evaluation 与 Observability，建立贯穿全项目的 Go 工程参照。</p>
-    <span class="status">🟡 源码分析 · 未完待续</span>
+    <span class="status">🟡 源码分析 · 开发中</span>
   </a>
   <a class="card" href="{{ '/docs/02-comparison-methodology/' | relative_url }}">
     <span class="card-kicker">Methodology</span>
@@ -53,27 +53,27 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
   <a class="card" href="{{ '/frameworks/langchain/' | relative_url }}">
     <span class="card-kicker">Ecosystem</span><h3>LangChain</h3>
     <p>Agent 工程抽象、Model 与 Tool 集成生态，以及它与 LangGraph、LangSmith、Deep Agents 的关系。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/frameworks/langgraph/' | relative_url }}">
     <span class="card-kicker">Stateful Orchestration</span><h3>LangGraph</h3>
     <p>有状态图、Durable Execution、Checkpoint、Human-in-the-loop 与长时间任务。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/frameworks/autogen/' | relative_url }}">
     <span class="card-kicker">Multi-Agent Runtime</span><h3>AutoGen</h3>
     <p>事件驱动 Core、AgentChat、Team、消息协作与代码执行，以及向 Microsoft Agent Framework 的演进。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/frameworks/google-adk/' | relative_url }}">
     <span class="card-kicker">Agent Development Kit</span><h3>Google ADK</h3>
     <p>Agent、Runner、Event、Session 与 Workflow Agent；同时比较 Python 与 Go 实现。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/frameworks/agno/' | relative_url }}">
     <span class="card-kicker">Agent Platform</span><h3>Agno</h3>
     <p>从 Agent、Team、Workflow 延伸到 API、Storage、Trace、RBAC 与 Control Plane。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
 </div>
 
@@ -86,12 +86,12 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
   <a class="card" href="{{ '/frameworks/agentscope/' | relative_url }}">
     <span class="card-kicker">Agent Framework</span><h3>AgentScope</h3>
     <p>ReAct、Tool、Memory、Multi-Agent Message Hub、Evaluation 与生产部署。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/frameworks/deerflow/' | relative_url }}">
     <span class="card-kicker">SuperAgent Harness</span><h3>DeerFlow 2.0</h3>
     <p>Subagent、Memory、Sandbox、Skill 与 Message Gateway 如何组合成长任务 Harness。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
 </div>
 
@@ -104,22 +104,22 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
   <a class="card" href="{{ '/coding-agents/codex/' | relative_url }}">
     <span class="card-kicker">OpenAI</span><h3>Codex</h3>
     <p>CLI、IDE、App、Cloud、Sandbox、Approval、Skill、MCP 与并行任务。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/coding-agents/claude-code/' | relative_url }}">
     <span class="card-kicker">Anthropic</span><h3>Claude Code</h3>
     <p>Terminal-first UX、Permission、Hook、Project Instructions、Skill 与 Subagent。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/coding-agents/gemini-cli/' | relative_url }}">
     <span class="card-kicker">Google</span><h3>Gemini CLI</h3>
     <p>开源 Agent Loop、Tool、MCP、扩展机制、Sandbox 与非交互运行。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
   <a class="card" href="{{ '/coding-agents/opencode/' | relative_url }}">
     <span class="card-kicker">Open Source</span><h3>OpenCode</h3>
     <p>Provider、Session、Tool、Permission、TUI / Client-Server 架构与扩展生态。</p>
-    <span class="status">🟡 未完待续</span>
+    <span class="status">🟡 开发中</span>
   </a>
 </div>
 
