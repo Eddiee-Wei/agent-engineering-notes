@@ -2,22 +2,22 @@
 layout: default
 title: 首页
 page_class: home
-description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工程判断、源码研究与应用体验。
+description: Notes on agent frameworks, runtimes, harnesses, and coding agents.
 ---
 
 <section class="hero">
-  <span class="eyebrow">EDDIE'S AGENT ENGINEERING NOTES · 持续更新</span>
-  <h1>Agent 工程实践<br>与研究手记</h1>
-  <p>从我在工作中使用 tRPC-Agent-Go 的真实经验出发，记录遇到的问题、设计取舍、源码阅读、框架实验，以及使用 Coding Agent 后形成的产品判断。</p>
+  <span class="eyebrow">AGENT ENGINEERING NOTES · 持续更新</span>
+  <h1>Agent Frameworks,<br>Runtimes & Coding Agents</h1>
+  <p>从 tRPC-Agent-Go 展开的一些工程笔记，包括应用记录、源码阅读、框架对照和小型实验。</p>
   <div class="hero-actions">
-    <a class="button primary" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">从我的实践主线开始</a>
-    <a class="button" href="{{ '/ROADMAP/' | relative_url }}">查看当前研究计划</a>
+    <a class="button primary" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">tRPC-Agent-Go</a>
+    <a class="button" href="{{ '/ROADMAP/' | relative_url }}">Roadmap</a>
   </div>
 </section>
 
 <div class="section-heading">
-  <h2>我目前的观察坐标</h2>
-  <p>这是阶段性理解，不是标准答案。</p>
+  <h2>Layers</h2>
+  <p>用于组织后续内容的一组简单分层。</p>
 </div>
 
 <div class="layer-flow" aria-label="Agent 技术分层">
@@ -33,20 +33,20 @@ description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工
   <a class="card featured" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">
     <span class="card-kicker">Reference Paradigm</span>
     <h3>tRPC-Agent-Go</h3>
-    <p>记录我在真实工作场景中对 Agent、Runner、Event、Session 与 Graph 的使用经验、问题和设计判断。</p>
+    <p>围绕 Agent、Runner、Event、Session 与 Graph 展开的应用记录、源码阅读和实验。</p>
     <span class="status">🟡 源码分析 · 开发中</span>
   </a>
   <a class="card" href="{{ '/docs/02-comparison-methodology/' | relative_url }}">
-    <span class="card-kicker">Research Lens</span>
-    <h3>我的观察维度</h3>
-    <p>我在阅读源码和使用框架时反复关注的抽象、状态、控制流、生产化和产品问题。</p>
+    <span class="card-kicker">Framework Lens</span>
+    <h3>Framework Lens</h3>
+    <p>阅读和使用框架时反复出现的抽象、状态、控制流、生产化和产品问题。</p>
     <span class="status">🟢 第一版完成</span>
   </a>
 </div>
 
 <div class="section-heading">
-  <h2>外部框架参照</h2>
-  <p>关注它们与我的实践有何不同，以及哪些设计值得借鉴。</p>
+  <h2>Frameworks</h2>
+  <p>不同框架对相似问题的不同选择。</p>
 </div>
 
 <div class="card-grid">
@@ -78,8 +78,8 @@ description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工
 </div>
 
 <div class="section-heading">
-  <h2>国内框架与 Harness 观察</h2>
-  <p>不做功能排名，记录工程路线和适用边界。</p>
+  <h2>Frameworks in China</h2>
+  <p>AgentScope、DeerFlow 与 tRPC-Agent-Go。</p>
 </div>
 
 <div class="card-grid">
@@ -96,8 +96,8 @@ description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工
 </div>
 
 <div class="section-heading">
-  <h2>Coding Agent 使用与产品观察</h2>
-  <p>从实际使用体验反推上下文、工具、权限和执行环境的设计。</p>
+  <h2>Coding Agents</h2>
+  <p>上下文、工具、权限、执行环境和交互方式。</p>
 </div>
 
 <div class="card-grid">

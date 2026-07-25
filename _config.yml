@@ -1,5 +1,5 @@
-title: Agent 工程实践与研究手记
-description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工程判断、源码研究与应用体验。
+title: Agent Engineering Notes
+description: Notes on agent frameworks, runtimes, harnesses, and coding agents.
 url: https://eddiee-wei.github.io
 baseurl: /agent-tech-share
 lang: zh-CN

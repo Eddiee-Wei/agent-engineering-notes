@@ -1,12 +1,12 @@
 ---
-title: 我观察 Agent 框架的几个维度
+title: Framework Lens
 ---
 
-# 02｜我观察 Agent 框架的几个维度
+# 02｜Framework Lens
 
 > 状态：🟢 第一版
 
-这不是一套希望别人照着执行的评测标准，而是我在使用 tRPC-Agent-Go、阅读其他框架源码和体验 Coding Agent 时，反复追问自己的问题清单。它会随着我的经验继续变化。
+阅读源码、使用框架和体验 Coding Agent 时反复出现的一些问题，用来保持对照的一致性。
 
 ## A. 核心抽象
 
