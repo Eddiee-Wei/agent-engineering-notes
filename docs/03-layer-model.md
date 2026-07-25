@@ -1,12 +1,12 @@
 ---
-title: 从框架到 Coding Agent 的分层模型
+title: 我目前对 Framework、Harness 与产品的分层理解
 ---
 
-# 03｜从框架到 Coding Agent 的分层模型
+# 03｜我目前对 Framework、Harness 与产品的分层理解
 
 > 状态：🟢 第一版
 
-为了避免把 LangGraph、DeerFlow 和 Codex 放在同一层直接比较，本项目采用以下分层。
+这是我为了避免把 LangGraph、DeerFlow 和 Codex 直接放进一张功能表而形成的工作模型。它帮助我组织观察，但不是行业标准，也可能在后续实践中调整。
 
 ## L0：模型层
 

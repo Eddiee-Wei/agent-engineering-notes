@@ -2,22 +2,22 @@
 layout: default
 title: 首页
 page_class: home
-description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、Harness 与 Coding Agent。
+description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工程判断、源码研究与应用体验。
 ---
 
 <section class="hero">
-  <span class="eyebrow">OPEN ENGINEERING NOTEBOOK · 持续更新</span>
-  <h1>从 Agent Framework<br>走向 Coding Agent</h1>
-  <p>以真实使用的 tRPC-Agent-Go 为工程参照，用同一套问题研究国内外 Agent 框架，并追踪它们如何演进为 Codex、Claude Code、Gemini CLI 与 OpenCode。</p>
+  <span class="eyebrow">EDDIE'S AGENT ENGINEERING NOTES · 持续更新</span>
+  <h1>Agent 工程实践<br>与研究手记</h1>
+  <p>从我在工作中使用 tRPC-Agent-Go 的真实经验出发，记录遇到的问题、设计取舍、源码阅读、框架实验，以及使用 Coding Agent 后形成的产品判断。</p>
   <div class="hero-actions">
-    <a class="button primary" href="{{ '/docs/01-agent-primer/' | relative_url }}">从 Agent 基础开始</a>
-    <a class="button" href="{{ '/ROADMAP/' | relative_url }}">查看研究路线图</a>
+    <a class="button primary" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">从我的实践主线开始</a>
+    <a class="button" href="{{ '/ROADMAP/' | relative_url }}">查看当前研究计划</a>
   </div>
 </section>
 
 <div class="section-heading">
-  <h2>研究坐标</h2>
-  <p>先固定问题，再寻找每个框架的答案。</p>
+  <h2>我目前的观察坐标</h2>
+  <p>这是阶段性理解，不是标准答案。</p>
 </div>
 
 <div class="layer-flow" aria-label="Agent 技术分层">
@@ -33,20 +33,20 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
   <a class="card featured" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">
     <span class="card-kicker">Reference Paradigm</span>
     <h3>tRPC-Agent-Go</h3>
-    <p>从 Agent、Runner、Event、Session、Graph 到 Evaluation 与 Observability，建立贯穿全项目的 Go 工程参照。</p>
+    <p>记录我在真实工作场景中对 Agent、Runner、Event、Session 与 Graph 的使用经验、问题和设计判断。</p>
     <span class="status">🟡 源码分析 · 开发中</span>
   </a>
   <a class="card" href="{{ '/docs/02-comparison-methodology/' | relative_url }}">
-    <span class="card-kicker">Methodology</span>
-    <h3>统一分析框架</h3>
-    <p>核心抽象、工具、状态、控制流、Multi-Agent、生产化与 Coding Agent 扩展。</p>
+    <span class="card-kicker">Research Lens</span>
+    <h3>我的观察维度</h3>
+    <p>我在阅读源码和使用框架时反复关注的抽象、状态、控制流、生产化和产品问题。</p>
     <span class="status">🟢 第一版完成</span>
   </a>
 </div>
 
 <div class="section-heading">
-  <h2>国外框架</h2>
-  <p>组件生态、图编排、多 Agent 与平台工程。</p>
+  <h2>外部框架参照</h2>
+  <p>关注它们与我的实践有何不同，以及哪些设计值得借鉴。</p>
 </div>
 
 <div class="card-grid">
@@ -78,8 +78,8 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
 </div>
 
 <div class="section-heading">
-  <h2>国内框架与 Harness</h2>
-  <p>在真实工程语境中比较抽象边界。</p>
+  <h2>国内框架与 Harness 观察</h2>
+  <p>不做功能排名，记录工程路线和适用边界。</p>
 </div>
 
 <div class="card-grid">
@@ -96,8 +96,8 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
 </div>
 
 <div class="section-heading">
-  <h2>Coding Agent 应用层</h2>
-  <p>框架能力如何变成真实的软件工程产品。</p>
+  <h2>Coding Agent 使用与产品观察</h2>
+  <p>从实际使用体验反推上下文、工具、权限和执行环境的设计。</p>
 </div>
 
 <div class="card-grid">
@@ -122,4 +122,3 @@ description: 以 tRPC-Agent-Go 为工程参照，系统研究 Agent Framework、
     <span class="status">🟡 开发中</span>
   </a>
 </div>
-

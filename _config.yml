@@ -1,5 +1,5 @@
-title: Agent 技术图谱
-description: 以 tRPC-Agent-Go 为工程参照，从 Agent Framework 走向 Coding Agent。
+title: Agent 工程实践与研究手记
+description: 从 tRPC-Agent-Go 的真实实践出发，记录 Agent 系统的工程判断、源码研究与应用体验。
 url: https://eddiee-wei.github.io
 baseurl: /agent-tech-share
 lang: zh-CN
@@ -28,4 +28,3 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - LICENSE
-

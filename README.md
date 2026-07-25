@@ -1,49 +1,42 @@
-# Agent 技术图谱：从框架到 Coding Agent
+# Agent 工程实践与研究手记
 
-> 以 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 为工程参照，系统理解主流 Agent 框架，并追踪它们如何演进为 Codex、Claude Code、Gemini CLI、OpenCode 等完整应用。
+> 从我在工作中使用 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 的经验出发，记录对 Agent Runtime、框架设计与 Coding Agent 产品的理解、实验和反思。
 
-🌐 **在线阅读：** [Agent 技术图谱](https://eddiee-wei.github.io/agent-tech-share/)
+🌐 **在线阅读：** [Agent 工程实践与研究手记](https://eddiee-wei.github.io/agent-tech-share/)
 
-## 为什么写这个项目
+## 这是什么
 
-Agent 领域的项目很多，但名称相似、抽象层次不同，容易陷入“会调用 API，却说不清系统为什么这样设计”的状态。
+这不是 Agent 教程、百科或“从零到一”课程。网上已经有很多更完整的入门资料，我不准备重复它们。
 
-这个项目不做简单的框架清单，也不按 Star 数量排名。我们从真实的 Go Agent 工程经验出发，用统一问题研究不同实现：
+这是我的个人工程档案。我会把工作中真实接触到的问题、使用框架时形成的判断、读源码后的新认识，以及不同 Coding Agent 带来的产品启发持续写下来。
 
-- Agent 的运行循环由谁驱动？
-- Model、Tool、Session、Memory 和 Knowledge 如何协作？
-- Graph、Workflow 与自主 Agent 的边界在哪里？
-- Streaming、取消、恢复、评测和可观测性如何落地？
-- 一个通用 Agent 框架还缺少什么，才能成为 Coding Agent？
+这里更关心：
 
-## 项目主线
+- 我实际遇到了什么问题？
+- 当时为什么选择这种实现？
+- tRPC-Agent-Go 的抽象给我的工作带来了什么帮助或限制？
+- 其他框架采取了什么不同路线？
+- 哪些设计值得借鉴，哪些只适合特定场景？
+- 我的判断经过实验或实践后发生了什么变化？
 
-```text
-Agent 基础概念
-      ↓
-tRPC-Agent-Go 参考范式
-      ↓
-国外通用框架对照
-LangChain / LangGraph / AutoGen / Google ADK / Agno
-      ↓
-国内框架与 Agent Harness
-AgentScope / DeerFlow / tRPC-Agent-Go
-      ↓
-应用层 Coding Agent
-Codex / Claude Code / Gemini CLI / OpenCode
-      ↓
-统一实验、源码阅读与架构对比
-```
+## 我的观察路径
 
-## 阅读地图
+我会从最熟悉的 tRPC-Agent-Go 开始，向两侧扩展：
 
-### 第一部分：先建立共同语言
+- 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
+- 横向看 LangChain、LangGraph、AutoGen、Google ADK、Agno、AgentScope 与 DeerFlow 的不同选择。
+- 向上看 Codex、Claude Code、Gemini CLI、OpenCode 如何把框架能力变成可用的 Coding Agent。
+- 最后回到自己的项目与工作场景，用实验验证判断。
 
-- [01｜Agent 到底是什么](docs/01-agent-primer.md) — 🟡 提纲已完成，正文开发中
-- [02｜统一分析框架](docs/02-comparison-methodology.md) — 🟢 第一版已完成
-- [03｜从框架到 Coding Agent 的分层模型](docs/03-layer-model.md) — 🟢 第一版已完成
+## 研究记录
 
-### 第二部分：以 tRPC-Agent-Go 建立参考坐标
+### 第一部分：我目前怎样理解 Agent
+
+- [01｜我目前怎样理解 Agent](docs/01-agent-primer.md) — 🟡 经验与案例开发中
+- [02｜我观察 Agent 框架的几个维度](docs/02-comparison-methodology.md) — 🟢 第一版已完成
+- [03｜我目前对 Framework、Harness 与产品的分层理解](docs/03-layer-model.md) — 🟢 第一版已完成
+
+### 第二部分：我的 tRPC-Agent-Go 实践
 
 - [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — 🟡 框架已搭建，源码分析开发中
 - Runner、Agent 与 Event Stream — 🟡 开发中
@@ -53,7 +46,7 @@ Codex / Claude Code / Gemini CLI / OpenCode
 - MCP、A2A 与 AG-UI — 🟡 开发中
 - Evaluation、Telemetry 与生产化 — 🟡 开发中
 
-### 第三部分：国外通用框架
+### 第三部分：外部框架带给我的参照
 
 - [20｜LangChain](frameworks/langchain.md) — 🟡 提纲已完成，内容开发中
 - [21｜LangGraph](frameworks/langgraph.md) — 🟡 提纲已完成，内容开发中
@@ -63,13 +56,13 @@ Codex / Claude Code / Gemini CLI / OpenCode
 - [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — 🟡 用于解释 AutoGen 的后续演进
 - LangChain、LangGraph 与 Deep Agents 的关系 — 🟡 开发中
 
-### 第四部分：国内框架与 Harness
+### 第四部分：国内框架与 Harness 观察
 
 - [30｜AgentScope](frameworks/agentscope.md) — 🟡 提纲已完成，内容开发中
 - [31｜DeerFlow](frameworks/deerflow.md) — 🟡 提纲已完成，内容开发中
 - 国内框架横向比较 — 🟡 开发中
 
-### 第五部分：Coding Agent 应用层
+### 第五部分：Coding Agent 使用与产品观察
 
 - [40｜Codex](coding-agents/codex.md) — 🟡 研究范围已定义，内容开发中
 - [41｜Claude Code](coding-agents/claude-code.md) — 🟡 研究范围已定义，内容开发中
@@ -79,7 +72,7 @@ Codex / Claude Code / Gemini CLI / OpenCode
 - 权限、Sandbox 与 Prompt Injection — 🟡 开发中
 - Context Engineering 与长任务 — 🟡 开发中
 
-### 第六部分：动手验证
+### 第六部分：我的实验与项目
 
 - 最小 Agent Loop — 🟡 开发中
 - 用 tRPC-Agent-Go 实现 Tool Agent — 🟡 开发中
@@ -96,19 +89,20 @@ Codex / Claude Code / Gemini CLI / OpenCode
 | 🟡 | 开发中：已有提纲或正在研究、实验 |
 | 🔄 | 正在更新 |
 
-## 写作原则
+## 每篇记录尽量包含
 
-1. **从问题出发，而不是从产品宣传出发。**
-2. **优先引用官方文档、官方仓库和可复现实验。**
-3. **明确区分事实、个人理解和推测。**
-4. **所有框架使用同一套分析维度。**
-5. **没有验证的章节明确写“开发中”。**
-6. **不使用或转载疑似泄露的专有源码。**
-7. **项目体现真实学习过程，不伪装成已经完成的研究。**
+1. **场景**：我为什么会注意到这个问题。
+2. **经验**：在工作、项目或工具使用中具体发生了什么。
+3. **判断**：我目前怎样理解其中的设计取舍。
+4. **证据**：源码、官方资料、Trace 或可重复实验。
+5. **局限**：结论在哪些条件下可能不成立。
+6. **变化**：新的实践怎样修正了之前的看法。
 
-## 当前结论
+涉及公司和工作经历时，只记录可以公开的通用工程经验，不公开内部代码、数据、架构细节或其他敏感信息。
 
-这不是一个“哪个框架最好”的项目。框架的价值取决于它选择解决哪一层问题：
+## 当前工作假设
+
+下面不是教学结论，而是我当前阶段的观察，后续可能被源码阅读和实践推翻：
 
 - LangChain 更接近组件与集成生态。
 - LangGraph 强调有状态、长时间运行的图编排。
@@ -120,7 +114,7 @@ Codex / Claude Code / Gemini CLI / OpenCode
 - tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。
 - Codex、Claude Code、Gemini CLI 和 OpenCode 位于更上层：它们把模型、工具、执行环境、权限、交互界面和软件工程工作流组合成产品。
 
-这些判断将在后续源码阅读和统一实验中持续修正。
+我会保留判断变化的过程，而不是把旧观点悄悄改成一个看似一直正确的答案。
 
 ## 资料与许可
 
