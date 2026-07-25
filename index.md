@@ -2,13 +2,13 @@
 layout: default
 title: 首页
 page_class: home
-description: Notes on agent frameworks, runtimes, harnesses, and coding agents.
+description: 一个 Agent 开发工程师的日常分享。
 ---
 
 <section class="hero">
   <span class="eyebrow">AGENT ENGINEERING NOTES · 持续更新</span>
   <h1>Agent Frameworks,<br>Runtimes & Coding Agents</h1>
-  <p>从 tRPC-Agent-Go 展开的一些工程笔记，包括应用记录、源码阅读、框架对照和小型实验。</p>
+  <p>一个 Agent 开发工程师的日常分享。</p>
   <div class="hero-actions">
     <a class="button primary" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">tRPC-Agent-Go</a>
     <a class="button" href="{{ '/ROADMAP/' | relative_url }}">Roadmap</a>
