@@ -1,11 +1,19 @@
 <!doctype html>
-<html lang="{{ site.lang | default: 'zh-CN' }}">
+<html lang="en" data-language="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ffffff">
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+    <script>
+      try {
+        if (localStorage.getItem("agent-notes-language") === "zh") {
+          document.documentElement.dataset.language = "zh";
+          document.documentElement.lang = "zh-CN";
+        }
+      } catch (error) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,31 +21,39 @@
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="{{ '/' | relative_url }}" aria-label="返回首页">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="Home">
         <span class="brand-mark">A/</span>
         <span>
           <strong>Agent Notes</strong>
           <small>Agent Definition → Agent Framework → Agent Application / Coding Agent</small>
         </span>
       </a>
-      <nav class="top-nav" aria-label="主导航">
+      <nav class="top-nav" aria-label="Site actions">
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-language-option="en" aria-pressed="true">EN</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-language-option="zh" aria-pressed="false">中文</button>
+        </div>
         <a class="github-link" href="https://github.com/Eddiee-Wei/agent-engineering-notes">GitHub ↗</a>
       </nav>
     </header>
 
     <div class="page-shell">
-      <aside class="side-nav" aria-label="章节目录">
+      <aside class="side-nav" aria-label="Sections">
         <a class="side-chapter{% if page.url contains '/docs/' or page.url contains '/agent/' %} is-active{% endif %}" href="{{ '/agent/' | relative_url }}">
           <span class="chapter-number">01</span>
-          <span class="chapter-title">Agent Introduction</span>
+          <span class="chapter-title" data-i18n data-en="Agent Introduction" data-zh="Agent 介绍">Agent Introduction</span>
         </a>
         <a class="side-chapter{% if page.url contains '/frameworks/' or page.url contains '/agent-framework/' %} is-active{% endif %}" href="{{ '/agent-framework/' | relative_url }}">
           <span class="chapter-number">02</span>
-          <span class="chapter-title">Agent Framework</span>
+          <span class="chapter-title" data-i18n data-en="Agent Framework" data-zh="Agent 框架">Agent Framework</span>
         </a>
         <a class="side-chapter{% if page.url contains '/coding-agents/' or page.url contains '/agent-application/' %} is-active{% endif %}" href="{{ '/agent-application/' | relative_url }}">
           <span class="chapter-number">03</span>
-          <span class="chapter-title">Agent Application<br><small>/ Coding Agent</small></span>
+          <span class="chapter-title">
+            <span data-lang="en">Agent Application<br><small>/ Coding Agent</small></span>
+            <span data-lang="zh">Agent 应用<br><small>/ Coding Agent</small></span>
+          </span>
         </a>
       </aside>
 
@@ -47,8 +63,9 @@
     </div>
 
     <footer class="site-footer">
-      <span>Notes on agent systems and coding agents</span>
-      <span>Built openly by <a href="https://github.com/Eddiee-Wei">@Eddiee-Wei</a></span>
+      <span data-i18n data-en="Notes on agent systems and coding agents" data-zh="关于 Agent 系统与 Coding Agent 的记录">Notes on agent systems and coding agents</span>
+      <span><span data-i18n data-en="Built openly by" data-zh="由">Built openly by</span> <a href="https://github.com/Eddiee-Wei">@Eddiee-Wei</a></span>
     </footer>
+    <script src="{{ '/assets/js/language.js' | relative_url }}" defer></script>
   </body>
 </html>

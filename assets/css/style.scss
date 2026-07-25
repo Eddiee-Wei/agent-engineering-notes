@@ -17,6 +17,8 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+html[data-language="en"] [data-lang="zh"],
+html[data-language="zh"] [data-lang="en"] { display: none !important; }
 
 body {
   margin: 0;
@@ -67,6 +69,32 @@ a:hover { color: #555550; }
 }
 .top-nav a:hover { color: var(--text); background: var(--panel-soft); }
 .top-nav .github-link { border: 1px solid var(--line); color: var(--text); }
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: #a0a09a;
+  background: var(--panel);
+}
+.language-switch button {
+  min-width: 36px;
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--muted);
+  background: transparent;
+  font: 600 11px "IBM Plex Mono", monospace;
+  cursor: pointer;
+}
+.language-switch button:hover { color: var(--text); }
+.language-switch button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--accent);
+}
+.language-switch span { font-size: 11px; }
 
 .page-shell {
   display: grid;
@@ -276,6 +304,8 @@ th { color: var(--text); background: var(--panel-soft); }
 @media (max-width: 640px) {
   .site-header { padding: 11px 16px; }
   .brand small { display: none; }
+  .language-switch { gap: 1px; }
+  .language-switch button { min-width: 31px; padding: 4px 5px; }
   .top-nav .github-link { padding: 7px 9px; font-size: 12px; }
   .hero { padding: 28px 22px; }
   .hero-actions { flex-direction: column; align-items: stretch; text-align: center; }
