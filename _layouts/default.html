@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0b1020">
+    <meta name="theme-color" content="#ffffff">
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,40 +22,25 @@
       </a>
       <nav class="top-nav" aria-label="主导航">
         <a href="{{ '/' | relative_url }}">Notes</a>
-        <a href="{{ '/docs/01-agent-primer/' | relative_url }}">Agent</a>
         <a href="{{ '/ROADMAP/' | relative_url }}">路线图</a>
         <a class="github-link" href="https://github.com/Eddiee-Wei/agent-engineering-notes">GitHub ↗</a>
       </nav>
     </header>
 
     <div class="page-shell">
-      <aside class="side-nav" aria-label="文章目录">
-        <div class="side-section">
-          <span>基础</span>
-          <a href="{{ '/docs/01-agent-primer/' | relative_url }}">Agent</a>
-          <a href="{{ '/docs/02-comparison-methodology/' | relative_url }}">Framework Lens</a>
-          <a href="{{ '/docs/03-layer-model/' | relative_url }}">Layers</a>
-        </div>
-        <div class="side-section">
-          <span>国外框架</span>
-          <a href="{{ '/frameworks/langchain/' | relative_url }}">LangChain</a>
-          <a href="{{ '/frameworks/langgraph/' | relative_url }}">LangGraph</a>
-          <a href="{{ '/frameworks/autogen/' | relative_url }}">AutoGen</a>
-          <a href="{{ '/frameworks/google-adk/' | relative_url }}">Google ADK</a>
-          <a href="{{ '/frameworks/agno/' | relative_url }}">Agno</a>
-        </div>
-        <div class="side-section">
-          <span>国内框架</span>
-          <a href="{{ '/frameworks/agentscope/' | relative_url }}">AgentScope</a>
-          <a href="{{ '/frameworks/deerflow/' | relative_url }}">DeerFlow</a>
-        </div>
-        <div class="side-section">
-          <span>Coding Agent</span>
-          <a href="{{ '/coding-agents/codex/' | relative_url }}">Codex</a>
-          <a href="{{ '/coding-agents/claude-code/' | relative_url }}">Claude Code</a>
-          <a href="{{ '/coding-agents/gemini-cli/' | relative_url }}">Gemini CLI</a>
-          <a href="{{ '/coding-agents/opencode/' | relative_url }}">OpenCode</a>
-        </div>
+      <aside class="side-nav" aria-label="章节目录">
+        <a class="side-chapter{% if page.url contains '/docs/' or page.url contains '/agent/' %} is-active{% endif %}" href="{{ '/agent/' | relative_url }}">
+          <span class="chapter-number">01</span>
+          <span class="chapter-title">Agent Introduction</span>
+        </a>
+        <a class="side-chapter{% if page.url contains '/frameworks/' or page.url contains '/agent-framework/' %} is-active{% endif %}" href="{{ '/agent-framework/' | relative_url }}">
+          <span class="chapter-number">02</span>
+          <span class="chapter-title">Agent Framework</span>
+        </a>
+        <a class="side-chapter{% if page.url contains '/coding-agents/' or page.url contains '/agent-application/' %} is-active{% endif %}" href="{{ '/agent-application/' | relative_url }}">
+          <span class="chapter-number">03</span>
+          <span class="chapter-title">Agent Application<br><small>/ Coding Agent</small></span>
+        </a>
       </aside>
 
       <main class="content{% if page.page_class %} {{ page.page_class }}{% endif %}">

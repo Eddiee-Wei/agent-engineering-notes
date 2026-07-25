@@ -10,6 +10,12 @@
 
 这里会有源码阅读、应用记录、框架对照、小型实验，以及在实践中形成或改变的判断。
 
+## Sections
+
+- [Agent Introduction](agent/)
+- [Agent Framework](agent-framework/)
+- [Agent Application / Coding Agent](agent-application/)
+
 ## Scope
 
 - 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
