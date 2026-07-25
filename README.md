@@ -22,7 +22,7 @@ Agent 基础概念
 tRPC-Agent-Go 参考范式
       ↓
 国外通用框架对照
-LangChain / LangGraph / Microsoft Agent Framework
+LangChain / LangGraph / AutoGen / Google ADK / Agno
       ↓
 国内框架与 Agent Harness
 AgentScope / DeerFlow / tRPC-Agent-Go
@@ -55,8 +55,10 @@ Codex / Claude Code / Gemini CLI / OpenCode
 
 - [20｜LangChain](frameworks/langchain.md) — 🟡 提纲完成，未完待续
 - [21｜LangGraph](frameworks/langgraph.md) — 🟡 提纲完成，未完待续
-- [22｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — 🟡 提纲完成，未完待续
-- AutoGen 与 Semantic Kernel 的历史位置 — ⚪ 未开始
+- [22｜AutoGen](frameworks/autogen.md) — 🟡 提纲完成，未完待续
+- [23｜Google ADK](frameworks/google-adk.md) — 🟡 提纲完成，未完待续
+- [24｜Agno](frameworks/agno.md) — 🟡 提纲完成，未完待续
+- [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — 🟡 用于解释 AutoGen 的后续演进
 - LangChain、LangGraph 与 Deep Agents 的关系 — ⚪ 未开始
 
 ### 第四部分：国内框架与 Harness
@@ -109,7 +111,9 @@ Codex / Claude Code / Gemini CLI / OpenCode
 
 - LangChain 更接近组件与集成生态。
 - LangGraph 强调有状态、长时间运行的图编排。
-- Microsoft Agent Framework 强调 Python/.NET、多 Agent 工作流和生产化能力。
+- AutoGen 代表事件驱动、多 Agent 消息协作与分层 Runtime 的重要路线；目前已进入维护模式。
+- Google ADK 强调 Agent、Runner、Event、Session 和多 Agent 组合，与本项目的 tRPC-Agent-Go 基准很适合做结构对照。
+- Agno 已从单一 Agent SDK 扩展为构建、运行和管理 Agent Platform 的完整工程路线。
 - AgentScope 提供 Agent、工具、记忆、多 Agent、评测与部署能力。
 - DeerFlow 2.0 更接近带 Sandbox、Memory、Skill 和 Subagent 的 SuperAgent Harness。
 - tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。
@@ -122,4 +126,3 @@ Codex / Claude Code / Gemini CLI / OpenCode
 - [官方资料索引](SOURCES.md)
 - 文字与示例代码以仓库许可证为准。
 - 各框架名称和商标属于各自权利人。
-

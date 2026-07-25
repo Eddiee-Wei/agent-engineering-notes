@@ -21,7 +21,10 @@
 
 - [ ] LangChain
 - [ ] LangGraph
-- [ ] Microsoft Agent Framework
+- [ ] AutoGen
+- [ ] Google ADK
+- [ ] Agno
+- [ ] 延伸：AutoGen 到 Microsoft Agent Framework 的演进
 - [ ] 同一任务的跨框架实验
 
 ## Milestone 3：国内框架与 Harness

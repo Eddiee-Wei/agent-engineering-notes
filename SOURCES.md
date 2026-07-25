@@ -10,8 +10,11 @@
 
 - [LangChain](https://github.com/langchain-ai/langchain)
 - [LangGraph](https://github.com/langchain-ai/langgraph)
-- [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
 - [Microsoft AutoGen](https://github.com/microsoft/autogen)
+- [Google ADK for Python](https://github.com/google/adk-python)
+- [Google ADK for Go](https://github.com/google/adk-go)
+- [Agno](https://github.com/agno-agi/agno)
+- [Microsoft Agent Framework（AutoGen 后续演进）](https://github.com/microsoft/agent-framework)
 
 ## 国内框架与 Harness
 
@@ -24,4 +27,3 @@
 - [Claude Code](https://code.claude.com/docs/)
 - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
 - [OpenCode](https://github.com/anomalyco/opencode)
-

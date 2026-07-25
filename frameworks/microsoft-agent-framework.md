@@ -1,6 +1,6 @@
-# 22｜Microsoft Agent Framework
+# 延伸｜Microsoft Agent Framework
 
-> 状态：🟡 提纲完成，未完待续
+> 状态：🟡 作为 AutoGen 后续演进补充，未完待续
 
 ## 官方定位
 
@@ -22,4 +22,3 @@ Microsoft Agent Framework 面向 Python 与 .NET 的生产级 Agent 和 Multi-Ag
 - [ ] Python 最小示例
 - [ ] Workflow 示例
 - [ ] 与 tRPC-Agent-Go 对照
-
