@@ -8,14 +8,15 @@ description: Notes from the day-to-day work of an Agent engineer.
 <section class="hero">
   <span class="eyebrow" data-i18n data-en="AGENT ENGINEERING NOTES · CONTINUOUSLY UPDATED" data-zh="AGENT ENGINEERING NOTES · 持续更新">AGENT ENGINEERING NOTES · CONTINUOUSLY UPDATED</span>
   <h1>
-    <span data-lang="en">Agent Frameworks,<br>Runtimes &amp; Coding Agents</span>
-    <span data-lang="zh">Agent 框架、运行时<br>与 Coding Agent</span>
+    <span data-lang="en">Agent Systems,<br>Applications &amp; Engineering</span>
+    <span data-lang="zh">Agent 系统、应用<br>与工程方法</span>
   </h1>
   <p data-i18n data-en="Notes from the day-to-day work of an Agent engineer." data-zh="一个 Agent 开发工程师的日常分享。">Notes from the day-to-day work of an Agent engineer.</p>
   <div class="hero-actions">
     <a class="button primary" href="{{ '/agent/' | relative_url }}" data-i18n data-en="Agent Introduction" data-zh="Agent 介绍">Agent Introduction</a>
     <a class="button" href="{{ '/agent-framework/' | relative_url }}" data-i18n data-en="Agent Framework" data-zh="Agent 框架">Agent Framework</a>
     <a class="button" href="{{ '/agent-application/' | relative_url }}" data-i18n data-en="Agent Application" data-zh="Agent 应用">Agent Application</a>
+    <a class="button" href="{{ '/engineering/' | relative_url }}" data-i18n data-en="Agent Engineering" data-zh="Agent 工程">Agent Engineering</a>
   </div>
 </section>
 
@@ -47,6 +48,36 @@ description: Notes from the day-to-day work of an Agent engineer.
     <span class="status" data-i18n data-en="v1 complete" data-zh="第一版完成">v1 complete</span>
   </a>
 </div>
+
+<div class="section-heading">
+  <h2 data-i18n data-en="Engineering Evolution" data-zh="工程化演进">Engineering Evolution</h2>
+  <p data-i18n data-en="A working map from better inputs to reliable autonomous execution." data-zh="从更好的输入，到可靠的自治执行。">A working map from better inputs to reliable autonomous execution.</p>
+</div>
+
+<div class="engineering-flow" aria-label="Agent Engineering 演进阶段">
+  <a class="engineering-stage" href="{{ '/engineering/prompt-engineering/' | relative_url }}">
+    <span class="stage-time">2023</span>
+    <strong>Prompt</strong>
+    <small>Engineering</small>
+  </a>
+  <a class="engineering-stage" href="{{ '/engineering/context-engineering/' | relative_url }}">
+    <span class="stage-time" data-i18n data-en="2025 H1" data-zh="2025 上半年">2025 H1</span>
+    <strong>Context</strong>
+    <small>Engineering</small>
+  </a>
+  <a class="engineering-stage" href="{{ '/engineering/harness-engineering/' | relative_url }}">
+    <span class="stage-time" data-i18n data-en="2025 H2–2026 Early" data-zh="2025 下半年–2026 年初">2025 H2–2026 Early</span>
+    <strong>Harness</strong>
+    <small>Engineering</small>
+  </a>
+  <a class="engineering-stage" href="{{ '/engineering/loop-engineering/' | relative_url }}">
+    <span class="stage-time" data-i18n data-en="2026 Mid" data-zh="2026 年中">2026 Mid</span>
+    <strong>Loop</strong>
+    <small>Engineering</small>
+  </a>
+</div>
+
+<p class="timeline-note" data-i18n data-en="This is a working timeline for organizing the notes, not a claim of a universally agreed industry boundary." data-zh="这是用于组织笔记的阶段性观察，不代表行业已有统一断代。">This is a working timeline for organizing the notes, not a claim of a universally agreed industry boundary.</p>
 
 <div class="section-heading">
   <h2 data-i18n data-en="Frameworks" data-zh="框架">Frameworks</h2>

@@ -15,12 +15,14 @@
 - [Agent Introduction](agent/)
 - [Agent Framework](agent-framework/)
 - [Agent Application / Coding Agent](agent-application/)
+- [Agent Engineering](engineering/)
 
 ## Scope
 
 - 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
 - 横向看 LangChain、LangGraph、AutoGen、CrewAI、Google ADK、Agno、AgentScope 与 DeerFlow 的不同选择。
 - 向上看 Codex、Claude Code、Gemini CLI、OpenCode 如何把框架能力变成可用的 Coding Agent。
+- 以 Prompt、Context、Harness、Loop 的演进主线，整理 Tool、Memory、Graph、Evaluation、Safety 与 Production 等工程方法。
 - 通过项目和实验验证其中的设计取舍。
 
 ## Contents
@@ -67,6 +69,27 @@
 - Coding Agent 统一架构比较 — todo
 - 权限、Sandbox 与 Prompt Injection — todo
 - Context Engineering 与长任务 — todo
+
+### Agent Engineering
+
+#### Evolution
+
+- [50｜Prompt Engineering](engineering/prompt-engineering.md) — todo
+- [51｜Context Engineering](engineering/context-engineering.md) — todo
+- [52｜Harness Engineering](engineering/harness-engineering.md) — todo
+- [53｜Loop Engineering](engineering/loop-engineering.md) — todo
+
+#### Capabilities, Orchestration, and Operations
+
+- [54｜Tool Engineering](engineering/tool-engineering.md) — todo
+- [55｜Memory Engineering](engineering/memory-engineering.md) — todo
+- [56｜Knowledge Engineering](engineering/knowledge-engineering.md) — todo
+- [57｜Graph Engineering](engineering/graph-engineering.md) — todo
+- [58｜Multi-Agent Engineering](engineering/multi-agent-engineering.md) — todo
+- [59｜Evaluation Engineering](engineering/evaluation-engineering.md) — todo
+- [60｜Observability Engineering](engineering/observability-engineering.md) — todo
+- [61｜Safety Engineering](engineering/safety-engineering.md) — todo
+- [62｜Production Engineering](engineering/production-engineering.md) — todo
 
 ### Experiments
 

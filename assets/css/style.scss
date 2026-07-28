@@ -281,6 +281,51 @@ th { color: var(--text); background: var(--panel-soft); }
   font: 12px "IBM Plex Mono", monospace;
 }
 
+.engineering-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0 10px;
+}
+.engineering-stage {
+  position: relative;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  background: var(--panel);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.engineering-stage:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -12px;
+  width: 12px;
+  color: #a0a09a;
+  background: var(--bg);
+  text-align: center;
+  transform: translateY(-50%);
+}
+.engineering-stage:hover {
+  transform: translateY(-2px);
+  border-color: #a8a8a1;
+  color: var(--text);
+}
+.engineering-stage span,
+.engineering-stage strong,
+.engineering-stage small { display: block; }
+.engineering-stage .stage-time {
+  min-height: 34px;
+  color: var(--muted);
+  font: 500 11px/1.45 "IBM Plex Mono", monospace;
+}
+.engineering-stage strong { margin-top: 14px; font-size: 1.05rem; }
+.engineering-stage small { color: var(--muted); font: 12px "IBM Plex Mono", monospace; }
+.timeline-note { margin-top: 10px; color: var(--muted); font-size: 13px; }
+
 .site-footer {
   display: flex;
   justify-content: space-between;
@@ -298,6 +343,8 @@ th { color: var(--text); background: var(--panel-soft); }
   .side-nav { position: static; display: flex; gap: 10px; padding: 20px 0 0; overflow-x: auto; }
   .side-chapter { min-width: 190px; margin: 0; background: var(--panel); }
   .content { padding-top: 32px; }
+  .engineering-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .engineering-stage:nth-child(2)::after { content: none; }
   .site-footer { width: min(760px, calc(100% - 32px)); padding-left: 0; }
 }
 
@@ -313,6 +360,8 @@ th { color: var(--text); background: var(--panel-soft); }
   .section-heading { display: block; }
   .section-heading p { margin-top: 8px; }
   .layer-flow { grid-template-columns: 1fr 1fr; }
+  .engineering-flow { grid-template-columns: 1fr; }
+  .engineering-stage::after { content: none !important; }
   .site-footer { display: block; }
   .site-footer span { display: block; margin: 4px 0; }
 }
