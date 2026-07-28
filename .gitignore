@@ -6,4 +6,4 @@ bin/
 dist/
 coverage/
 *.log
-
+reference/
