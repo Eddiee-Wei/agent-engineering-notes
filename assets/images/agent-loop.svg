@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610" role="img" aria-labelledby="title desc">
+  <title id="title">最小 Agent 执行闭环</title>
+  <desc id="desc">目标与完成契约进入 Agent Runtime。Runtime 组装上下文，由模型生成最终候选或行动候选。行动经过策略校验后在工具或环境中执行，观察结果更新状态并接受完成验证；未完成则进入下一轮，完成、阻塞或越界则停止或交还人工。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .frame { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 8 8; }
+      .box { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .model { fill: #181816; stroke: #181816; stroke-width: 2; }
+      .gate { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .label { fill: #181816; font: 600 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-light { fill: #ffffff; font: 600 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub-light { fill: #deded8; font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .frame-label { fill: #6d6d67; font: 600 17px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.5; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #6d6d67; stroke-width: 2.2; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 14px "IBM Plex Mono", monospace; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="610" rx="18" fill="#ffffff"/>
+  <rect class="frame" x="35" y="125" width="1130" height="440" rx="24"/>
+  <text class="frame-label" x="65" y="158">DETERMINISTIC CONTROL PLANE · RUNTIME / HARNESS</text>
+
+  <rect class="box" x="420" y="30" width="360" height="72" rx="14"/>
+  <text class="label" x="600" y="61">Goal + Completion Contract</text>
+  <text class="sub" x="600" y="85">目标、约束与可验证的完成条件</text>
+
+  <rect class="box" x="70" y="205" width="190" height="90" rx="14"/>
+  <text class="label" x="165" y="240">Assemble Context</text>
+  <text class="sub" x="165" y="267">状态、观察、工具与预算</text>
+
+  <rect class="model" x="315" y="205" width="190" height="90" rx="14"/>
+  <text class="label-light" x="410" y="240">Model Decision</text>
+  <text class="sub-light" x="410" y="267">final candidate / action</text>
+
+  <rect class="gate" x="560" y="205" width="190" height="90" rx="14"/>
+  <text class="label" x="655" y="240">Policy Gate</text>
+  <text class="sub" x="655" y="267">Schema、权限、审批、预算</text>
+
+  <rect class="box" x="805" y="205" width="290" height="90" rx="14"/>
+  <text class="label" x="950" y="240">Tool / Environment</text>
+  <text class="sub" x="950" y="267">真实执行、外部状态与副作用</text>
+
+  <rect class="box" x="805" y="385" width="290" height="90" rx="14"/>
+  <text class="label" x="950" y="420">Observation</text>
+  <text class="sub" x="950" y="447">结果、错误、证据与环境变化</text>
+
+  <rect class="box" x="560" y="385" width="190" height="90" rx="14"/>
+  <text class="label" x="655" y="420">Update State</text>
+  <text class="sub" x="655" y="447">轨迹、进度、产物与消耗</text>
+
+  <rect class="gate" x="315" y="385" width="190" height="90" rx="14"/>
+  <text class="label" x="410" y="420">Verify</text>
+  <text class="sub" x="410" y="447">证据通过，而非模型自报</text>
+
+  <rect class="box" x="70" y="385" width="190" height="90" rx="14"/>
+  <text class="label" x="165" y="420">Stop / Escalate</text>
+  <text class="sub" x="165" y="447">完成、失败、取消或等待人工</text>
+
+  <path class="edge" d="M 750 102 L 750 180 L 165 180 L 165 204"/>
+  <path class="edge" d="M 260 250 L 314 250"/>
+  <path class="edge" d="M 505 250 L 559 250"/>
+  <text class="edge-label" x="532" y="235">action</text>
+  <path class="edge" d="M 750 250 L 804 250"/>
+  <text class="edge-label" x="777" y="235">approved</text>
+  <path class="edge" d="M 950 295 L 950 384"/>
+  <text class="edge-label" x="1008" y="345">result / error</text>
+  <path class="edge" d="M 805 430 L 751 430"/>
+  <path class="edge" d="M 560 430 L 506 430"/>
+  <path class="edge" d="M 315 430 L 261 430"/>
+  <text class="edge-label" x="287" y="375">done / blocked</text>
+
+  <path class="edge-dashed" d="M 410 295 L 410 384"/>
+  <text class="edge-label" x="478" y="360">final candidate</text>
+  <path class="edge-dashed" d="M 655 295 L 655 320 L 220 320 L 220 384"/>
+  <text class="edge-label" x="790" y="306">denied / approval required</text>
+  <path class="edge-dashed" d="M 410 475 L 410 525 L 165 525 L 165 296"/>
+  <text class="edge-label" x="307" y="549">not done → next turn</text>
+
+  <rect class="model" x="790" y="520" width="22" height="22" rx="4"/>
+  <text class="sub" x="900" y="537">模型驱动的概率性决策</text>
+  <rect class="gate" x="995" y="520" width="22" height="22" rx="4"/>
+  <text class="sub" x="1090" y="537">系统控制与校验</text>
+</svg>

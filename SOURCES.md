@@ -6,9 +6,21 @@ title: 官方资料索引
 
 > 资料会在写作时锁定版本或 Commit；以下为项目启动时的入口。
 
+## Agent 原理
+
+- [A practical guide to building agents — OpenAI](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) — 访问于 2026-07-29
+- [Building effective agents — Anthropic](https://www.anthropic.com/engineering/building-effective-agents) — 发布于 2024-12-19，访问于 2026-07-29
+- [Function calling — OpenAI API](https://developers.openai.com/api/docs/guides/function-calling) — 访问于 2026-07-29
+- [Running agents — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/running_agents/) — 访问于 2026-07-29
+- [Trustworthy agents in practice — Anthropic](https://www.anthropic.com/research/trustworthy-agents) — 发布于 2026-04-09，访问于 2026-07-29
+- [Demystifying evals for AI agents — Anthropic](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) — 发布于 2026-01-09，访问于 2026-07-29
+- [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) — arXiv:2210.03629
+- [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) — arXiv:2303.11366
+- [Executable Code Actions Elicit Better LLM Agents](https://arxiv.org/abs/2402.01030) — arXiv:2402.01030
+
 ## 核心基准
 
-- [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go)
+- [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) — 本次写作检查版本：[fff1eedd](https://github.com/trpc-group/trpc-agent-go/tree/fff1eedd0054f8c7149d59f4b35895b48387d243)，2026-07-29
 
 ## 国外框架
 

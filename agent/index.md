@@ -14,5 +14,6 @@ description: Notes on Agent definitions, components, and runtime behavior.
 
 ## Notes
 
-- [Agent](../docs/01-agent-primer.md) — todo
+- [From Model Call to Agent](../docs/01-agent-primer.md) — v1
+- [Framework Lens](../docs/02-comparison-methodology.md) — v1
 - [Layers](../docs/03-layer-model.md) — v1
