@@ -454,7 +454,7 @@ ADK 的 Execution Logic 产生 Event 后，Runner 处理 Event、应用 State/Ar
 13. Resume、Retry、Replay 和新 Run 是否拥有不同 API 与身份？
 14. 快照如何处理 Tool、Prompt、Graph 和 Schema 版本变化？
 
-这些问题也补充了 [Framework Lens](02-comparison-methodology.md)：一个框架拥有名为 Runner、Session 或 Event 的类型，不代表它已经提供相同的执行保证。
+一个框架拥有名为 Runner、Session 或 Event 的类型，不代表它已经提供相同的执行保证。
 
 ## 结论
 

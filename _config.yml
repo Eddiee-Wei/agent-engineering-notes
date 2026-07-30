@@ -21,10 +21,6 @@ defaults:
     values:
       layout: default
   - scope:
-      path: "agent"
-    values:
-      nav_section: agent
-  - scope:
       path: "docs"
     values:
       nav_section: agent

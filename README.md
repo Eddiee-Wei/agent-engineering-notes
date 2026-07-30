@@ -12,18 +12,18 @@
 
 ## Sections
 
-- [Agent Introduction](agent/)
+- [Agent Fundamentals](docs/01-agent-primer.md)
 - [Agent Framework](agent-framework/)
-- [Agent Application / Coding Agent](agent-application/)
+- [Agent Application](agent-application/)
 - [Agent Engineering](engineering/)
 
 ## Adding content
 
-站点导航和首页目录由内容自动生成。在下面任一目录中新建 Markdown，即可自动继承统一外观，并进入对应的侧栏、首页目录和搜索：
+在下面任一目录中新建 Markdown，即可自动继承统一外观：
 
 | 目录 | 自动归属 |
 | --- | --- |
-| `docs/`、`agent/` | Agent Introduction |
+| `docs/` | Agent Fundamentals |
 | `frameworks/`、`agent-framework/` | Agent Framework |
 | `coding-agents/`、`agent-application/` | Agent Application |
 | `engineering/` | Agent Engineering |
@@ -36,28 +36,42 @@ title: Example Note
 ---
 ```
 
-可选使用 `nav_title` 和 `nav_title_zh` 覆盖侧栏及首页显示名称。一级栏目配置集中在 [`_data/navigation.yml`](_data/navigation.yml)，页面结构组件集中在 [`_includes/`](_includes/)；通常新增内容不需要修改布局、首页或搜索代码。
+框架与应用使用显式分组和顺序，新增页面后需要同步更新 [`_data/navigation.yml`](_data/navigation.yml)。Agent 工程内容仍按目录自动汇集。页面结构组件集中在 [`_includes/`](_includes/)。
 
 ## Scope
 
 - 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
-- 横向看 LangChain、LangGraph、AutoGen、CrewAI、Google ADK、Agno、AgentScope 与 DeerFlow 的不同选择。
-- 向上看 Codex、Claude Code、Gemini CLI、OpenCode 如何把框架能力变成可用的 Coding Agent。
+- 横向看 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope、DeerFlow 与 tRPC-Agent-Go 的不同选择。
+- 向上看 Dify、Coze、LangGraph 如何组装 Agent 应用，以及 Codex、Claude Code、Gemini CLI、OpenCode 如何实现 Coding Agent。
 - 以 Prompt、Context、Harness、Loop 的演进主线，整理 Tool、Memory、Graph、Evaluation、Safety 与 Production 等工程方法。
 - 通过项目和实验验证其中的设计取舍。
 
 ## Contents
 
-### Agent
+### Agent Fundamentals
 
 - [01｜From Model Call to Agent](docs/01-agent-primer.md) — 🟢 第一版已完成
-- [02｜Framework Lens](docs/02-comparison-methodology.md) — 🟢 第一版已完成
-- [03｜Layers](docs/03-layer-model.md) — 🟢 第一版已完成
 - [04｜Agent Runtime Semantics](docs/04-runtime-semantics.md) — 🟢 第一版已完成
 
-### tRPC-Agent-Go
+### International Frameworks
 
-- [10｜为什么以 tRPC-Agent-Go 为主线](frameworks/trpc-agent-go.md) — todo
+- [Agno](frameworks/agno.md) — todo
+- [AutoGen](frameworks/autogen.md) — todo
+- [CrewAI](frameworks/crewai.md) — todo
+- [ADK](frameworks/google-adk.md) — todo
+- [LangChain](frameworks/langchain.md) — todo
+- [Langflow](frameworks/langflow.md) — todo
+- [LangGraph](frameworks/langgraph.md) — todo
+
+### 国内大厂
+
+- [AgentScope](frameworks/agentscope.md) — todo
+- [DeerFlow](frameworks/deerflow.md) — todo
+- [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — todo
+- 国内框架横向比较 — todo
+
+#### tRPC-Agent-Go research
+
 - Runner、Agent 与 Event Stream — todo
 - Model 与 Tool Calling — todo
 - Session、Memory、Knowledge 与 Artifact — todo
@@ -65,22 +79,11 @@ title: Example Note
 - MCP、A2A 与 AG-UI — todo
 - Evaluation、Telemetry 与生产化 — todo
 
-### Frameworks
+### 组装 Agent
 
-- [20｜LangChain](frameworks/langchain.md) — todo
-- [21｜LangGraph](frameworks/langgraph.md) — todo
-- [22｜AutoGen](frameworks/autogen.md) — todo
-- [23｜Google ADK](frameworks/google-adk.md) — todo
-- [24｜Agno](frameworks/agno.md) — todo
-- [25｜CrewAI](frameworks/crewai.md) — todo
-- [延伸｜Microsoft Agent Framework](frameworks/microsoft-agent-framework.md) — todo
-- LangChain、LangGraph 与 Deep Agents 的关系 — todo
-
-### Frameworks in China
-
-- [30｜AgentScope](frameworks/agentscope.md) — todo
-- [31｜DeerFlow](frameworks/deerflow.md) — todo
-- 国内框架横向比较 — todo
+- [Dify](agent-application/dify.md) — todo
+- [Coze](agent-application/coze.md) — todo
+- [LangGraph](frameworks/langgraph.md) — todo
 
 ### Coding Agents
 

@@ -36,20 +36,21 @@ title: 官方资料索引
 
 ## 国外框架
 
-- [LangChain](https://github.com/langchain-ai/langchain)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
-- [Microsoft AutoGen](https://github.com/microsoft/autogen)
-- [Google ADK for Python](https://github.com/google/adk-python)
-- [Google ADK for Go](https://github.com/google/adk-go)
 - [Agno](https://github.com/agno-agi/agno)
+- [Microsoft AutoGen](https://github.com/microsoft/autogen)
 - [CrewAI Documentation](https://docs.crewai.com/)
 - [CrewAI](https://github.com/crewAIInc/crewAI)
-- [Microsoft Agent Framework（AutoGen 后续演进）](https://github.com/microsoft/agent-framework)
+- [Google ADK for Python](https://github.com/google/adk-python)
+- [Google ADK for Go](https://github.com/google/adk-go)
+- [LangChain](https://github.com/langchain-ai/langchain)
+- [Langflow](https://github.com/langflow-ai/langflow)
+- [LangGraph](https://github.com/langchain-ai/langgraph)
 
 ## 国内框架与 Harness
 
 - [AgentScope](https://github.com/agentscope-ai/agentscope)
 - [DeerFlow](https://github.com/bytedance/deer-flow)
+- [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go)
 
 ## Coding Agent
 
