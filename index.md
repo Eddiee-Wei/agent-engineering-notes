@@ -1,164 +1,107 @@
 ---
 layout: default
-title: Home
+title: Knowledge Atlas
 page_class: home
-description: Notes from the day-to-day work of an Agent engineer.
+description: A search-first map of agent engineering, from components to production systems.
 ---
 
-<section class="hero">
-  <span class="eyebrow" data-i18n data-en="AGENT ENGINEERING NOTES · CONTINUOUSLY UPDATED" data-zh="AGENT ENGINEERING NOTES · 持续更新">AGENT ENGINEERING NOTES · CONTINUOUSLY UPDATED</span>
-  <h1>
-    <span data-lang="en">Agent Systems,<br>Applications &amp; Engineering</span>
-    <span data-lang="zh">Agent 系统、应用<br>与工程方法</span>
-  </h1>
-  <p data-i18n data-en="Notes from the day-to-day work of an Agent engineer." data-zh="一个 Agent 开发工程师的日常分享。">Notes from the day-to-day work of an Agent engineer.</p>
-  <div class="hero-actions">
-    <a class="button primary" href="{{ '/agent/' | relative_url }}" data-i18n data-en="Agent Introduction" data-zh="Agent 介绍">Agent Introduction</a>
-    <a class="button" href="{{ '/agent-framework/' | relative_url }}" data-i18n data-en="Agent Framework" data-zh="Agent 框架">Agent Framework</a>
-    <a class="button" href="{{ '/agent-application/' | relative_url }}" data-i18n data-en="Agent Application" data-zh="Agent 应用">Agent Application</a>
-    <a class="button" href="{{ '/engineering/' | relative_url }}" data-i18n data-en="Agent Engineering" data-zh="Agent 工程">Agent Engineering</a>
+<section class="atlas-intro">
+  <h1 data-i18n data-en="Knowledge Atlas" data-zh="知识地图">Knowledge Atlas</h1>
+  <p data-i18n data-en="A search-first map of agent engineering—from components to production systems." data-zh="一张面向检索与学习的 Agent 工程地图：从组件一路通向生产系统。">A search-first map of agent engineering—from components to production systems.</p>
+  <div class="atlas-actions">
+    <a class="button primary" href="{{ '/agent/' | relative_url }}">
+      <span data-i18n data-en="Start with Agent Introduction" data-zh="从 Agent 介绍开始">Start with Agent Introduction</span>
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+    <a class="button" href="{{ '/agent-framework/' | relative_url }}" data-i18n data-en="Browse Framework Index" data-zh="浏览框架索引">Browse Framework Index</a>
   </div>
 </section>
 
-<div class="section-heading">
-  <h2 data-i18n data-en="Layers" data-zh="分层">Layers</h2>
-  <p data-i18n data-en="A simple model for organizing the notes that follow." data-zh="用于组织后续内容的一组简单分层。">A simple model for organizing the notes that follow.</p>
-</div>
+<section class="atlas-section" id="browse-by-layer">
+  <h2 data-i18n data-en="Browse by layer" data-zh="按层级浏览">Browse by layer</h2>
+  <p data-i18n data-en="A practical model for organizing the notes that follow." data-zh="用于组织后续内容的一套实用分层模型。">A practical model for organizing the notes that follow.</p>
 
-<div class="layer-flow" aria-label="Agent 技术分层">
-  <span data-i18n data-en="L1 Components &amp; Protocols" data-zh="L1 组件与协议">L1 Components &amp; Protocols</span>
-  <span>L2 Agent Runtime</span>
-  <span>L3 Workflow</span>
-  <span>L4 Agent Harness</span>
-  <span data-i18n data-en="L5 Vertical Applications" data-zh="L5 垂直应用">L5 Vertical Applications</span>
-  <span data-i18n data-en="L6 Products &amp; Platforms" data-zh="L6 产品与平台">L6 Products &amp; Platforms</span>
-</div>
+  <div class="layer-index">
+    <a class="layer-row" id="layer-components" data-toc-label="L1 Components &amp; Protocols" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L1</span>
+      <span class="layer-name" data-i18n data-en="Components &amp; Protocols" data-zh="组件与协议">Components &amp; Protocols</span>
+      <span class="material-symbols-outlined" aria-hidden="true">extension</span>
+      <span class="layer-description" data-i18n data-en="Model I/O, tool protocols, data formats, connectors, and interoperability primitives." data-zh="模型输入输出、工具协议、数据格式、连接器与互操作基础。">Model I/O, tool protocols, data formats, connectors, and interoperability primitives.</span>
+    </a>
+    <a class="layer-row" id="layer-runtime" data-toc-label="L2 Agent Runtime" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L2</span>
+      <span class="layer-name">Agent Runtime</span>
+      <span class="material-symbols-outlined" aria-hidden="true">deployed_code</span>
+      <span class="layer-description" data-i18n data-en="Runtime environment, state, memory, tool execution, scheduling, and concurrency." data-zh="运行环境、状态、记忆、工具执行、调度与并发。">Runtime environment, state, memory, tool execution, scheduling, and concurrency.</span>
+    </a>
+    <a class="layer-row" id="layer-workflow" data-toc-label="L3 Workflow" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L3</span>
+      <span class="layer-name">Workflow</span>
+      <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
+      <span class="layer-description" data-i18n data-en="Planning, routing, branching, loops, and orchestration patterns that structure behavior." data-zh="规划、路由、分支、循环，以及用于组织行为的编排模式。">Planning, routing, branching, loops, and orchestration patterns that structure behavior.</span>
+    </a>
+    <a class="layer-row" id="layer-harness" data-toc-label="L4 Agent Harness" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L4</span>
+      <span class="layer-name">Agent Harness</span>
+      <span class="material-symbols-outlined" aria-hidden="true">security</span>
+      <span class="layer-description" data-i18n data-en="Evaluation, guardrails, monitoring, tracing, permissions, and operational controls." data-zh="评测、护栏、监控、追踪、权限与运行控制。">Evaluation, guardrails, monitoring, tracing, permissions, and operational controls.</span>
+    </a>
+    <a class="layer-row" id="layer-applications" data-toc-label="L5 Vertical Applications" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L5</span>
+      <span class="layer-name" data-i18n data-en="Vertical Applications" data-zh="垂直应用">Vertical Applications</span>
+      <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+      <span class="layer-description" data-i18n data-en="Domain-specific agents and workflows that solve concrete real-world problems." data-zh="面向具体真实问题的领域 Agent 与工作流。">Domain-specific agents and workflows that solve concrete real-world problems.</span>
+    </a>
+    <a class="layer-row" id="layer-products" data-toc-label="L6 Products &amp; Platforms" href="{{ '/docs/03-layer-model/' | relative_url }}">
+      <span class="layer-code">L6</span>
+      <span class="layer-name" data-i18n data-en="Products &amp; Platforms" data-zh="产品与平台">Products &amp; Platforms</span>
+      <span class="material-symbols-outlined" aria-hidden="true">layers</span>
+      <span class="layer-description" data-i18n data-en="End-user products, platforms, and ecosystems built on agent technologies." data-zh="建立在 Agent 技术之上的终端产品、平台与生态。">End-user products, platforms, and ecosystems built on agent technologies.</span>
+    </a>
+  </div>
+</section>
 
-<div class="card-grid">
-  <a class="card featured" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}">
-    <span class="card-kicker">Reference Paradigm</span>
-    <h3>tRPC-Agent-Go</h3>
-    <p data-i18n data-en="Application notes, source reading, and experiments around Agent, Runner, Event, Session, and Graph." data-zh="围绕 Agent、Runner、Event、Session 与 Graph 展开的应用记录、源码阅读和实验。">Application notes, source reading, and experiments around Agent, Runner, Event, Session, and Graph.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/docs/02-comparison-methodology/' | relative_url }}">
-    <span class="card-kicker">Framework Lens</span>
-    <h3>Framework Lens</h3>
-    <p data-i18n data-en="Recurring questions about abstractions, state, control flow, production, and product design." data-zh="阅读和使用框架时反复出现的抽象、状态、控制流、生产化和产品问题。">Recurring questions about abstractions, state, control flow, production, and product design.</p>
-    <span class="status" data-i18n data-en="v1 complete" data-zh="第一版完成">v1 complete</span>
-  </a>
-</div>
+<section class="atlas-section" id="framework-index">
+  <h2 data-i18n data-en="Framework index" data-zh="框架索引">Framework index</h2>
+  <p data-i18n data-en="Popular frameworks and toolkits for building agent systems." data-zh="用于构建 Agent 系统的主流框架与工具包。">Popular frameworks and toolkits for building agent systems.</p>
 
-<div class="section-heading">
-  <h2 data-i18n data-en="Engineering Evolution" data-zh="工程化演进">Engineering Evolution</h2>
-  <p data-i18n data-en="A working map from better inputs to reliable autonomous execution." data-zh="从更好的输入，到可靠的自治执行。">A working map from better inputs to reliable autonomous execution.</p>
-</div>
+  <div class="framework-index">
+    <a class="framework-link" href="{{ '/frameworks/langchain/' | relative_url }}"><span>LangChain</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/langgraph/' | relative_url }}"><span>LangGraph</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/autogen/' | relative_url }}"><span>AutoGen</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/google-adk/' | relative_url }}"><span>Google ADK</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/agno/' | relative_url }}"><span>Agno</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/crewai/' | relative_url }}"><span>CrewAI</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/agentscope/' | relative_url }}"><span>AgentScope</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/deerflow/' | relative_url }}"><span>DeerFlow</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    <a class="framework-link" href="{{ '/frameworks/trpc-agent-go/' | relative_url }}"><span>tRPC-Agent-Go</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+  </div>
+</section>
 
-<div class="engineering-flow" aria-label="Agent Engineering 演进阶段">
-  <a class="engineering-stage" href="{{ '/engineering/prompt-engineering/' | relative_url }}">
-    <span class="stage-time">2023</span>
-    <strong>Prompt</strong>
-    <small>Engineering</small>
-  </a>
-  <a class="engineering-stage" href="{{ '/engineering/context-engineering/' | relative_url }}">
-    <span class="stage-time" data-i18n data-en="2025 H1" data-zh="2025 上半年">2025 H1</span>
-    <strong>Context</strong>
-    <small>Engineering</small>
-  </a>
-  <a class="engineering-stage" href="{{ '/engineering/harness-engineering/' | relative_url }}">
-    <span class="stage-time" data-i18n data-en="2025 H2–2026 Early" data-zh="2025 下半年–2026 年初">2025 H2–2026 Early</span>
-    <strong>Harness</strong>
-    <small>Engineering</small>
-  </a>
-  <a class="engineering-stage" href="{{ '/engineering/loop-engineering/' | relative_url }}">
-    <span class="stage-time" data-i18n data-en="2026 Mid" data-zh="2026 年中">2026 Mid</span>
-    <strong>Loop</strong>
-    <small>Engineering</small>
-  </a>
-</div>
+<section class="atlas-section" id="engineering-evolution">
+  <h2 data-i18n data-en="Engineering evolution" data-zh="工程化演进">Engineering evolution</h2>
+  <p data-i18n data-en="A working sequence for turning ideas into reliable, maintainable agent systems." data-zh="一条把想法逐步变成可靠、可维护 Agent 系统的工作主线。">A working sequence for turning ideas into reliable, maintainable agent systems.</p>
 
-<p class="timeline-note" data-i18n data-en="This is a working timeline for organizing the notes, not a claim of a universally agreed industry boundary." data-zh="这是用于组织笔记的阶段性观察，不代表行业已有统一断代。">This is a working timeline for organizing the notes, not a claim of a universally agreed industry boundary.</p>
-
-<div class="section-heading">
-  <h2 data-i18n data-en="Frameworks" data-zh="框架">Frameworks</h2>
-  <p data-i18n data-en="Different engineering choices for similar problems." data-zh="不同框架对相似问题的不同选择。">Different engineering choices for similar problems.</p>
-</div>
-
-<div class="card-grid">
-  <a class="card" href="{{ '/frameworks/langchain/' | relative_url }}">
-    <span class="card-kicker">Ecosystem</span><h3>LangChain</h3>
-    <p data-i18n data-en="Agent abstractions, the model and tool ecosystem, and its relationship with LangGraph, LangSmith, and Deep Agents." data-zh="Agent 工程抽象、Model 与 Tool 集成生态，以及它与 LangGraph、LangSmith、Deep Agents 的关系。">Agent abstractions, the model and tool ecosystem, and its relationship with LangGraph, LangSmith, and Deep Agents.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/langgraph/' | relative_url }}">
-    <span class="card-kicker">Stateful Orchestration</span><h3>LangGraph</h3>
-    <p data-i18n data-en="Stateful graphs, durable execution, checkpoints, human-in-the-loop, and long-running tasks." data-zh="有状态图、Durable Execution、Checkpoint、Human-in-the-loop 与长时间任务。">Stateful graphs, durable execution, checkpoints, human-in-the-loop, and long-running tasks.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/autogen/' | relative_url }}">
-    <span class="card-kicker">Multi-Agent Runtime</span><h3>AutoGen</h3>
-    <p data-i18n data-en="Event-driven Core, AgentChat, teams, message collaboration, code execution, and the move toward Microsoft Agent Framework." data-zh="事件驱动 Core、AgentChat、Team、消息协作与代码执行，以及向 Microsoft Agent Framework 的演进。">Event-driven Core, AgentChat, teams, message collaboration, code execution, and the move toward Microsoft Agent Framework.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/google-adk/' | relative_url }}">
-    <span class="card-kicker">Agent Development Kit</span><h3>Google ADK</h3>
-    <p data-i18n data-en="Agent, Runner, Event, Session, and Workflow Agent, with notes on both the Python and Go implementations." data-zh="Agent、Runner、Event、Session 与 Workflow Agent；同时比较 Python 与 Go 实现。">Agent, Runner, Event, Session, and Workflow Agent, with notes on both the Python and Go implementations.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/agno/' | relative_url }}">
-    <span class="card-kicker">Agent Platform</span><h3>Agno</h3>
-    <p data-i18n data-en="From Agent, Team, and Workflow to APIs, storage, traces, RBAC, and the control plane." data-zh="从 Agent、Team、Workflow 延伸到 API、Storage、Trace、RBAC 与 Control Plane。">From Agent, Team, and Workflow to APIs, storage, traces, RBAC, and the control plane.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/crewai/' | relative_url }}">
-    <span class="card-kicker">Multi-Agent Automation</span><h3>CrewAI</h3>
-    <p data-i18n data-en="Role-based agents and tasks organized through autonomous Crews and event-driven, stateful Flows." data-zh="以角色化 Agent 与 Task 为基础，通过自主协作的 Crews 和事件驱动、有状态的 Flows 组织多 Agent 自动化。">Role-based agents and tasks organized through autonomous Crews and event-driven, stateful Flows.</p>
-    <span class="status">todo</span>
-  </a>
-</div>
-
-<div class="section-heading">
-  <h2>Frameworks in China</h2>
-  <p data-i18n data-en="AgentScope, DeerFlow, and tRPC-Agent-Go." data-zh="AgentScope、DeerFlow 与 tRPC-Agent-Go。">AgentScope, DeerFlow, and tRPC-Agent-Go.</p>
-</div>
-
-<div class="card-grid">
-  <a class="card" href="{{ '/frameworks/agentscope/' | relative_url }}">
-    <span class="card-kicker">Agent Framework</span><h3>AgentScope</h3>
-    <p data-i18n data-en="ReAct, tools, memory, the multi-agent message hub, evaluation, and production deployment." data-zh="ReAct、Tool、Memory、Multi-Agent Message Hub、Evaluation 与生产部署。">ReAct, tools, memory, the multi-agent message hub, evaluation, and production deployment.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/frameworks/deerflow/' | relative_url }}">
-    <span class="card-kicker">SuperAgent Harness</span><h3>DeerFlow 2.0</h3>
-    <p data-i18n data-en="How subagents, memory, sandboxes, skills, and message gateways form a harness for long-running tasks." data-zh="Subagent、Memory、Sandbox、Skill 与 Message Gateway 如何组合成长任务 Harness。">How subagents, memory, sandboxes, skills, and message gateways form a harness for long-running tasks.</p>
-    <span class="status">todo</span>
-  </a>
-</div>
-
-<div class="section-heading">
-  <h2>Coding Agents</h2>
-  <p data-i18n data-en="Context, tools, permissions, execution environments, and interaction models." data-zh="上下文、工具、权限、执行环境和交互方式。">Context, tools, permissions, execution environments, and interaction models.</p>
-</div>
-
-<div class="card-grid">
-  <a class="card" href="{{ '/coding-agents/codex/' | relative_url }}">
-    <span class="card-kicker">OpenAI</span><h3>Codex</h3>
-    <p data-i18n data-en="CLI, IDE, app, cloud, sandbox, approvals, skills, MCP, and parallel tasks." data-zh="CLI、IDE、App、Cloud、Sandbox、Approval、Skill、MCP 与并行任务。">CLI, IDE, app, cloud, sandbox, approvals, skills, MCP, and parallel tasks.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/coding-agents/claude-code/' | relative_url }}">
-    <span class="card-kicker">Anthropic</span><h3>Claude Code</h3>
-    <p data-i18n data-en="Terminal-first UX, permissions, hooks, project instructions, skills, and subagents." data-zh="Terminal-first UX、Permission、Hook、Project Instructions、Skill 与 Subagent。">Terminal-first UX, permissions, hooks, project instructions, skills, and subagents.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/coding-agents/gemini-cli/' | relative_url }}">
-    <span class="card-kicker">Google</span><h3>Gemini CLI</h3>
-    <p data-i18n data-en="An open-source agent loop with tools, MCP, extensions, sandboxing, and non-interactive execution." data-zh="开源 Agent Loop、Tool、MCP、扩展机制、Sandbox 与非交互运行。">An open-source agent loop with tools, MCP, extensions, sandboxing, and non-interactive execution.</p>
-    <span class="status">todo</span>
-  </a>
-  <a class="card" href="{{ '/coding-agents/opencode/' | relative_url }}">
-    <span class="card-kicker">Open Source</span><h3>OpenCode</h3>
-    <p data-i18n data-en="Providers, sessions, tools, permissions, TUI and client-server architecture, and the extension ecosystem." data-zh="Provider、Session、Tool、Permission、TUI / Client-Server 架构与扩展生态。">Providers, sessions, tools, permissions, TUI and client-server architecture, and the extension ecosystem.</p>
-    <span class="status">todo</span>
-  </a>
-</div>
+  <div class="evolution-flow">
+    <a class="evolution-step" href="{{ '/engineering/prompt-engineering/' | relative_url }}">
+      <strong>Prompt</strong>
+      <small data-i18n data-en="Express intent and shape a single interaction." data-zh="表达意图，塑造单次交互。">Express intent and shape a single interaction.</small>
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+    <a class="evolution-step" href="{{ '/engineering/context-engineering/' | relative_url }}">
+      <strong>Context</strong>
+      <small data-i18n data-en="Provide knowledge, state, and the right tools." data-zh="提供知识、状态与合适的工具。">Provide knowledge, state, and the right tools.</small>
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+    <a class="evolution-step" href="{{ '/engineering/harness-engineering/' | relative_url }}">
+      <strong>Harness</strong>
+      <small data-i18n data-en="Add guardrails, tests, and observability." data-zh="加入护栏、测试与可观测性。">Add guardrails, tests, and observability.</small>
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+    <a class="evolution-step" href="{{ '/engineering/loop-engineering/' | relative_url }}">
+      <strong>Loop</strong>
+      <small data-i18n data-en="Measure, learn, and continuously improve." data-zh="度量、学习并持续改进。">Measure, learn, and continuously improve.</small>
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+  </div>
+</section>
