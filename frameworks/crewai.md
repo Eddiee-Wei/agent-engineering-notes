@@ -3,7 +3,7 @@ title: CrewAI
 description: Notes on CrewAI agents, tasks, crews, processes, and flows.
 ---
 
-<h1>25｜CrewAI</h1>
+<h1>CrewAI</h1>
 
 <blockquote><p data-i18n data-en="Status: todo" data-zh="状态：todo">Status: todo</p></blockquote>
 

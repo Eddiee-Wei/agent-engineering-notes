@@ -1,10 +1,11 @@
 ---
 title: Agent Runtime Semantics
 nav_title_zh: Agent Runtime 执行语义
+nav_order: 2
 description: 从 Run、Turn、Step、Event、Session 到暂停、取消与恢复，建立 Agent Runtime 的框架无关执行语义。
 ---
 
-# 04｜Agent Runtime 的执行语义
+# 02｜Agent Runtime 的执行语义
 
 > 状态：🟢 第一版
 

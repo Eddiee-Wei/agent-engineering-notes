@@ -12,7 +12,7 @@
 
 ## Sections
 
-- [Agent Fundamentals](docs/01-agent-primer.md)
+- [Agent Fundamentals](agent/)
 - [Agent Framework](agent-framework/)
 - [Agent Application](agent-application/)
 - [Agent Engineering](engineering/)
@@ -28,15 +28,17 @@
 | `coding-agents/`、`agent-application/` | Agent Application |
 | `engineering/` | Agent Engineering |
 
-最小页面只需要标题：
+自动收录的 Agent 基础与 Agent 工程页面需要标题和排序值：
 
 ```yaml
 ---
 title: Example Note
+nav_title_zh: 示例笔记
+nav_order: 3
 ---
 ```
 
-框架与应用使用显式分组和顺序，新增页面后需要同步更新 [`_data/navigation.yml`](_data/navigation.yml)。Agent 工程内容仍按目录自动汇集。页面结构组件集中在 [`_includes/`](_includes/)。
+Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`；两者按 `nav_order` 排序并生成连续序号，新增内容无需修改导航。框架与应用因为包含固定分组、指定顺序和跨目录复用，统一由 [`_data/navigation.yml`](_data/navigation.yml) 管理；章节页、首页目录和侧栏会自动同步并生成连续序号。页面结构组件集中在 [`_includes/`](_includes/)。
 
 ## Scope
 
@@ -51,7 +53,7 @@ title: Example Note
 ### Agent Fundamentals
 
 - [01｜From Model Call to Agent](docs/01-agent-primer.md) — 🟢 第一版已完成
-- [04｜Agent Runtime Semantics](docs/04-runtime-semantics.md) — 🟢 第一版已完成
+- [02｜Agent Runtime Semantics](docs/02-agent-runtime-semantics.md) — 🟢 第一版已完成
 
 ### International Frameworks
 
@@ -87,10 +89,10 @@ title: Example Note
 
 ### Coding Agents
 
-- [40｜Codex](coding-agents/codex.md) — todo
-- [41｜Claude Code](coding-agents/claude-code.md) — todo
-- [42｜Gemini CLI](coding-agents/gemini-cli.md) — todo
-- [43｜OpenCode](coding-agents/opencode.md) — todo
+- [Codex](coding-agents/codex.md) — todo
+- [Claude Code](coding-agents/claude-code.md) — todo
+- [Gemini CLI](coding-agents/gemini-cli.md) — todo
+- [OpenCode](coding-agents/opencode.md) — todo
 - Coding Agent 统一架构比较 — todo
 - 权限、Sandbox 与 Prompt Injection — todo
 - Context Engineering 与长任务 — todo

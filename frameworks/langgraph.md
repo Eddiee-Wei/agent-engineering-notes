@@ -2,7 +2,7 @@
 title: LangGraph
 ---
 
-# 21｜LangGraph
+# LangGraph
 
 > 状态：todo
 

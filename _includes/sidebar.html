@@ -4,11 +4,11 @@
   </button>
   <div class="side-nav-inner">
     {% for section in site.data.navigation %}
-      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "path" %}
+      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "nav_order" %}
       {% assign group_label = section.group_label | default: section.label %}
       {% assign group_label_zh = section.group_label_zh | default: section.label_zh %}
       <section
-        class="nav-group"
+        class="nav-group{% if section.numbered %} is-numbered{% endif %}"
         data-group-en="{{ group_label | escape }}"
         data-group-zh="{{ group_label_zh | escape }}"
       >
@@ -41,10 +41,13 @@
               <a
                 class="nav-child{% if page.url == nav_item.url %} is-active{% endif %}"
                 href="{{ nav_item.url | relative_url }}"
-                data-i18n
-                data-en="{{ nav_item.label | escape }}"
-                data-zh="{{ nav_item.label_zh | escape }}"
-              >{{ nav_item.label }}</a>
+              >
+                <span
+                  data-i18n
+                  data-en="{{ nav_item.label | escape }}"
+                  data-zh="{{ nav_item.label_zh | escape }}"
+                >{{ nav_item.label }}</span>
+              </a>
             {% endfor %}
           {% endfor %}
         {% elsif section.items %}
@@ -52,10 +55,13 @@
             <a
               class="nav-child{% if page.url == nav_item.url %} is-active{% endif %}"
               href="{{ nav_item.url | relative_url }}"
-              data-i18n
-              data-en="{{ nav_item.label | escape }}"
-              data-zh="{{ nav_item.label_zh | escape }}"
-            >{{ nav_item.label }}</a>
+            >
+              <span
+                data-i18n
+                data-en="{{ nav_item.label | escape }}"
+                data-zh="{{ nav_item.label_zh | escape }}"
+              >{{ nav_item.label }}</span>
+            </a>
           {% endfor %}
         {% else %}
           {% for nav_page in section_pages %}
@@ -65,10 +71,13 @@
               <a
                 class="nav-child{% if page.url == nav_page.url %} is-active{% endif %}"
                 href="{{ nav_page.url | relative_url }}"
-                data-i18n
-                data-en="{{ nav_title | escape }}"
-                data-zh="{{ nav_title_zh | escape }}"
-              >{{ nav_title }}</a>
+              >
+                <span
+                  data-i18n
+                  data-en="{{ nav_title | escape }}"
+                  data-zh="{{ nav_title_zh | escape }}"
+                >{{ nav_title }}</span>
+              </a>
             {% endunless %}
           {% endfor %}
         {% endif %}

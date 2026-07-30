@@ -2,13 +2,10 @@
   index: "01"
   label: Agent Fundamentals
   label_zh: Agent 基础
-  url: /docs/01-agent-primer/
+  url: /agent/
   description: Authored notes on Agent behavior and runtime semantics.
   description_zh: 关于 Agent 行为与 Runtime 执行语义的原创笔记。
-  items:
-    - label: Agent Runtime Semantics
-      label_zh: Agent Runtime 执行语义
-      url: /docs/04-runtime-semantics/
+  numbered: true
 
 - id: frameworks
   index: "02"
@@ -19,6 +16,7 @@
   url: /agent-framework/
   description: Frameworks and toolkits for building, orchestrating, and operating agents.
   description_zh: 用于构建、编排和运行 Agent 的框架与工具包。
+  numbered: true
   groups:
     - label: International Frameworks
       label_zh: 国外框架
@@ -66,6 +64,7 @@
   url: /agent-application/
   description: Assembly tools and Coding Agents built around agent workflows.
   description_zh: 围绕 Agent 工作流构建的组装工具与 Coding Agent。
+  numbered: true
   groups:
     - label: Assembly Agents
       label_zh: 组装 Agent
@@ -104,3 +103,4 @@
   url: /engineering/
   description: Engineering practices that turn agent prototypes into reliable systems.
   description_zh: 把 Agent 原型变成可靠系统的工程实践。
+  numbered: true

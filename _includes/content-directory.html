@@ -8,7 +8,7 @@
 
   <div class="content-directory">
     {% for section in site.data.navigation %}
-      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "path" %}
+      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "nav_order" %}
       <section class="directory-group">
         <a class="directory-heading" href="{{ section.url | relative_url }}">
           <span class="nav-index">{{ section.index }}</span>
@@ -27,7 +27,7 @@
           <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
         </a>
 
-        <div class="directory-links">
+        <div class="directory-links{% if section.numbered %} is-numbered{% endif %}">
           {% if section.groups %}
             {% for nav_group in section.groups %}
               <h3

@@ -2,7 +2,7 @@
 title: AutoGen
 ---
 
-# 22｜AutoGen
+# AutoGen
 
 > 状态：todo
 

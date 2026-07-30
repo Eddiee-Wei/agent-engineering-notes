@@ -2,7 +2,7 @@
 title: AgentScope
 ---
 
-# 30｜AgentScope
+# AgentScope
 
 > 状态：todo
 
