@@ -17,6 +17,27 @@
 - [Agent Application / Coding Agent](agent-application/)
 - [Agent Engineering](engineering/)
 
+## Adding content
+
+站点导航和首页目录由内容自动生成。在下面任一目录中新建 Markdown，即可自动继承统一外观，并进入对应的侧栏、首页目录和搜索：
+
+| 目录 | 自动归属 |
+| --- | --- |
+| `docs/`、`agent/` | Agent Introduction |
+| `frameworks/`、`agent-framework/` | Agent Framework |
+| `coding-agents/`、`agent-application/` | Agent Application |
+| `engineering/` | Agent Engineering |
+
+最小页面只需要标题：
+
+```yaml
+---
+title: Example Note
+---
+```
+
+可选使用 `nav_title` 和 `nav_title_zh` 覆盖侧栏及首页显示名称。一级栏目配置集中在 [`_data/navigation.yml`](_data/navigation.yml)，页面结构组件集中在 [`_includes/`](_includes/)；通常新增内容不需要修改布局、首页或搜索代码。
+
 ## Scope
 
 - 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。

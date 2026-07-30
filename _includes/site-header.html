@@ -1,0 +1,56 @@
+<header class="site-header">
+  <div class="utility-bar">
+    <button class="mobile-nav-toggle" type="button" aria-controls="site-navigation" aria-expanded="false" aria-label="Open navigation">
+      <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+    </button>
+
+    <a class="brand" href="{{ '/' | relative_url }}" aria-label="Agent Engineering Notes home">
+      <span class="brand-mark" aria-hidden="true">A/</span>
+      <span class="brand-copy">
+        <strong>Agent Engineering Notes</strong>
+        <small>Agent → Framework → Application → Engineering</small>
+      </span>
+    </a>
+
+    <div class="site-search" role="search">
+      <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+      <label class="sr-only" for="site-search-input" data-i18n data-en="Search the knowledge base" data-zh="搜索知识库">Search the knowledge base</label>
+      <input
+        id="site-search-input"
+        type="search"
+        autocomplete="off"
+        aria-autocomplete="list"
+        aria-controls="site-search-results"
+        aria-expanded="false"
+        data-placeholder-en="Search the knowledge base..."
+        data-placeholder-zh="搜索知识库..."
+        placeholder="Search the knowledge base..."
+      >
+      <kbd>⌘K</kbd>
+      <div class="search-panel" id="site-search-results" role="listbox" hidden></div>
+    </div>
+
+    <nav class="utility-actions" aria-label="Site actions">
+      <div class="language-switch" role="group" aria-label="Language">
+        <button type="button" data-language-option="en" aria-pressed="true">EN</button>
+        <button type="button" data-language-option="zh" aria-pressed="false">中文</button>
+      </div>
+      <a class="github-link" href="https://github.com/Eddiee-Wei/agent-engineering-notes">
+        <span>GitHub</span>
+        <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+      </a>
+    </nav>
+  </div>
+
+  <nav class="primary-nav" aria-label="Primary">
+    {% for section in site.data.navigation %}
+      <a
+        class="{% if page.nav_section == section.id %}is-active{% endif %}"
+        href="{{ section.url | relative_url }}"
+        data-i18n
+        data-en="{{ section.label | escape }}"
+        data-zh="{{ section.label_zh | escape }}"
+      >{{ section.label }}</a>
+    {% endfor %}
+  </nav>
+</header>

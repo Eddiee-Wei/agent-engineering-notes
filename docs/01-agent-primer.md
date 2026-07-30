@@ -1,5 +1,6 @@
 ---
 title: From Model Call to Agent
+nav_title_zh: 从模型调用到 Agent
 description: 从一次模型调用出发，理解 Agent 的最小判定、执行闭环与工程边界。
 ---
 

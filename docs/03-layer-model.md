@@ -1,5 +1,7 @@
 ---
 title: Layers
+nav_title: Layer Model
+nav_title_zh: 分层模型
 ---
 
 # 03｜Layers

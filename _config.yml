@@ -20,6 +20,34 @@ defaults:
       path: ""
     values:
       layout: default
+  - scope:
+      path: "agent"
+    values:
+      nav_section: agent
+  - scope:
+      path: "docs"
+    values:
+      nav_section: agent
+  - scope:
+      path: "agent-framework"
+    values:
+      nav_section: frameworks
+  - scope:
+      path: "frameworks"
+    values:
+      nav_section: frameworks
+  - scope:
+      path: "agent-application"
+    values:
+      nav_section: applications
+  - scope:
+      path: "coding-agents"
+    values:
+      nav_section: applications
+  - scope:
+      path: "engineering"
+    values:
+      nav_section: engineering
 
 exclude:
   - .git

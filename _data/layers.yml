@@ -1,0 +1,53 @@
+- id: components
+  code: L1
+  label: Components & Protocols
+  label_zh: 组件与协议
+  icon: extension
+  description: Model I/O, tool protocols, data formats, connectors, and interoperability primitives.
+  description_zh: 模型输入输出、工具协议、数据格式、连接器与互操作基础。
+  url: /docs/03-layer-model/
+
+- id: runtime
+  code: L2
+  label: Agent Runtime
+  label_zh: Agent Runtime
+  icon: deployed_code
+  description: Runtime environment, state, memory, tool execution, scheduling, and concurrency.
+  description_zh: 运行环境、状态、记忆、工具执行、调度与并发。
+  url: /docs/03-layer-model/
+
+- id: workflow
+  code: L3
+  label: Workflow
+  label_zh: Workflow
+  icon: account_tree
+  description: Planning, routing, branching, loops, and orchestration patterns that structure behavior.
+  description_zh: 规划、路由、分支、循环，以及用于组织行为的编排模式。
+  url: /docs/03-layer-model/
+
+- id: harness
+  code: L4
+  label: Agent Harness
+  label_zh: Agent Harness
+  icon: security
+  description: Evaluation, guardrails, monitoring, tracing, permissions, and operational controls.
+  description_zh: 评测、护栏、监控、追踪、权限与运行控制。
+  url: /docs/03-layer-model/
+
+- id: applications
+  code: L5
+  label: Vertical Applications
+  label_zh: 垂直应用
+  icon: grid_view
+  description: Domain-specific agents and workflows that solve concrete real-world problems.
+  description_zh: 面向具体真实问题的领域 Agent 与工作流。
+  url: /docs/03-layer-model/
+
+- id: products
+  code: L6
+  label: Products & Platforms
+  label_zh: 产品与平台
+  icon: layers
+  description: End-user products, platforms, and ecosystems built on agent technologies.
+  description_zh: 建立在 Agent 技术之上的终端产品、平台与生态。
+  url: /docs/03-layer-model/
