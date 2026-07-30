@@ -28,20 +28,52 @@
         </a>
 
         <div class="directory-links">
-          {% for nav_page in section_pages %}
-            {% unless nav_page.url == section.url or nav_page.url == section.featured_url or nav_page.url == page.url %}
-              {% assign nav_title = nav_page.nav_title | default: nav_page.title %}
-              {% assign nav_title_zh = nav_page.nav_title_zh | default: nav_title %}
-              <a class="directory-link" href="{{ nav_page.url | relative_url }}">
+          {% if section.groups %}
+            {% for nav_group in section.groups %}
+              <h3
+                class="directory-subgroup-title"
+                data-i18n
+                data-en="{{ nav_group.label | escape }}"
+                data-zh="{{ nav_group.label_zh | escape }}"
+              >{{ nav_group.label }}</h3>
+              {% for nav_item in nav_group.items %}
+                <a class="directory-link" href="{{ nav_item.url | relative_url }}">
+                  <span
+                    data-i18n
+                    data-en="{{ nav_item.label | escape }}"
+                    data-zh="{{ nav_item.label_zh | escape }}"
+                  >{{ nav_item.label }}</span>
+                  <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+                </a>
+              {% endfor %}
+            {% endfor %}
+          {% elsif section.items %}
+            {% for nav_item in section.items %}
+              <a class="directory-link" href="{{ nav_item.url | relative_url }}">
                 <span
                   data-i18n
-                  data-en="{{ nav_title | escape }}"
-                  data-zh="{{ nav_title_zh | escape }}"
-                >{{ nav_title }}</span>
+                  data-en="{{ nav_item.label | escape }}"
+                  data-zh="{{ nav_item.label_zh | escape }}"
+                >{{ nav_item.label }}</span>
                 <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
               </a>
-            {% endunless %}
-          {% endfor %}
+            {% endfor %}
+          {% else %}
+            {% for nav_page in section_pages %}
+              {% unless nav_page.url == section.url or nav_page.url == page.url %}
+                {% assign nav_title = nav_page.nav_title | default: nav_page.title %}
+                {% assign nav_title_zh = nav_page.nav_title_zh | default: nav_title %}
+                <a class="directory-link" href="{{ nav_page.url | relative_url }}">
+                  <span
+                    data-i18n
+                    data-en="{{ nav_title | escape }}"
+                    data-zh="{{ nav_title_zh | escape }}"
+                  >{{ nav_title }}</span>
+                  <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+                </a>
+              {% endunless %}
+            {% endfor %}
+          {% endif %}
         </div>
       </section>
     {% endfor %}

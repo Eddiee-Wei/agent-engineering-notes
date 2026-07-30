@@ -240,8 +240,6 @@ Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色�
 
 > **模型是概率性的决策面；Runtime 与 Harness 是确定性的控制面。自治不是移除控制，而是把有限决策权放进受控闭环。**
 
-更完整的分层见 [03｜Layers](03-layer-model.md)；跨框架比较时则使用 [02｜Framework Lens](02-comparison-methodology.md)。
-
 ## 从 Demo 到可生产 Agent
 
 最小循环证明“系统能够自己往下走”，生产工程则要证明“它走错时可被发现、限制和恢复”。

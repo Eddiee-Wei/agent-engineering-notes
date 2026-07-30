@@ -1,16 +1,20 @@
 ---
 layout: default
-title: Agent Application / Coding Agent
-description: Engineering notes on Agent applications and Coding Agents.
+title: Agent Application
+description: Engineering notes on assembly tools and Coding Agents.
 ---
 
-<span class="eyebrow">03 · AGENT APPLICATION / CODING AGENT</span>
+<span class="eyebrow">03 · AGENT APPLICATION</span>
 
-<h1 data-i18n data-en="Agent Application / Coding Agent" data-zh="Agent 应用 / Coding Agent">Agent Application / Coding Agent</h1>
+<h1 data-i18n data-en="Agent Application" data-zh="Agent 应用">Agent Application</h1>
 
-<p data-i18n data-en="Notes on how Agent capabilities become practical applications, and how Coding Agents handle context, tools, permissions, and execution environments." data-zh="关注 Agent 能力如何进入实际应用，以及 Coding Agent 在上下文、工具、权限和执行环境上的实现方式。">Notes on how Agent capabilities become practical applications, and how Coding Agents handle context, tools, permissions, and execution environments.</p>
+<p data-i18n data-en="Notes on tools for assembling Agent applications and on Coding Agents that operate across code, tools, permissions, and execution environments." data-zh="记录用于组装 Agent 应用的工具，以及在代码、工具、权限和执行环境中工作的 Coding Agent。">Notes on tools for assembling Agent applications and on Coding Agents that operate across code, tools, permissions, and execution environments.</p>
 
-<p data-i18n data-en="New application notes will continue to live in the agent-application/ directory." data-zh="新的应用笔记会继续放在 agent-application/ 目录中。">New application notes will continue to live in the agent-application/ directory.</p>
+<h2 data-i18n data-en="Assembly Agents" data-zh="组装 Agent">Assembly Agents</h2>
+
+- [Dify](dify.md) — todo
+- [Coze](coze.md) — todo
+- [LangGraph](../frameworks/langgraph.md) — todo
 
 <h2 data-i18n data-en="Coding Agents" data-zh="Coding Agent">Coding Agents</h2>
 
