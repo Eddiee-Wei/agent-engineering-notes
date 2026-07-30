@@ -1,0 +1,40 @@
+- id: agent
+  index: "01"
+  label: Agent Introduction
+  label_zh: Agent 介绍
+  url: /agent/
+  featured_url: /
+  featured_label: Knowledge Atlas
+  featured_label_zh: 知识地图
+  description: Foundations, comparison methods, and the conceptual layers behind agent systems.
+  description_zh: Agent 系统的基础概念、比较方法与分层模型。
+
+- id: frameworks
+  index: "02"
+  label: Agent Framework
+  label_zh: Agent 框架
+  group_label: Frameworks
+  group_label_zh: 框架
+  url: /agent-framework/
+  description: Frameworks and toolkits for building, orchestrating, and operating agents.
+  description_zh: 用于构建、编排和运行 Agent 的框架与工具包。
+
+- id: applications
+  index: "03"
+  label: Agent Application
+  label_zh: Agent 应用
+  group_label: Applications
+  group_label_zh: 应用
+  url: /agent-application/
+  description: Coding agents and other practical products built around agent workflows.
+  description_zh: 围绕 Agent 工作流构建的 Coding Agent 与实际产品。
+
+- id: engineering
+  index: "04"
+  label: Agent Engineering
+  label_zh: Agent 工程
+  group_label: Engineering
+  group_label_zh: 工程
+  url: /engineering/
+  description: Engineering practices that turn agent prototypes into reliable systems.
+  description_zh: 把 Agent 原型变成可靠系统的工程实践。
