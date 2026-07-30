@@ -1,0 +1,49 @@
+<section class="atlas-section" id="content-directory">
+  <h2 data-i18n data-en="Content directory" data-zh="内容目录">Content directory</h2>
+  <p
+    data-i18n
+    data-en="Every configured note is collected here automatically."
+    data-zh="所有已配置的笔记都会自动汇集到这里。"
+  >Every configured note is collected here automatically.</p>
+
+  <div class="content-directory">
+    {% for section in site.data.navigation %}
+      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "path" %}
+      <section class="directory-group">
+        <a class="directory-heading" href="{{ section.url | relative_url }}">
+          <span class="nav-index">{{ section.index }}</span>
+          <span>
+            <strong
+              data-i18n
+              data-en="{{ section.label | escape }}"
+              data-zh="{{ section.label_zh | escape }}"
+            >{{ section.label }}</strong>
+            <small
+              data-i18n
+              data-en="{{ section.description | escape }}"
+              data-zh="{{ section.description_zh | escape }}"
+            >{{ section.description }}</small>
+          </span>
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </a>
+
+        <div class="directory-links">
+          {% for nav_page in section_pages %}
+            {% unless nav_page.url == section.url or nav_page.url == section.featured_url or nav_page.url == page.url %}
+              {% assign nav_title = nav_page.nav_title | default: nav_page.title %}
+              {% assign nav_title_zh = nav_page.nav_title_zh | default: nav_title %}
+              <a class="directory-link" href="{{ nav_page.url | relative_url }}">
+                <span
+                  data-i18n
+                  data-en="{{ nav_title | escape }}"
+                  data-zh="{{ nav_title_zh | escape }}"
+                >{{ nav_title }}</span>
+                <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+              </a>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</section>

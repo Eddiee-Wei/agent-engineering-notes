@@ -1,0 +1,58 @@
+<aside class="side-nav" id="site-navigation" aria-label="Documentation">
+  <button class="drawer-close" type="button" aria-label="Close navigation">
+    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+  </button>
+  <div class="side-nav-inner">
+    {% for section in site.data.navigation %}
+      {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "path" %}
+      {% assign group_label = section.group_label | default: section.label %}
+      {% assign group_label_zh = section.group_label_zh | default: section.label_zh %}
+      <section
+        class="nav-group"
+        data-group-en="{{ group_label | escape }}"
+        data-group-zh="{{ group_label_zh | escape }}"
+      >
+        {% unless forloop.first %}
+          <h2
+            data-i18n
+            data-en="{{ group_label | escape }}"
+            data-zh="{{ group_label_zh | escape }}"
+          >{{ group_label }}</h2>
+        {% endunless %}
+
+        <a class="{% if page.url == section.url %}is-active{% endif %}" href="{{ section.url | relative_url }}">
+          <span class="nav-index">{{ section.index }}</span>
+          <span
+            data-i18n
+            data-en="{{ section.label | escape }}"
+            data-zh="{{ section.label_zh | escape }}"
+          >{{ section.label }}</span>
+        </a>
+
+        {% if section.featured_url %}
+          <a
+            class="nav-child{% if page.url == section.featured_url %} is-active{% endif %}"
+            href="{{ section.featured_url | relative_url }}"
+            data-i18n
+            data-en="{{ section.featured_label | escape }}"
+            data-zh="{{ section.featured_label_zh | escape }}"
+          >{{ section.featured_label }}</a>
+        {% endif %}
+
+        {% for nav_page in section_pages %}
+          {% unless nav_page.url == section.url or nav_page.url == section.featured_url %}
+            {% assign nav_title = nav_page.nav_title | default: nav_page.title %}
+            {% assign nav_title_zh = nav_page.nav_title_zh | default: nav_title %}
+            <a
+              class="nav-child{% if page.url == nav_page.url %} is-active{% endif %}"
+              href="{{ nav_page.url | relative_url }}"
+              data-i18n
+              data-en="{{ nav_title | escape }}"
+              data-zh="{{ nav_title_zh | escape }}"
+            >{{ nav_title }}</a>
+          {% endunless %}
+        {% endfor %}
+      </section>
+    {% endfor %}
+  </div>
+</aside>

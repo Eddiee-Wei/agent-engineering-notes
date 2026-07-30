@@ -42,9 +42,11 @@
       .map((link) => {
         const href = link.href;
         const label = link.textContent.replace(/\s+/g, " ").trim();
+        const navGroup = link.closest(".nav-group");
         const group =
-          link.closest(".nav-group")?.querySelector("h2")?.textContent.trim() ||
-          "Documentation";
+          (root.dataset.language === "zh"
+            ? navGroup?.dataset.groupZh
+            : navGroup?.dataset.groupEn) || "Documentation";
 
         return { href, label, group };
       })

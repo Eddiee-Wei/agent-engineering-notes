@@ -1,5 +1,6 @@
 ---
 title: Framework Lens
+nav_title_zh: 框架比较方法
 ---
 
 # 02｜Framework Lens
