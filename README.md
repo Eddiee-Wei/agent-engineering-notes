@@ -32,6 +32,7 @@
 - [01｜From Model Call to Agent](docs/01-agent-primer.md) — 🟢 第一版已完成
 - [02｜Framework Lens](docs/02-comparison-methodology.md) — 🟢 第一版已完成
 - [03｜Layers](docs/03-layer-model.md) — 🟢 第一版已完成
+- [04｜Agent Runtime Semantics](docs/04-runtime-semantics.md) — 🟢 第一版已完成
 
 ### tRPC-Agent-Go
 

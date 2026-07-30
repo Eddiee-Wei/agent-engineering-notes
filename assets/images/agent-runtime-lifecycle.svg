@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 790" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Runtime 双层生命周期</title>
+  <desc id="desc">上层展示 Logical Run 从 Created 进入 Running，随后完成、暂停恢复、取消、失败、超时或受控停止。下层展示 Event 从 Produced、Validated、Committed、Published 到 Consumed 的提交与交付链。两层通过 Step 产生事件、提交确认后继续运行，以及终态事件连接。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #ffffff; }
+      .lane { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 8 8; }
+      .state { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .active { fill: #181816; stroke: #181816; stroke-width: 2; }
+      .wait { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .terminal { fill: #ffffff; stroke: #6d6d67; stroke-width: 2; }
+      .danger { fill: #f3f0ed; stroke: #65564d; stroke-width: 2; }
+      .commit { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .label { fill: #181816; font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-light { fill: #ffffff; font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub-light { fill: #deded8; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .lane-label { fill: #6d6d67; font: 600 17px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.4; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #6d6d67; stroke-width: 2.1; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 13px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .note { fill: #42423e; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="790" rx="18"/>
+
+  <rect class="lane" x="35" y="35" width="1210" height="445" rx="24"/>
+  <text class="lane-label" x="65" y="70">LOGICAL RUN · EXECUTION LIFECYCLE</text>
+
+  <rect class="state" x="75" y="105" width="165" height="76" rx="14"/>
+  <text class="label" x="157.5" y="136">Created</text>
+  <text class="sub" x="157.5" y="159">身份已分配</text>
+
+  <rect class="active" x="310" y="105" width="165" height="76" rx="14"/>
+  <text class="label-light" x="392.5" y="136">Running</text>
+  <text class="sub-light" x="392.5" y="159">模型 / 工具 / 提交</text>
+
+  <rect class="state" x="1040" y="105" width="165" height="76" rx="14"/>
+  <text class="label" x="1122.5" y="136">Completed</text>
+  <text class="sub" x="1122.5" y="159">完成契约通过</text>
+
+  <path class="edge" d="M 240 143 L 309 143"/>
+  <text class="edge-label" x="274" y="128">start</text>
+  <path class="edge" d="M 475 143 L 1039 143"/>
+  <text class="edge-label" x="760" y="128">verified + terminal commit</text>
+
+  <rect class="wait" x="545" y="220" width="165" height="76" rx="14"/>
+  <text class="label" x="627.5" y="251">Paused</text>
+  <text class="sub" x="627.5" y="274">等待审批 / 外部输入</text>
+
+  <rect class="wait" x="790" y="220" width="165" height="76" rx="14"/>
+  <text class="label" x="872.5" y="251">Resuming</text>
+  <text class="sub" x="872.5" y="274">校验快照与副作用</text>
+
+  <path class="edge" d="M 430 181 L 430 258 L 544 258"/>
+  <text class="edge-label" x="485" y="243">checkpoint</text>
+  <path class="edge" d="M 710 258 L 789 258"/>
+  <text class="edge-label" x="749" y="243">wake</text>
+  <path class="edge" d="M 872 220 L 872 190 L 475 190 L 475 164"/>
+  <text class="edge-label" x="680" y="207">new attempt</text>
+
+  <rect class="danger" x="310" y="355" width="185" height="76" rx="14"/>
+  <text class="label" x="402.5" y="386">Cancel Requested</text>
+  <text class="sub" x="402.5" y="409">信号正在传播</text>
+
+  <rect class="terminal" x="545" y="355" width="145" height="76" rx="14"/>
+  <text class="label" x="617.5" y="386">Cancelled</text>
+  <text class="sub" x="617.5" y="409">确认停止</text>
+
+  <rect class="terminal" x="725" y="355" width="130" height="76" rx="14"/>
+  <text class="label" x="790" y="386">Failed</text>
+  <text class="sub" x="790" y="409">执行契约破坏</text>
+
+  <rect class="terminal" x="890" y="355" width="130" height="76" rx="14"/>
+  <text class="label" x="955" y="386">TimedOut</text>
+  <text class="sub" x="955" y="409">Deadline 到达</text>
+
+  <rect class="terminal" x="1055" y="355" width="130" height="76" rx="14"/>
+  <text class="label" x="1120" y="386">Stopped</text>
+  <text class="sub" x="1120" y="409">预算 / 策略停止</text>
+
+  <path class="edge" d="M 392 181 L 392 354"/>
+  <text class="edge-label" x="452" y="330">cancel intent</text>
+  <path class="edge" d="M 495 393 L 544 393"/>
+  <text class="edge-label" x="520" y="378">ack</text>
+  <path class="edge-dashed" d="M 405 181 L 505 320 L 790 320 L 790 354"/>
+  <path class="edge-dashed" d="M 420 181 L 520 312 L 955 312 L 955 354"/>
+  <path class="edge-dashed" d="M 435 181 L 535 304 L 1120 304 L 1120 354"/>
+
+  <rect class="lane" x="35" y="510" width="1210" height="245" rx="24"/>
+  <text class="lane-label" x="65" y="545">EVENT + STATE · COMMIT / DELIVERY LIFECYCLE</text>
+
+  <rect class="state" x="75" y="590" width="165" height="76" rx="14"/>
+  <text class="label" x="157.5" y="621">Produced</text>
+  <text class="sub" x="157.5" y="644">逻辑产生 Event</text>
+
+  <rect class="state" x="310" y="590" width="165" height="76" rx="14"/>
+  <text class="label" x="392.5" y="621">Validated</text>
+  <text class="sub" x="392.5" y="644">Schema / Policy</text>
+
+  <rect class="commit" x="545" y="590" width="165" height="76" rx="14"/>
+  <text class="label" x="627.5" y="621">Committed</text>
+  <text class="sub" x="627.5" y="644">状态成为事实</text>
+
+  <rect class="state" x="780" y="590" width="165" height="76" rx="14"/>
+  <text class="label" x="862.5" y="621">Published</text>
+  <text class="sub" x="862.5" y="644">Channel / SSE / WS</text>
+
+  <rect class="state" x="1015" y="590" width="165" height="76" rx="14"/>
+  <text class="label" x="1097.5" y="621">Consumed</text>
+  <text class="sub" x="1097.5" y="644">UI / Workflow / Client</text>
+
+  <path class="edge" d="M 240 628 L 309 628"/>
+  <path class="edge" d="M 475 628 L 544 628"/>
+  <path class="edge" d="M 710 628 L 779 628"/>
+  <path class="edge" d="M 945 628 L 1014 628"/>
+
+  <path class="edge-dashed" d="M 392 181 L 157 589"/>
+  <text class="edge-label" x="205" y="435">step emits</text>
+  <path class="edge-dashed" d="M 627 589 L 627 480 L 505 480 L 505 180"/>
+  <text class="edge-label" x="570" y="496">commit ack → continue</text>
+  <path class="edge-dashed" d="M 1122 181 L 1122 589"/>
+  <text class="edge-label" x="1170" y="520">terminal event</text>
+
+  <text class="note" x="75" y="712">Partial streaming 可以在 Produced 后直接发布；若未提交，它只能用于展示，不能单独充当恢复事实。</text>
+</svg>

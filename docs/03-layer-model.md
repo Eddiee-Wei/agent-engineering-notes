@@ -30,6 +30,8 @@ title: Layers
 - Cancellation
 - Error Handling
 
+这些对象的执行粒度、身份与生命周期并不天然一致。更细的 Run、Turn、Step、Event、Session、暂停、取消与恢复语义见 [04｜Agent Runtime 的执行语义](04-runtime-semantics.md)。
+
 ## L3：Workflow 与 Multi-Agent
 
 - Graph

@@ -17,3 +17,4 @@ description: Notes on Agent definitions, components, and runtime behavior.
 - [From Model Call to Agent](../docs/01-agent-primer.md) — v1
 - [Framework Lens](../docs/02-comparison-methodology.md) — v1
 - [Layers](../docs/03-layer-model.md) — v1
+- [Agent Runtime Semantics](../docs/04-runtime-semantics.md) — v1
