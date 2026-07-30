@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Observability Engineering
+nav_title_zh: 可观测性工程
+nav_order: 11
 description: Making Agent decisions, actions, failures, latency, and cost inspectable.
 ---
 

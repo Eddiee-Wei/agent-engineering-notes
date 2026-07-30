@@ -2,7 +2,7 @@
 title: OpenCode
 ---
 
-# 43｜OpenCode
+# OpenCode
 
 > 状态：todo
 

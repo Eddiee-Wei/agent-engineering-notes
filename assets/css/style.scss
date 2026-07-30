@@ -446,6 +446,21 @@ a { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
 }
 
+.nav-group.is-numbered {
+  counter-reset: nav-note;
+}
+
+.nav-group.is-numbered .nav-child {
+  counter-increment: nav-note;
+}
+
+.nav-group.is-numbered .nav-child::before {
+  content: counter(nav-note, decimal-leading-zero);
+  flex: 0 0 24px;
+  color: var(--muted);
+  font: 10px "IBM Plex Mono", monospace;
+}
+
 .content {
   min-width: 0;
   width: 100%;
@@ -814,6 +829,33 @@ hr {
   font: 600 10px/1.4 "IBM Plex Mono", monospace;
   letter-spacing: .08em;
   text-transform: uppercase;
+}
+
+.directory-links.is-numbered {
+  counter-reset: directory-note;
+}
+
+.directory-links.is-numbered .directory-link {
+  counter-increment: directory-note;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.directory-links.is-numbered .directory-link::before {
+  content: counter(directory-note, decimal-leading-zero);
+  flex: 0 0 24px;
+  color: var(--muted);
+  font: 10px "IBM Plex Mono", monospace;
+}
+
+.directory-links.is-numbered .directory-link .material-symbols-outlined {
+  margin-left: auto;
+}
+
+.section-note-directory {
+  grid-template-columns: 1fr;
+  margin-top: 28px;
+  border-top: 1px solid var(--line-strong);
 }
 
 .directory-link {

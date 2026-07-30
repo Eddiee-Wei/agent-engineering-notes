@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Prompt Engineering
+nav_title_zh: 提示词工程
+nav_order: 1
 description: Engineering instructions, constraints, examples, and output contracts for reliable model interactions.
 ---
 

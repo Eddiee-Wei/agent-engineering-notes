@@ -2,7 +2,7 @@
 title: Gemini CLI
 ---
 
-# 42｜Gemini CLI
+# Gemini CLI
 
 > 状态：todo
 

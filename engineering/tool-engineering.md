@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Tool Engineering
+nav_title_zh: 工具工程
+nav_order: 5
 description: Designing safe, understandable, and recoverable tool contracts for Agents.
 ---
 

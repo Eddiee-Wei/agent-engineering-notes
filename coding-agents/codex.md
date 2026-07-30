@@ -2,7 +2,7 @@
 title: Codex
 ---
 
-# 40｜Codex
+# Codex
 
 > 状态：todo
 

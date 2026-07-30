@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Production Engineering
+nav_title_zh: 生产工程
+nav_order: 13
 description: Operating Agent systems with reliability, scalability, cost control, and safe releases.
 ---
 

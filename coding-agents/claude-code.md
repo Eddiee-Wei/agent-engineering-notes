@@ -2,7 +2,7 @@
 title: Claude Code
 ---
 
-# 41｜Claude Code
+# Claude Code
 
 > 状态：todo
 

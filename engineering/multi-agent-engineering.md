@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Multi-Agent Engineering
+nav_title_zh: 多 Agent 工程
+nav_order: 9
 description: Designing effective delegation, communication, and coordination among multiple Agents.
 ---
 
