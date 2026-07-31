@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 状态语义地图</title>
+  <desc id="desc">外部世界与 Workspace 是事实边界。Run State 观察世界并产生行动，Context 从 Run State、Session、Memory 和 Artifact Reference 中按需编译。Run State 生成 Checkpoint 和 Artifact，Session 中经过验证的信息可以提升为 Memory。Session、Memory、Checkpoint 与 Artifact 由不同 Store 持久化，Store 本身不决定上层语义。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #ffffff; }
+      .frame { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 8 8; }
+      .box { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .active { fill: #181816; stroke: #181816; stroke-width: 2; }
+      .projection { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .substrate { fill: #f7f7f5; stroke: #6d6d67; stroke-width: 2; stroke-dasharray: 7 6; }
+      .label { fill: #181816; font: 600 19px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-light { fill: #ffffff; font: 600 19px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub-light { fill: #deded8; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .frame-label { fill: #6d6d67; font: 600 17px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.4; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #6d6d67; stroke-width: 2.1; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 13px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .note { fill: #42423e; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="860" rx="18"/>
+
+  <rect class="frame" x="35" y="35" width="1210" height="150" rx="24"/>
+  <text class="frame-label" x="65" y="70">FACT BOUNDARY · WORLD / WORKSPACE</text>
+  <rect class="box" x="430" y="88" width="420" height="70" rx="14"/>
+  <text class="label" x="640" y="117">External World State</text>
+  <text class="sub" x="640" y="141">Repo / DB / Browser / Cloud / Side Effects</text>
+
+  <rect class="frame" x="35" y="215" width="1210" height="470" rx="24"/>
+  <text class="frame-label" x="65" y="250">SEMANTIC PLANES · DIFFERENT GUARANTEES</text>
+
+  <rect class="projection" x="465" y="275" width="350" height="80" rx="14"/>
+  <text class="label" x="640" y="307">Context</text>
+  <text class="sub" x="640" y="333">select / pack / compress · 决策投影</text>
+
+  <rect class="box" x="70" y="465" width="190" height="88" rx="14"/>
+  <text class="label" x="165" y="499">Session</text>
+  <text class="sub" x="165" y="526">连续交互、Event、会话状态</text>
+
+  <rect class="box" x="300" y="465" width="190" height="88" rx="14"/>
+  <text class="label" x="395" y="499">Memory</text>
+  <text class="sub" x="395" y="526">验证后发布的可复用信息</text>
+
+  <rect class="active" x="530" y="450" width="220" height="118" rx="14"/>
+  <text class="label-light" x="640" y="493">Run State</text>
+  <text class="sub-light" x="640" y="520">goal / cursor / pending effects</text>
+  <text class="sub-light" x="640" y="543">version / owner / budget</text>
+
+  <rect class="box" x="790" y="465" width="190" height="88" rx="14"/>
+  <text class="label" x="885" y="499">Checkpoint</text>
+  <text class="sub" x="885" y="526">可恢复执行切面</text>
+
+  <rect class="box" x="1020" y="465" width="190" height="88" rx="14"/>
+  <text class="label" x="1115" y="499">Artifact</text>
+  <text class="sub" x="1115" y="526">命名、版本化的独立产物</text>
+
+  <path class="edge" d="M 615 450 L 615 375 L 615 356"/>
+  <text class="edge-label" x="570" y="405">select</text>
+
+  <path class="edge-dashed" d="M 165 465 C 165 380, 440 400, 510 355"/>
+  <text class="edge-label" x="310" y="385">history</text>
+
+  <path class="edge-dashed" d="M 395 465 C 395 405, 495 390, 555 355"/>
+  <text class="edge-label" x="450" y="414">retrieve</text>
+
+  <path class="edge-dashed" d="M 1115 465 C 1115 380, 840 400, 770 355"/>
+  <text class="edge-label" x="965" y="385">reference</text>
+
+  <path class="edge" d="M 260 509 L 299 509"/>
+  <text class="edge-label" x="279" y="494">promote</text>
+
+  <path class="edge" d="M 750 509 L 789 509"/>
+  <text class="edge-label" x="770" y="494">snapshot</text>
+
+  <path class="edge" d="M 750 541 C 850 610, 1010 610, 1075 554"/>
+  <text class="edge-label" x="910" y="623">materialize</text>
+
+  <path class="edge-dashed" d="M 1060 465 C 1005 408, 820 408, 725 450"/>
+  <text class="edge-label" x="910" y="413">versioned ref</text>
+
+  <path class="edge-dashed" d="M 560 158 C 420 195, 390 370, 530 482"/>
+  <text class="edge-label" x="410" y="224">observe</text>
+
+  <path class="edge" d="M 750 482 C 900 370, 865 195, 720 158"/>
+  <text class="edge-label" x="872" y="224">action / effect</text>
+
+  <text class="note" x="70" y="638">Context 是可丢弃并重新编译的投影；Checkpoint 保存恢复契约；Artifact 本体留在状态之外。</text>
+
+  <rect class="substrate" x="35" y="715" width="1210" height="110" rx="24"/>
+  <text class="frame-label" x="65" y="750">STORE SUBSTRATE · PERSISTENCE MECHANISMS, NOT BUSINESS SEMANTICS</text>
+  <text class="label" x="640" y="783">KV / Document / Vector / Blob / Event Log / Database</text>
+  <text class="sub" x="640" y="808">同一 Store 可以承载多个角色；同一角色也可以跨多个 Store。事务边界必须单独说明。</text>
+
+  <path class="edge-dashed" d="M 165 553 L 165 714"/>
+  <path class="edge-dashed" d="M 395 553 L 395 714"/>
+  <path class="edge-dashed" d="M 885 553 L 885 714"/>
+  <path class="edge-dashed" d="M 1115 553 L 1115 714"/>
+</svg>
