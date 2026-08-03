@@ -55,6 +55,7 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [01｜From Model Call to Agent](docs/01-agent-primer.md) — 🟢 第一版已完成
 - [02｜Agent Runtime Semantics](docs/02-agent-runtime-semantics.md) — 🟢 第一版已完成
 - [03｜Agent State Semantics](docs/03-agent-state-semantics.md) — 🟢 第一版已完成
+- [04｜Agent Task Semantics](docs/04-agent-task-semantics.md) — 🟢 第一版已完成
 
 ### International Frameworks
 

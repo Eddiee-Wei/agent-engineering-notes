@@ -589,6 +589,8 @@ Context、Run State、Session、Memory、Store、Checkpoint 与 Artifact 的区�
 
 > **状态系统的目标不是让 Agent 永远记得更多，而是让它在崩溃、并发、重试和变化之后，仍然知道什么可以相信、什么必须重查，以及下一步怎样安全发生。**
 
+这些状态最终都要服务于某个可追溯的任务版本：Goal 与 Constraint 怎样形成 Contract、Plan 怎样在不改变任务的前提下重写、完成证据怎样绑定 Contract 与 World Version，详见 [04｜Agent 任务的语义](04-agent-task-semantics.md)。
+
 ## 参考资料
 
 - [Context management — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/context/)

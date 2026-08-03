@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 920" role="img" aria-labelledby="title desc">
+  <title id="title">Task Contract、Run 与完成证据的关系</title>
+  <desc id="desc">上层展示用户请求经过澄清形成 Task Contract v1，并通过明确修订形成 v2。中层展示 Run 和 Attempt 必须绑定具体契约版本，Plan 可以在同一契约下重写；实质修订需要暂停和校准旧副作用。下层展示完成证据必须同时绑定契约版本和世界版本，v1 的旧证据不能直接证明 v2。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #ffffff; }
+      .frame { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 8 8; }
+      .box { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .active { fill: #181816; stroke: #181816; stroke-width: 2; }
+      .soft { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .label { fill: #181816; font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-light { fill: #ffffff; font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub-light { fill: #deded8; font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .frame-label { fill: #6d6d67; font: 600 16px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.4; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #6d6d67; stroke-width: 2.1; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 12px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .note { fill: #42423e; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .note-strong { fill: #181816; font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="920" rx="18"/>
+
+  <rect class="frame" x="35" y="30" width="1210" height="250" rx="24"/>
+  <text class="frame-label" x="65" y="65">SPECIFICATION PLANE · WHAT IS AUTHORIZED TO CHANGE</text>
+
+  <rect class="box" x="70" y="105" width="180" height="82" rx="14"/>
+  <text class="label" x="160" y="136">User Request</text>
+  <text class="sub" x="160" y="160">原始表达与来源</text>
+
+  <rect class="soft" x="300" y="105" width="180" height="82" rx="14"/>
+  <text class="label" x="390" y="136">Task Draft</text>
+  <text class="sub" x="390" y="160">clarify / authorize</text>
+
+  <rect class="active" x="535" y="90" width="235" height="112" rx="14"/>
+  <text class="label-light" x="652" y="126">Task Contract v1</text>
+  <text class="sub-light" x="652" y="151">Goal · Invariants · Scope</text>
+  <text class="sub-light" x="652" y="174">Evidence Standard · Policy Refs</text>
+
+  <rect class="soft" x="825" y="105" width="170" height="82" rx="14"/>
+  <text class="label" x="910" y="136">Amendment</text>
+  <text class="sub" x="910" y="160">classify / reconcile</text>
+
+  <rect class="active" x="1045" y="90" width="165" height="112" rx="14"/>
+  <text class="label-light" x="1127" y="126">Contract v2</text>
+  <text class="sub-light" x="1127" y="151">new invariant</text>
+  <text class="sub-light" x="1127" y="174">new evidence scope</text>
+
+  <path class="edge" d="M 250 146 L 299 146"/>
+  <path class="edge" d="M 480 146 L 534 146"/>
+  <path class="edge" d="M 770 146 L 824 146"/>
+  <path class="edge" d="M 995 146 L 1044 146"/>
+  <text class="edge-label" x="275" y="132">interpret</text>
+  <text class="edge-label" x="508" y="132">approve</text>
+  <text class="edge-label" x="798" y="132">steering</text>
+  <text class="edge-label" x="1020" y="132">version</text>
+
+  <text class="note" x="70" y="235">Request 保留原始表达；Draft 可以澄清；已生效 Contract 只能通过有来源、有授权的 Amendment 形成新版本。</text>
+
+  <rect class="frame" x="35" y="310" width="1210" height="260" rx="24"/>
+  <text class="frame-label" x="65" y="345">EXECUTION PLANE · WHICH VERSION IS BEING EXECUTED</text>
+
+  <rect class="active" x="105" y="380" width="345" height="135" rx="16"/>
+  <text class="label-light" x="277" y="413">Logical Run R42</text>
+  <text class="sub-light" x="277" y="438">pinned: task T9 @ contract v1</text>
+  <rect x="135" y="462" width="125" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+  <rect x="290" y="462" width="125" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+  <text class="sub-light" x="197" y="483">Attempt A1 / A2</text>
+  <text class="sub-light" x="352" y="483">Plan p1 → p2 → p3</text>
+
+  <rect class="soft" x="535" y="395" width="210" height="105" rx="14"/>
+  <text class="label" x="640" y="427">Safe Boundary</text>
+  <text class="sub" x="640" y="452">pause · inspect effects</text>
+  <text class="sub" x="640" y="475">reconcile · supersede</text>
+
+  <rect class="active" x="830" y="380" width="345" height="135" rx="16"/>
+  <text class="label-light" x="1002" y="413">Logical Run R43</text>
+  <text class="sub-light" x="1002" y="438">pinned: task T9 @ contract v2</text>
+  <rect x="865" y="462" width="130" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+  <rect x="1025" y="462" width="115" height="32" rx="8" fill="#ffffff" opacity=".16"/>
+  <text class="sub-light" x="930" y="483">Attempt B1</text>
+  <text class="sub-light" x="1082" y="483">Plan q1</text>
+
+  <path class="edge-dashed" d="M 652 202 L 652 245 C 652 290, 277 285, 277 379"/>
+  <text class="edge-label" x="430" y="300">bind v1</text>
+  <path class="edge-dashed" d="M 1127 202 L 1127 290 C 1127 325, 1002 330, 1002 379"/>
+  <text class="edge-label" x="1085" y="300">bind v2</text>
+  <path class="edge" d="M 450 447 L 534 447"/>
+  <path class="edge" d="M 745 447 L 829 447"/>
+  <text class="edge-label" x="492" y="432">material change</text>
+  <text class="edge-label" x="787" y="432">new run / explicit resume</text>
+  <text class="note" x="105" y="545">Plan 可以在同一 Contract 下重写；Attempt 可以恢复同一 Run；二者都不能静默替换 Goal 或 Invariant。</text>
+
+  <rect class="frame" x="35" y="600" width="1210" height="285" rx="24"/>
+  <text class="frame-label" x="65" y="635">EVIDENCE PLANE · WHAT CAN ACTUALLY PROVE COMPLETION</text>
+
+  <rect class="box" x="70" y="680" width="210" height="68" rx="13"/>
+  <text class="label" x="175" y="708">World W1</text>
+  <text class="sub" x="175" y="731">workspace commit C1</text>
+
+  <rect class="box" x="350" y="680" width="210" height="68" rx="13"/>
+  <text class="label" x="455" y="708">Evidence E1</text>
+  <text class="sub" x="455" y="731">contract v1 + world W1</text>
+
+  <rect class="soft" x="630" y="680" width="210" height="68" rx="13"/>
+  <text class="label" x="735" y="708">Verdict v1</text>
+  <text class="sub" x="735" y="731">satisfied / unknown</text>
+
+  <rect class="active" x="910" y="680" width="210" height="68" rx="13"/>
+  <text class="label-light" x="1015" y="708">Outcome R42</text>
+  <text class="sub-light" x="1015" y="731">completed / stopped / failed</text>
+
+  <rect class="box" x="70" y="785" width="210" height="68" rx="13"/>
+  <text class="label" x="175" y="813">World W2</text>
+  <text class="sub" x="175" y="836">after reconcile / new effects</text>
+
+  <rect class="box" x="350" y="785" width="210" height="68" rx="13"/>
+  <text class="label" x="455" y="813">Evidence E2</text>
+  <text class="sub" x="455" y="836">contract v2 + world W2</text>
+
+  <rect class="soft" x="630" y="785" width="210" height="68" rx="13"/>
+  <text class="label" x="735" y="813">Verdict v2</text>
+  <text class="sub" x="735" y="836">re-evaluate all required conditions</text>
+
+  <rect class="active" x="910" y="785" width="210" height="68" rx="13"/>
+  <text class="label-light" x="1015" y="813">Outcome R43</text>
+  <text class="sub-light" x="1015" y="836">bound to v2 verdict</text>
+
+  <path class="edge" d="M 280 714 L 349 714"/>
+  <path class="edge" d="M 560 714 L 629 714"/>
+  <path class="edge" d="M 840 714 L 909 714"/>
+  <path class="edge" d="M 280 819 L 349 819"/>
+  <path class="edge" d="M 560 819 L 629 819"/>
+  <path class="edge" d="M 840 819 L 909 819"/>
+
+  <path class="edge-dashed" d="M 277 515 C 277 610, 175 610, 175 679"/>
+  <text class="edge-label" x="223" y="621">action / observe</text>
+  <path class="edge-dashed" d="M 1002 515 C 1002 580, 1190 575, 1190 650 L 1190 770 L 175 770 L 175 784"/>
+  <text class="edge-label" x="800" y="765">new version must produce or revalidate evidence</text>
+
+  <text class="note-strong" x="1145" y="733">E1 ≠ proof for v2</text>
+  <text class="note" x="1145" y="754">除非重新校验</text>
+</svg>

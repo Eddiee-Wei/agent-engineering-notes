@@ -165,6 +165,8 @@ Completion Contract 可以包含：
 
 对无法完全自动判断的创意或开放任务，Contract 也不必假装绝对客观；它可以明确把最终判断交给人。重要的是让“不知道是否完成”成为一种可表达状态，而不是让模型用自信措辞掩盖证据缺口。
 
+Completion Contract 也不能脱离任务版本单独存在：Goal、Constraint 或 Scope 一旦改变，旧证据未必仍能证明新要求。Intent 怎样形成可执行 Task、Plan 与 Contract 怎样分别变更，以及 Outcome 如何绑定证据，详见 [04｜Agent 任务的语义](04-agent-task-semantics.md)。
+
 ## 常见范式只是闭环的不同组织方式
 
 不同 Agent 范式主要改变 Planning、Action 和 Verification 怎样进入同一个闭环。
