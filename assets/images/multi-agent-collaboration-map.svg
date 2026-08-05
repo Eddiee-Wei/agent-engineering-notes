@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Multi-Agent 从委派到父任务验收的协作关系</title>
+  <desc id="desc">图分为委派、隔离执行与团队收敛三层。父任务可以通过 Agent-as-Tool、Handoff、Child Task 或 Team 组织参与者；各参与者受 Context、State、Artifact、Workspace、Authority 和 Budget 边界约束；候选结果必须经过合并、全局验证和父任务验收。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#0b1120"/>
+    </linearGradient>
+    <linearGradient id="accept" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <filter id="glow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .band { fill: #0f172a; fill-opacity: .72; stroke: #334155; stroke-width: 1.5; }
+      .band-title { fill: #94a3b8; font: 700 15px "JetBrains Mono", "SFMono-Regular", monospace; letter-spacing: .12em; }
+      .title { fill: #f8fafc; font: 750 34px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .subtitle { fill: #94a3b8; font: 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .node-title { fill: #f8fafc; font: 700 19px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .node-sub { fill: #cbd5e1; font: 14px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .chip-text { fill: #e2e8f0; font: 650 13px "JetBrains Mono", "SFMono-Regular", monospace; text-anchor: middle; }
+      .edge-label { fill: #cbd5e1; font: 12px "JetBrains Mono", "SFMono-Regular", monospace; text-anchor: middle; }
+      .legend { fill: #94a3b8; font: 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .edge { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+      .edge-soft { fill: none; stroke: #475569; stroke-width: 2; stroke-dasharray: 7 7; }
+      .box { fill: #111827; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1080" rx="28" fill="url(#bg)"/>
+  <circle cx="1450" cy="40" r="180" fill="#22d3ee" opacity=".045"/>
+  <circle cx="120" cy="1040" r="220" fill="#a78bfa" opacity=".045"/>
+
+  <text class="title" x="60" y="62">MULTI-AGENT COLLABORATION MAP</text>
+  <text class="subtitle" x="60" y="92">委派产生候选结果；隔离限制错误传播；合并后的父任务证据决定是否完成</text>
+
+  <rect class="band" x="45" y="120" width="1510" height="225" rx="22"/>
+  <text class="band-title" x="72" y="152">01 · DELEGATION PLANE — WHO HOLDS CONTROL?</text>
+
+  <rect class="band" x="45" y="370" width="1510" height="385" rx="22"/>
+  <text class="band-title" x="72" y="402">02 · ISOLATED EXECUTION — WHAT MAY EACH PARTICIPANT SEE, CHANGE, AND SPEND?</text>
+
+  <rect class="band" x="45" y="780" width="1510" height="245" rx="22"/>
+  <text class="band-title" x="72" y="812">03 · CONVERGENCE PLANE — WHAT CAN PROVE THE PARENT TASK?</text>
+
+  <!-- Edges are deliberately drawn before nodes so they never cut through labels. -->
+  <path class="edge" d="M310 240 H385" stroke="#22d3ee" marker-end="url(#arrow-cyan)"/>
+  <path class="edge" d="M610 240 C665 240 650 197 705 197" stroke="#22d3ee" marker-end="url(#arrow-cyan)"/>
+  <path class="edge" d="M610 240 C665 240 650 277 705 277" stroke="#a78bfa" marker-end="url(#arrow-violet)"/>
+  <path class="edge" d="M610 240 C740 240 990 197 1045 197" stroke="#34d399" marker-end="url(#arrow-emerald)"/>
+  <path class="edge" d="M610 240 C740 240 990 277 1045 277" stroke="#fbbf24" marker-end="url(#arrow-amber)"/>
+
+  <path class="edge" d="M815 225 C815 330 55 330 55 360 V430 H182 V447" stroke="#22d3ee" marker-end="url(#arrow-cyan)"/>
+  <path class="edge" d="M815 305 C815 355 573 350 573 447" stroke="#a78bfa" marker-end="url(#arrow-violet)"/>
+  <path class="edge" d="M1155 225 C1155 355 963 350 963 447" stroke="#34d399" marker-end="url(#arrow-emerald)"/>
+  <path class="edge" d="M1155 305 C1155 365 1353 355 1353 447" stroke="#fbbf24" marker-end="url(#arrow-amber)"/>
+
+  <path class="edge-soft" d="M182 640 V713 H1415 V640"/>
+  <path class="edge-soft" d="M573 640 V713"/>
+  <path class="edge-soft" d="M963 640 V713"/>
+  <path class="edge-soft" d="M1353 640 V713"/>
+
+  <path class="edge" d="M285 895 H400" stroke="#22d3ee" marker-end="url(#arrow-cyan)"/>
+  <path class="edge" d="M650 895 H765" stroke="#a78bfa" marker-end="url(#arrow-violet)"/>
+  <path class="edge" d="M1015 895 H1130" stroke="#f43f5e" marker-end="url(#arrow-amber)"/>
+  <path class="edge" d="M1390 895 H1470" stroke="#34d399" marker-end="url(#arrow-emerald)"/>
+
+  <!-- Delegation nodes -->
+  <rect class="box" x="80" y="184" width="230" height="112" rx="17" stroke="#22d3ee"/>
+  <text class="node-title" x="195" y="223">Parent Task</text>
+  <text class="node-sub" x="195" y="251">Contract · Global Goal</text>
+  <text class="node-sub" x="195" y="276">Acceptance Owner</text>
+
+  <rect class="box" x="385" y="184" width="225" height="112" rx="17" stroke="#64748b"/>
+  <text class="node-title" x="497" y="223">Delegation Gate</text>
+  <text class="node-sub" x="497" y="251">derive Assignment</text>
+  <text class="node-sub" x="497" y="276">reserve scope + budget</text>
+
+  <rect class="box" x="705" y="169" width="220" height="56" rx="14" stroke="#22d3ee"/>
+  <text class="chip-text" x="815" y="194">AGENT-AS-TOOL</text>
+  <text class="node-sub" x="815" y="214">return result</text>
+
+  <rect class="box" x="705" y="249" width="220" height="56" rx="14" stroke="#a78bfa"/>
+  <text class="chip-text" x="815" y="274">HANDOFF</text>
+  <text class="node-sub" x="815" y="294">transfer control</text>
+
+  <rect class="box" x="1045" y="169" width="220" height="56" rx="14" stroke="#34d399"/>
+  <text class="chip-text" x="1155" y="194">CHILD TASK</text>
+  <text class="node-sub" x="1155" y="214">managed lifecycle</text>
+
+  <rect class="box" x="1045" y="249" width="220" height="56" rx="14" stroke="#fbbf24"/>
+  <text class="chip-text" x="1155" y="274">TEAM</text>
+  <text class="node-sub" x="1155" y="294">collaboration surface</text>
+
+  <!-- Execution nodes -->
+  <rect class="box" x="92" y="448" width="180" height="192" rx="18" stroke="#64748b"/>
+  <text class="node-title" x="182" y="483">Tool Specialist</text>
+  <text class="node-sub" x="182" y="510">bounded input / output</text>
+  <text class="node-sub" x="182" y="532">returns candidate</text>
+  <rect x="117" y="558" width="130" height="31" rx="8" fill="#1e293b"/>
+  <text class="chip-text" x="182" y="579">CALLED BY PARENT</text>
+  <text class="node-sub" x="182" y="612">parent remains owner</text>
+
+  <rect class="box" x="448" y="448" width="250" height="192" rx="18" stroke="#a78bfa"/>
+  <text class="node-title" x="573" y="483">Active Specialist</text>
+  <text class="node-sub" x="573" y="510">owns current turn</text>
+  <text class="node-sub" x="573" y="532">may hand off again</text>
+  <rect x="480" y="558" width="186" height="31" rx="8" fill="#2e1065" opacity=".68"/>
+  <text class="chip-text" x="573" y="579">HANDOFF / SWARM</text>
+  <text class="node-sub" x="573" y="612">loop limit required</text>
+
+  <rect class="box" x="838" y="448" width="250" height="192" rx="18" stroke="#34d399"/>
+  <text class="node-title" x="963" y="483">Child Run</text>
+  <text class="node-sub" x="963" y="510">own task + context</text>
+  <text class="node-sub" x="963" y="532">query · cancel · retry</text>
+  <rect x="869" y="558" width="188" height="31" rx="8" fill="#064e3b" opacity=".68"/>
+  <text class="chip-text" x="963" y="579">RUN ID + DEADLINE</text>
+  <text class="node-sub" x="963" y="612">must be joined</text>
+
+  <rect class="box" x="1228" y="448" width="250" height="192" rx="18" stroke="#fbbf24"/>
+  <text class="node-title" x="1353" y="483">Team Members</text>
+  <text class="node-sub" x="1353" y="510">tasks · messages</text>
+  <text class="node-sub" x="1353" y="532">visibility · hierarchy</text>
+  <rect x="1260" y="558" width="186" height="31" rx="8" fill="#78350f" opacity=".62"/>
+  <text class="chip-text" x="1353" y="579">DYNAMIC / NESTED</text>
+  <text class="node-sub" x="1353" y="612">team stop rule</text>
+
+  <rect x="160" y="683" width="1280" height="58" rx="15" fill="#020617" stroke="#475569" stroke-width="1.5"/>
+  <text class="chip-text" x="800" y="706">ISOLATION CONTRACT</text>
+  <text class="node-sub" x="800" y="728">Context · State · Artifact · Workspace · Authority · Budget</text>
+
+  <!-- Convergence nodes -->
+  <rect class="box" x="75" y="843" width="210" height="104" rx="17" stroke="#22d3ee"/>
+  <text class="node-title" x="180" y="881">Candidates</text>
+  <text class="node-sub" x="180" y="907">versioned artifacts</text>
+  <text class="node-sub" x="180" y="929">evidence + unknowns</text>
+
+  <rect class="box" x="400" y="843" width="250" height="104" rx="17" stroke="#a78bfa"/>
+  <text class="node-title" x="525" y="881">Merge / Reconcile</text>
+  <text class="node-sub" x="525" y="907">reducer · synthesizer</text>
+  <text class="node-sub" x="525" y="929">integrator · conflicts</text>
+
+  <rect class="box" x="765" y="843" width="250" height="104" rx="17" stroke="#f43f5e"/>
+  <text class="node-title" x="890" y="881">Global Verify</text>
+  <text class="node-sub" x="890" y="907">against parent contract</text>
+  <text class="node-sub" x="890" y="929">on merged world version</text>
+
+  <rect x="1130" y="843" width="260" height="104" rx="17" fill="#0f172a" stroke="url(#accept)" stroke-width="2.5" filter="url(#glow)"/>
+  <text class="node-title" x="1260" y="881">Parent Acceptance</text>
+  <text class="node-sub" x="1260" y="907">accept · replan</text>
+  <text class="node-sub" x="1260" y="929">escalate · stop</text>
+
+  <rect x="1470" y="868" width="52" height="52" rx="26" fill="#064e3b" stroke="#34d399" stroke-width="2"/>
+  <path d="M1485 894 L1497 906 L1510 883" fill="none" stroke="#ecfdf5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Legend, outside all system boundaries -->
+  <circle cx="76" cy="1052" r="5" fill="#22d3ee"/>
+  <text class="legend" x="88" y="1057">tool / evidence</text>
+  <circle cx="240" cy="1052" r="5" fill="#a78bfa"/>
+  <text class="legend" x="252" y="1057">control transfer</text>
+  <circle cx="428" cy="1052" r="5" fill="#34d399"/>
+  <text class="legend" x="440" y="1057">managed task / acceptance</text>
+  <circle cx="695" cy="1052" r="5" fill="#fbbf24"/>
+  <text class="legend" x="707" y="1057">team coordination</text>
+  <circle cx="920" cy="1052" r="5" fill="#f43f5e"/>
+  <text class="legend" x="932" y="1057">verification gate</text>
+</svg>

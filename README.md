@@ -52,10 +52,11 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 
 ### Agent Fundamentals
 
-- [01｜From Model Call to Agent](docs/01-agent-primer.md) — 🟢 第一版已完成
-- [02｜Agent Runtime Semantics](docs/02-agent-runtime-semantics.md) — 🟢 第一版已完成
-- [03｜Agent State Semantics](docs/03-agent-state-semantics.md) — 🟢 第一版已完成
-- [04｜Agent Task Semantics](docs/04-agent-task-semantics.md) — 🟢 第一版已完成
+- [01｜From Model Call to Agent: Definition, Loop, and Boundaries](docs/01-agent-primer.md)
+- [02｜Agent Runtime: How a Run Starts, Progresses, and Ends](docs/02-agent-runtime-semantics.md)
+- [03｜Agent State Boundaries: Context, Session, Memory, and Artifacts](docs/03-agent-state-semantics.md)
+- [04｜Agent Task Boundaries: Goal, Plan, Steering, and Completion](docs/04-agent-task-semantics.md)
+- [05｜Multi-Agent: Delegation, Collaboration, and Team Convergence](docs/05-multi-agent-collaboration.md)
 
 ### International Frameworks
 
@@ -72,16 +73,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [AgentScope](frameworks/agentscope.md) — todo
 - [DeerFlow](frameworks/deerflow.md) — todo
 - [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — todo
-- 国内框架横向比较 — todo
-
-#### tRPC-Agent-Go research
-
-- Runner、Agent 与 Event Stream — todo
-- Model 与 Tool Calling — todo
-- Session、Memory、Knowledge 与 Artifact — todo
-- GraphAgent 与多 Agent 编排 — todo
-- MCP、A2A 与 AG-UI — todo
-- Evaluation、Telemetry 与生产化 — todo
 
 ### 组装 Agent
 
@@ -95,9 +86,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [Claude Code](coding-agents/claude-code.md) — todo
 - [Gemini CLI](coding-agents/gemini-cli.md) — todo
 - [OpenCode](coding-agents/opencode.md) — todo
-- Coding Agent 统一架构比较 — todo
-- 权限、Sandbox 与 Prompt Injection — todo
-- Context Engineering 与长任务 — todo
 
 ### Agent Engineering
 
@@ -120,23 +108,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [61｜Safety Engineering](engineering/safety-engineering.md) — todo
 - [62｜Production Engineering](engineering/production-engineering.md) — todo
 
-### Experiments
-
-- 最小 Agent Loop — todo
-- 用 tRPC-Agent-Go 实现 Tool Agent — todo
-- 用 GraphAgent 实现可恢复 Workflow — todo
-- 同一任务的跨框架实现 — todo
-- Coding Agent 最小原型 — todo
-- 统一 Benchmark 与 Trace 对比 — todo
-
-## 内容状态
-
-| 标记 | 含义 |
-| --- | --- |
-| 🟢 | 已形成可阅读的第一版 |
-| todo | 待补充或正在整理 |
-| 🔄 | 正在更新 |
-
 ## Notes
 
 - LangChain 更接近组件与集成生态。
@@ -149,8 +120,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - DeerFlow 2.0 更接近带 Sandbox、Memory、Skill 和 Subagent 的 SuperAgent Harness。
 - tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。
 - Codex、Claude Code、Gemini CLI 和 OpenCode 位于更上层：它们把模型、工具、执行环境、权限、交互界面和软件工程工作流组合成产品。
-
-这些是阶段性记录，会随着源码阅读和实践继续修正。
 
 ## 资料与许可
 

@@ -1,13 +1,11 @@
 ---
-title: From Model Call to Agent
-nav_title_zh: 从模型调用到 Agent
+title: "From Model Call to Agent: Definition, Loop, and Boundaries"
+nav_title_zh: 从模型调用到 Agent：定义、闭环与边界
 nav_order: 1
 description: 从一次模型调用出发，理解 Agent 的最小判定、执行闭环与工程边界。
 ---
 
-# 01｜从模型调用到 Agent
-
-> 状态：🟢 第一版
+# 01｜从模型调用到 Agent：定义、闭环与边界
 
 Agent 在不同框架和产品里指向的抽象并不完全相同：有时是一个配置了工具的模型对象，有时是一段动态执行循环，有时又泛指包含权限、Sandbox、Memory 和界面的完整产品。与其先争论一个包罗万象的定义，不如从控制权怎样变化开始。
 
@@ -165,33 +163,18 @@ Completion Contract 可以包含：
 
 对无法完全自动判断的创意或开放任务，Contract 也不必假装绝对客观；它可以明确把最终判断交给人。重要的是让“不知道是否完成”成为一种可表达状态，而不是让模型用自信措辞掩盖证据缺口。
 
-Completion Contract 也不能脱离任务版本单独存在：Goal、Constraint 或 Scope 一旦改变，旧证据未必仍能证明新要求。Intent 怎样形成可执行 Task、Plan 与 Contract 怎样分别变更，以及 Outcome 如何绑定证据，详见 [04｜Agent 任务的语义](04-agent-task-semantics.md)。
+Completion Contract 也不能脱离任务版本单独存在：Goal、Constraint 或 Scope 一旦改变，旧证据未必仍能证明新要求。Intent 怎样形成可执行 Task、Plan 与 Contract 怎样分别变更，以及 Outcome 如何绑定证据，详见 [04｜Agent 的任务边界](04-agent-task-semantics.md)。
 
 ## 常见范式只是闭环的不同组织方式
 
-不同 Agent 范式主要改变 Planning、Action 和 Verification 怎样进入同一个闭环。
+不同范式主要改变 Planning、Action 和 Verification 怎样进入同一个闭环；它们不是互斥定义，也不是成熟度排名。
 
-### ReAct
-
-[ReAct](https://arxiv.org/abs/2210.03629) 把推理与行动交错组织：根据当前信息选择行动，观察环境结果，再更新后续计划。它适合路径无法预先穷举、环境反馈会改变下一步的任务。
-
-工程上不需要把模型的完整内部思维过程暴露给用户或 Trace。真正需要记录的是可审计的行动、Observation、状态变化、决策摘要和完成证据。**可观测轨迹不等于公开 Chain-of-Thought。**
-
-### Plan-and-Execute
-
-Plan-and-Execute 先把目标拆成较完整的步骤，再由执行器逐项处理。它有利于预算估计、并行机会识别和进度展示，但首版计划仍是模型输出，不是事实。环境变化或中间假设被推翻时，系统必须允许重规划。
-
-### Reflection / Evaluator-Optimizer
-
-Reflection 在失败或阶段完成后生成反馈，影响下一次尝试。[Reflexion](https://arxiv.org/abs/2303.11366) 展示了利用语言反馈和情景记忆改进后续决策的路径。但“再想一次”不天然等于纠错：如果没有测试、规则、环境反馈或可靠 Judge，模型可能只是为原错误生成更流畅的解释。
-
-Evaluator-Optimizer 同样依赖可操作的评价标准。无法指出什么算更好，就无法判断多一轮生成是否值得额外成本。
-
-### CodeAct
-
-[CodeAct](https://arxiv.org/abs/2402.01030) 用可执行代码作为行动表达，使模型能够组合库和多个操作，而不是只能选择预定义的单个 JSON 工具。表达能力提高的同时，权限面和副作用也同步扩大，因此更依赖隔离环境、资源限制和执行审计。
-
-这些范式不是 Agent 的四种互斥定义，也不是成熟度排名。它们是对同一动态闭环的不同取舍。
+| 范式 | 主要组织方式 | 更适合什么 | 工程提醒 |
+| --- | --- | --- | --- |
+| [ReAct](https://arxiv.org/abs/2210.03629) | 推理、行动与观察交错推进 | 下一步依赖新证据、路径难以预先穷举 | 记录行动、观察和决策摘要即可；可观测轨迹不等于公开 Chain-of-Thought |
+| Plan-and-Execute | 先拆解，再逐项执行和重规划 | 需要预算估计、进度展示或并行识别 | Plan 是可证伪假设，不是事实或完成证明 |
+| Reflection / Evaluator-Optimizer | 用反馈驱动下一次尝试 | 存在测试、规则或可靠 Judge | 没有外部证据的“再想一次”可能只会强化原错误 |
+| [CodeAct](https://arxiv.org/abs/2402.01030) | 用可执行代码组合行动 | 工具组合复杂、预定义接口不够表达 | 表达能力与权限面同时扩大，更依赖 Sandbox 和审计 |
 
 ## Workflow 与 Agent：差异在控制权
 
@@ -214,7 +197,7 @@ Anthropic 在 [Building effective agents](https://www.anthropic.com/engineering/
 
 反过来，能稳定写成规则的步骤没有必要为了“Agent 化”交给模型。权限检查、金额计算、状态迁移约束、发布门禁和数据完整性都更适合确定性代码。实际系统通常是混合结构：**确定性 Workflow 提供骨架，Agent 节点处理开放决策。**
 
-Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色，只有在并行探索、上下文隔离、专业能力或独立验证带来可测收益时才值得；否则只是把一次不确定决策变成更多调用、通信损耗与冲突状态。
+Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色，只有在并行探索、上下文隔离、专业能力或独立验证带来可测收益时才值得；否则只是把一次不确定决策变成更多调用、通信损耗与冲突状态。Agent-as-Tool、Handoff、Child Task 与 Team 的控制权和生命周期差异，详见 [05｜Multi-Agent：委派、协作与团队收敛](05-multi-agent-collaboration.md)。
 
 ## 模型能力与系统能力
 
@@ -245,47 +228,17 @@ Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色�
 
 ## 从 Demo 到可生产 Agent
 
-最小循环证明“系统能够自己往下走”，生产工程则要证明“它走错时可被发现、限制和恢复”。
+最小循环证明“系统能够自己往下走”，生产工程则要证明“它走错时可被发现、限制和恢复”。可以先用五组问题判断工程缺口：
 
-### 可靠性：错误不是一句 retry
+| 方面 | 必须回答的问题 | 相关内容 |
+| --- | --- | --- |
+| 可靠性 | 模型错误、工具错误、策略拒绝和系统故障怎样区分？Retry 会不会重复副作用？ | Loop / Tool Engineering |
+| 状态与恢复 | Session、Run State、Memory 与 Checkpoint 各保存什么？恢复时怎样校准外部世界？ | [02｜Runtime](02-agent-runtime-semantics.md)、[03｜状态边界](03-agent-state-semantics.md) |
+| 安全 | 权限、Sandbox、审批和参数约束在哪里确定性生效？ | Safety / Harness Engineering |
+| 可观测性 | 能否关联模型决策、工具回执、状态变化、成本与停止原因？ | Observability Engineering |
+| 评测 | Outcome 是否真实达成，Trajectory 是否合理，Policy、成本和多次 Trial 是否可接受？ | Evaluation Engineering |
 
-模型错误、工具错误、策略拒绝和系统错误需要分别处理。超时、指数退避、熔断和降级属于常规服务治理；Agent 额外需要关注多步错误累积、重复副作用、无进展循环和错误状态继续传播。Retry Policy 必须同时理解错误类型与工具语义。
-
-### 状态与恢复：历史记录不等于可恢复
-
-Session 可以保存对话轨迹，Working State 记录当前任务进度，Memory 保存跨任务复用的信息，Checkpoint 则支持从明确边界恢复。把全部消息存进数据库，只能证明历史存在；如果不能重建待执行动作、工具结果、审批状态和版本信息，任务仍然无法安全 Resume。
-
-### 安全：能力边界比提示词更可靠
-
-Agent 会读取不可信内容并使用带副作用的工具，因此 Prompt Injection 不只是“模型回答被带偏”，还可能演变为真实越权。[Anthropic 对可信 Agent 的讨论](https://www.anthropic.com/research/trustworthy-agents)强调了分层防御：限制工具和数据范围、保持人类控制、保护隐私，并在关键行动前设置确认。
-
-工程上应优先使用最小权限、短期凭据、参数约束、Sandbox、网络与文件边界、敏感操作审批和审计记录。System Prompt 是其中一层，但不是安全边界本身。
-
-### 可观测性：记录轨迹，也记录环境结果
-
-单次模型调用可以只看输入输出，Agent 调试则需要完整 Trace：
-
-- 模型在什么状态下选择了哪个工具；
-- 参数经过了哪些校验与改写；
-- 工具返回了什么结果或错误；
-- 状态如何变化，消耗了多少时间和成本；
-- 为什么继续、停止、重试或请求人工介入。
-
-Event 是运行时事实流，Trace 是将这些事实关联成一次可查询的 Run。只有最终文本而没有轨迹，很难区分模型能力不足、上下文缺失、工具设计不清还是 Runtime 行为错误。
-
-### 评测：结果正确和路径合理是两件事
-
-[Agent 评测实践](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)区分 Transcript/Trajectory 与 Outcome：Agent 说“修复完成”属于轨迹，仓库中的测试真正通过才是环境结果。
-
-因此评测至少包含：
-
-- **Outcome**：目标状态是否真的达成；
-- **Trajectory**：是否选择了合理工具，是否绕路或陷入循环；
-- **Policy**：是否违反权限、安全和业务规则；
-- **Efficiency**：延迟、Token、工具调用和基础设施成本；
-- **Stability**：在多次 Trial、不同输入和依赖波动下是否保持可接受表现。
-
-最终答案很好但靠偶然越权获得，不能算可靠；路径看似合理但没有完成目标，同样不能算成功。
+[Anthropic 对可信 Agent 的讨论](https://www.anthropic.com/research/trustworthy-agents)强调分层防御；[Agent 评测实践](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)则区分 Trajectory 与 Outcome。两者共同指向一个原则：Prompt 可以辅助判断，但最小权限、状态提交、环境证据和验收门禁必须由系统承担。
 
 ## 用七个问题识别一个 Agent 系统
 

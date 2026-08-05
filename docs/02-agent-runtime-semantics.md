@@ -1,13 +1,11 @@
 ---
-title: Agent Runtime Semantics
-nav_title_zh: Agent Runtime 执行语义
+title: "Agent Runtime: How a Run Starts, Progresses, and Ends"
+nav_title_zh: Agent Runtime：一次运行如何开始、推进与结束
 nav_order: 2
-description: 从 Run、Turn、Step、Event、Session 到暂停、取消与恢复，建立 Agent Runtime 的框架无关执行语义。
+description: 从 Run、Attempt、Step、Event 到暂停、取消与终态，理解一次 Agent 运行如何开始、推进与结束。
 ---
 
-# 02｜Agent Runtime 的执行语义
-
-> 状态：🟢 第一版
+# 02｜Agent Runtime：一次运行如何开始、推进与结束
 
 在[从模型调用到 Agent](01-agent-primer.md)中，Agent Runtime 被描述为确定性控制面：它驱动模型与工具之间的循环，处理状态、权限、取消、错误和完成判定。但只知道“Runtime 负责运行 Agent”还不够。真正进入框架源码或生产系统后，很快会遇到一组看似直观、实际并不统一的对象：
 
@@ -61,7 +59,7 @@ Session
         └── Event Stream
 ```
 
-这不是要求所有框架都实现同一棵对象树，而是一套分析坐标。Graph、并行工具和 Multi-Agent 会让实际执行变成 DAG；关键是不要把不同生命周期压进同一个 ID。
+这不是要求所有框架都实现同一棵对象树，而是一套分析坐标。Graph、并行工具和 Multi-Agent 会让实际执行变成 DAG；关键是不要把不同生命周期压进同一个 ID。父子 Run 怎样被委派、Join、取消并形成团队终态，在 [05｜Multi-Agent](05-multi-agent-collaboration.md) 中继续展开。
 
 | 概念 | 本文定义 | 典型生命周期 | 不应混淆 |
 | --- | --- | --- | --- |
@@ -82,7 +80,7 @@ Session
 - Runtime 可能把“一次模型生成，以及由它触发的工具工作”称为 Turn。
 - 有些代码又把每次循环、Agent 调用或事件称为 Turn。
 
-因此本文只使用 **Conversation Turn** 和 **Model Turn**。引用框架原生 `turn` 字段或 `max_turns` 时，会明确说明它的计数单位，而不会假设它与用户回合相同。
+为避免歧义，后文统一使用 **Conversation Turn** 和 **Model Turn**。引用框架原生 `turn` 字段或 `max_turns` 时，会明确说明它的计数单位，而不会假设它与用户回合相同。
 
 ### Run 与 Attempt 的分离很重要
 
@@ -98,18 +96,14 @@ Logical Run 表示“这是同一个目标执行”，Attempt 表示“这是该
 
 ## Runtime 实际承诺了什么
 
-框架的 API 可能只暴露 `runner.run(...)`，但一个完整 Runtime 通常隐含以下责任：
+框架的 API 可能只暴露 `runner.run(...)`，但一个完整 Runtime 至少要履行六类责任：
 
-1. **身份**：分配或接受 Run、Attempt、Invocation、Step 和 Event 标识；
-2. **输入**：读取 Session、当前状态、工具集合、策略与预算；
-3. **驱动**：调用模型，解析 Final Candidate、Tool Call 或 Handoff；
-4. **治理**：校验 Schema、权限、审批、并发和资源限制；
-5. **执行**：调度工具，把环境结果转成 Observation；
-6. **提交**：持久化状态变化、工具回执、审批结果和运行进度；
-7. **发布**：向 UI、API 或上层 Workflow 发送语义事件；
-8. **控制**：响应暂停、取消、超时、用户 Steering 和外部唤醒；
-9. **终止**：区分完成、受控停止、失败、取消和超时；
-10. **清理**：关闭流、释放 Sandbox、连接、锁与临时资源。
+1. **建立身份与输入边界**：创建 Run / Attempt，装配 Session、工具、策略和预算；
+2. **驱动决策与行动**：调用模型、解析候选行动、调度工具并回传 Observation；
+3. **执行确定性治理**：校验 Schema、权限、审批、并发和资源限制；
+4. **提交并发布事实**：保存状态、回执和进度，向 UI 或上层 Workflow 发出 Event；
+5. **处理控制转移**：响应暂停、Steering、取消、超时和外部唤醒；
+6. **形成明确终态**：区分完成、受控停止、失败、取消和超时，并清理资源。
 
 一个框架无关的接口可以长成这样：
 
@@ -204,48 +198,21 @@ Produced → Validated → Committed → Published → Consumed
 
 ## Event 不是 Token，也不是 Trace
 
-Token Delta 只是 Event 的一个低层类别。对 Agent Runtime 更有价值的是能够表达行动和状态变化的语义事件。
+Token Delta 只是 Event 的一个低层类别。对 Runtime 更重要的是能够表达输出、行动、状态与控制转移的语义事件。
 
 | Event 类别 | 例子 | 是否通常需要持久化 |
 | --- | --- | --- |
-| 原始模型流 | Token、Response Delta、Reasoning 摘要片段 | 通常不逐片持久化 |
+| 原始模型流 | Token、Response Delta | 通常不逐片持久化 |
 | 语义输出 | Message、Final Candidate、结构化结果 | 通常需要 |
-| 行动 | Tool Call、Tool Result、Handoff | 需要，尤其涉及副作用时 |
-| 状态 | State Delta、Artifact Delta、Checkpoint | 需要 |
-| 控制 | Approval Required、Paused、Cancel Requested、Escalated | 需要 |
+| 行动 | Tool Call、Tool Result、Handoff | 涉及副作用时必须可追溯 |
+| 状态与控制 | State Delta、Checkpoint、Approval Required、Paused | 通常需要 |
 | 终态 | Completed、Failed、Cancelled、TimedOut、Stopped | 必须可追溯 |
 
-### Event 应该携带因果，而不只是内容
+一个 `tool_result` 只有 `{result: "ok"}` 还不够。Event Envelope 应通过稳定 ID、Run / Attempt 关联、因果 ID、序号和版本说明它回应哪个行动、属于哪次执行、能否去重和重放。
 
-一个 `tool_result` 如果只有 `{result: "ok"}`，无法回答：
+Event 与 Trace 也不能互换：Event 可能驱动状态提交、审批和上层 Workflow；Trace 是为诊断生成的观测投影。Event 丢失可能改变业务行为，Trace 丢失主要影响排障。
 
-- 它回应的是哪个 Tool Call？
-- 属于哪个 Run、Attempt 和 Agent Invocation？
-- 是第几个 Step？
-- 是否已经写入 Session？
-- 失败重放时能否去重？
-
-因此成熟的 Event Envelope 通常包含稳定 ID、关联 ID、因果 ID、序号、时间戳和版本。事件内容告诉消费者“发生了什么”，因果元数据告诉系统“为什么发生、属于哪里、能否安全重放”。
-
-### Event 与 Trace 的责任不同
-
-- **Event** 是 Runtime 的内带协议，可能驱动 UI、状态提交、审批和上层 Workflow；
-- **Trace** 是观测投影，用 Span 关联延迟、模型调用、工具执行和错误。
-
-Event 丢失可能改变业务行为；Trace 丢失主要影响诊断。Event 可以成为 Trace 的来源，但不能因为已经打了 Span，就省略恢复所需的业务事件。
-
-### 背压和断连也是执行语义
-
-事件流常由 Channel、Async Generator、SSE 或 WebSocket 承载。调用方如果停止消费：
-
-- 生产者可能阻塞在满队列；
-- Runtime 可能无法发出终态事件；
-- Session 持久化或 Sandbox 清理可能尚未完成；
-- 客户端断连未必自动传播为底层 Cancel。
-
-因此消费者应明确选择：继续 drain、发送取消、转交后台消费者，或使用可恢复订阅。Channel 关闭只表示传输结束；是否成功必须读取明确的 Run Outcome 或 Terminal Event。
-
-传输也不应被笼统宣称为 exactly-once。网络重连、Worker 重试和发布失败都可能产生重复或缺口。Event ID、单调序号、持久游标和幂等消费者比乐观假设更可靠。
+流关闭同样不等于成功。调用方停止消费可能造成背压，却未必自动 Cancel 底层 Run；网络重连还可能产生重复事件。消费者必须读取明确的 Terminal Event 或 Run Outcome，并用 Event ID、游标和幂等消费处理断连。
 
 ## 退出循环不等于同一种结果
 
@@ -258,38 +225,13 @@ Event 丢失可能改变业务行为；Trace 丢失主要影响诊断。Event �
 | Cancelled | 是 | 通常不能直接继续 | 不回滚 | Runtime 已确认响应取消 |
 | TimedOut | 是 | 视恢复能力而定 | 不确定 | Deadline 到达并结束本次执行 |
 
-### Cancel 是请求，不是回滚
+停止原因决定后续能否继续，而不只是错误码不同：
 
-取消通常是协作式的：
+- **Cancel** 通常是协作式请求，不是事务回滚。信号应传播到模型请求、工具和子 Agent；即使最终为 `Cancelled`，已经发生的副作用仍需确认或补偿。
+- **Timeout** 常借用 Cancellation 机制退出，但应保留 `TimedOut` 原因，以便采用不同的重试、告警和容量策略。
+- **Tool Error** 可以成为 Observation、触发重试、暂停或策略停止；只有 Runtime 无法继续履行执行契约时，才应把 Run 标成 `Failed`。
 
-1. 调用方发出 Cancel；
-2. Runtime 标记 `CancelRequested`；
-3. 信号向模型请求、工具、子 Agent 和回调传播；
-4. 各层在安全点检查信号并退出；
-5. Runtime 清理资源并记录 `Cancelled`。
-
-如果工具不检查信号，或者外部 API 已经接受请求，副作用仍可能完成。即使 Runtime 最终记录 Cancelled，也不能推导出“环境没有变化”。
-
-因此取消后的正确问题不是“如何自动回滚一切”，而是：
-
-- 哪些动作尚未开始？
-- 哪些动作已确认完成？
-- 哪些动作结果未知？
-- 哪些动作支持补偿？
-
-### Timeout 是原因，Cancellation 常是机制
-
-Deadline 到达后，Runtime 常通过同一取消信号停止执行。但观测与策略上仍应保留 `TimedOut`：
-
-- 它说明停止由时间预算触发，而不是用户主动取消；
-- 可以进入不同的重试、告警和容量分析；
-- 能区分模型太慢、工具超时和队列等待过长。
-
-### Tool Error 不一定让 Run Failed
-
-工具返回“文件不存在”可以成为 Observation，让模型换路径；权限拒绝可以让 Run Paused 或 Stopped；网络瞬时错误可以按策略重试。只有当 Runtime 无法继续履行执行契约，或者错误策略明确要求终止时，Run 才应进入 Failed。
-
-把所有异常都抛到最外层，会让模型无法从可恢复错误中学习；把所有异常都包装成普通文本，又会掩盖策略拒绝、状态损坏和重复副作用。
+所以退出前至少要分清：哪些行动未开始、哪些已确认完成、哪些结果未知，以及哪些支持补偿。
 
 ## Resume、Retry、Replay 和 New Run
 
@@ -300,52 +242,9 @@ Deadline 到达后，Runtime 常通过同一取消信号停止执行。但观测
 | Replay | 通常不继续真实执行 | Event Log、Trace 或记录输入 | 重放外部动作会污染环境 |
 | New Run with Session History | 新 Logical Run | 历史消息或 Session State | 只能语义接续，不能精确恢复 |
 
-### 历史记录不能替代 Checkpoint
+Session 历史能帮助模型“接着聊”，却不能替代 Checkpoint。精确恢复还需要当前控制位置、待处理行动与审批、已提交 Event 游标、预算、Session / Workspace / Artifact 版本，以及 Tool、Graph 和策略指纹。
 
-Session 中可能完整保存：
-
-```text
-user: 修复测试
-assistant: 我准备修改 auth.go
-tool: patch applied
-```
-
-这仍不足以安全恢复。Runtime 还需要知道：
-
-- 当前 Agent 和 Step；
-- Patch 的调用 ID、幂等标识与真实环境回执；
-- 待执行的是测试、验证还是最终回答；
-- 已消耗的步数、Token、时间和成本；
-- 当时使用的工具 Schema、权限策略和代码版本；
-- 是否存在未完成的并行分支或待审批动作。
-
-把对话历史重新送给模型，模型也许能“接着聊”，但这属于语义续写，不是执行位置恢复。
-
-### 最危险的是结果未知
-
-假设文件修改工具已经写入磁盘，但进程在记录 Tool Result 前崩溃。新的 Attempt 如果直接重放工具调用，可能重复修改或覆盖用户后续工作；如果直接假设成功，又可能在写入未发生时继续测试。
-
-安全恢复需要先查询环境：
-
-1. 检查目标文件或版本状态；
-2. 用 Tool Call ID、幂等键或效果回执判断动作是否发生；
-3. 把确认结果补成 Observation；
-4. 再决定继续、补偿或人工介入。
-
-这正是“Action Candidate”和“已确认环境事实”必须分开的原因。
-
-### 可恢复快照至少要保存什么
-
-- 稳定的 `run_id` 与递增或唯一的 `attempt_id`；
-- 当前 Agent、Step、待处理 Tool Call 和审批；
-- 已提交 Event 的位置或游标；
-- Session 版本、Workspace/Artifact 引用；
-- 模型、Prompt、Tool Schema、Graph 和策略版本；
-- 预算与使用量；
-- 外部副作用的幂等键、回执和未知结果；
-- 快照 Schema 版本与迁移策略。
-
-能够序列化一个 Python/Go 对象只是第一步。Durable Resume 还需要可靠存储、租约、并发控制、版本兼容和副作用治理。
+最危险的状态是外部行动已经受理，但回执尚未提交。新的 Attempt 不能直接假设失败或重放，而应先查询环境，用 Tool Call ID、幂等键或效果回执把结果补成 Observation，再决定继续、补偿或人工介入。更完整的恢复与状态版本问题交给 [03｜Agent 的状态边界](03-agent-state-semantics.md)。
 
 ## Run 是执行边界，Session 是连续性边界
 
@@ -373,24 +272,7 @@ Run 则回答：
 
 Session 可以持久化 Event 和 State，却不因此自动成为 Runtime Checkpoint。相反，一个无对话产品也可以有 Durable Run：例如后台研究任务、定时 Agent 或事件触发的运维 Agent。
 
-### 同一 Session 并发 Run 会发生什么
-
-假设两个请求同时读取 Session 版本 7：
-
-- Run A 追加工具调用与结果；
-- Run B 按旧历史生成回答；
-- 两者都写入版本 8；
-- Event 顺序、State Delta 或 Tool Call / Tool Result 邻接关系可能损坏。
-
-常见控制方式包括：
-
-- 一个 Session 同时只允许一个活动 Run；
-- 使用乐观版本号，提交冲突后重新读取；
-- 每个 Run 使用隔离分支，完成后按规则合并；
-- 用租约或锁保护关键状态；
-- 明确支持 Steering，把新用户消息排到当前安全边界，而不是启动竞争 Run。
-
-这也是为什么 `session_id` 不能同时充当 `run_id`：连续性相同，不代表执行可以随意交错。
+同一 Session 的并发 Run 可能都基于旧版本生成结果，随后互相覆盖历史或打乱 Tool Call / Tool Result 邻接关系。实现可以选择单写者、乐观版本、隔离分支或安全边界 Steering；但不能用同一个 `session_id` 同时充当执行身份和并发策略。
 
 ## 三个框架怎样映射这些概念
 
@@ -407,53 +289,23 @@ Session 可以持久化 Event 和 State，却不因此自动成为 Runtime Check
 | Cancel | Context 或 `ManagedRunner.Cancel(requestID)`，依赖各层协作响应 | 部分语言使用 AbortSignal；已提交 Event 不回滚 | Streaming Result 支持立即取消或完成当前 Turn 后取消 |
 | 完成信号 | `IsRunnerCompletion()` 是消费整个 Run Event Stream 的统一信号 | Event Generator 结束，应用需识别 Final Response；Partial Event 不代表完成 | 非流式返回 `RunResult`；流式需消费完 `stream_events()`，再读取完整结果 |
 
-这张表揭示了三个重要差异。
+表中最值得带走的不是类型名，而是三个差异：tRPC-Agent-Go 把 Run 控制身份与父子 Agent Invocation 分开；Google ADK 让非 Partial Event 参与执行逻辑与状态提交之间的协议；OpenAI Agents SDK 的一次用户逻辑回合内部还会经历多个模型 Turn，并可在审批中断后从 `RunState` 继续。
 
-### tRPC-Agent-Go：Run 控制与 Agent Invocation 分开
-
-tRPC-Agent-Go 把 `RequestID` 用作 Run 控制标识，注入每个 Event；Agent `InvocationID` 则描述根 Agent 或子 Agent 的具体调用，并记录父子关系。这样，同一 Run 中的 Handoff、AgentTool 和并行子 Agent 不必共享一个模糊 ID。
-
-其 Runner 还把 Steering 放到 Assistant Round 的安全边界：如果一次模型输出包含多个 Tool Call，新用户消息必须等待整个 Tool Batch 的结果返回后才能插入，避免破坏 Tool Call 与 Tool Result 的结构。
-
-### Google ADK：Event 是执行逻辑与 Runner 的提交协议
-
-ADK 的 Execution Logic 产生 Event 后，Runner 处理 Event、应用 State/Artifact Delta、追加 Session，再让逻辑继续。Python 源码中的 InvocationContext 甚至为非 Partial Event 设置确认机制：主循环追加到 Session 后才解除等待。
-
-这使 Event 不只是“通知 UI 的消息”，而是执行逻辑与持久化控制面之间的协作边界。Partial Streaming Event 则可以被观察而不逐片进入 Session。
-
-### OpenAI Agents SDK：用户逻辑回合与内部 Turn 不是一个计数
-
-一次 `Runner.run()` 可以代表一个 Conversation Turn，却在内部经历多个 `max_turns` 计数单位。SDK 将一个 Turn 定义为一次 AI Invocation，包括它触发的 Tool Calls。审批中断时，`RunState` 还会保存当前 Step、最后处理的模型响应、已持久化项目数量和快照 Schema 版本。
-
-流式调用返回得更早：调用方必须消费完 `stream_events()`，才能可靠读取最终输出、中断信息和完整使用量。`cancel(mode="after_turn")` 又说明“立刻停止”和“完成当前安全单元后停止”是不同契约。
-
-因此，跨框架比较不能只问“是否支持 Session、Streaming、Resume”，而应继续追问：
-
-- ID 的作用域是什么？
-- Turn 或 Step 到底以什么为边界？
-- 哪类 Event 会持久化，何时提交？
-- Pause 保存了哪些继续执行状态？
-- Cancel 是否传播到 Tool 与子 Agent？
-- 最终文本、终态和流关闭分别由什么表示？
+因此，看到“支持 Session、Streaming、Resume”还不够。仍要追问 ID 的作用域、Turn / Step 的边界、哪些 Event 会提交、Pause 保存什么、Cancel 传播到哪里，以及最终文本、Run 终态和流关闭分别由什么表示。
 
 ## 阅读或设计 Runtime 时的检查清单
 
-面对任何 Agent Framework，可以用下面的问题检查它的执行语义：
+面对任何 Agent Framework，可以先问九个问题：
 
-1. 一次根执行由哪个 API 创建，稳定 Run ID 在哪里？
-2. Run、Agent Invocation、模型调用和工具调用怎样关联？
+1. 根执行由哪个 API 创建，稳定 Run ID 在哪里？
+2. Run、Attempt、Agent Invocation、模型调用和工具调用怎样关联？
 3. `Turn`、`Step`、`Round` 分别以什么为边界？
-4. Event 是否有稳定 ID、序号、因果关系和版本？
-5. Partial Event、业务 Event 与持久化 Event 怎样区分？
-6. 状态在 Event 发布前还是发布后提交？失败时谁是事实源？
-7. 调用方停止消费 Streaming 后，底层 Run 会怎样？
-8. Pause 是否保存待处理动作、审批和恢复游标？
-9. Cancel 是立即中断、协作式停止，还是在安全边界生效？
-10. 工具已经产生副作用但结果未知时，怎样恢复？
-11. Session 并发 Run 的顺序、一致性和冲突策略是什么？
-12. Run 的 Completed、Failed、Cancelled、TimedOut 和 Stopped 如何表达？
-13. Resume、Retry、Replay 和新 Run 是否拥有不同 API 与身份？
-14. 快照如何处理 Tool、Prompt、Graph 和 Schema 版本变化？
+4. Event 是否有稳定身份、顺序和因果关系，哪些会持久化？
+5. 状态提交、Event 发布和客户端消费分别在什么时候完成？
+6. Pause、Cancel、Timeout 和工具错误各自怎样改变 Run？
+7. Resume、Retry、Replay 和 New Run 是否拥有不同身份与入口？
+8. 结果未知的外部副作用怎样查询、去重或补偿？
+9. Session 并发、快照版本和 Runtime 配置变化怎样处理？
 
 一个框架拥有名为 Runner、Session 或 Event 的类型，不代表它已经提供相同的执行保证。
 
@@ -468,9 +320,9 @@ Run、Turn、Step、Event 和 Session 不是越多越专业的名词，而是对
 - **Event** 回答“哪些事实、状态变化和控制信号可以被观察与重建”；
 - **Outcome** 回答“为什么不再继续”。
 
-这些身份解决了“谁正在执行”，下一步还需要区分“哪些数据属于当前决策、连续会话、长期复用、恢复切面或独立产物”。详见 [03｜Agent 状态的语义地图](03-agent-state-semantics.md)。
+这些身份解决了“谁正在执行”，下一步还需要区分“哪些数据属于当前决策、连续会话、长期复用、恢复切面或独立产物”。详见 [03｜Agent 的状态边界](03-agent-state-semantics.md)。
 
-如果继续追问“这个 Run 究竟承诺完成哪个版本的目标、用户 Steering 何时构成任务变更、终态凭什么满足验收”，详见 [04｜Agent 任务的语义](04-agent-task-semantics.md)。
+如果继续追问“这个 Run 究竟承诺完成哪个版本的目标、用户 Steering 何时构成任务变更、终态凭什么满足验收”，详见 [04｜Agent 的任务边界](04-agent-task-semantics.md)。
 
 模型让下一步具有动态性，Runtime 则让这份动态性拥有可验证的因果、状态和终点。一个 Runtime 的成熟度，不取决于它能循环多少次，而取决于它能否清楚说明：
 

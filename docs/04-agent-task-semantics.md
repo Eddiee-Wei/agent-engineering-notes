@@ -1,15 +1,13 @@
 ---
-title: Agent Task Semantics
-nav_title_zh: Agent 任务语义
+title: "Agent Task Boundaries: Goal, Plan, Steering, and Completion"
+nav_title_zh: Agent 的任务边界：Goal、Plan、Steering 与 Completion
 nav_order: 4
-description: 从 Intent、Goal、Constraint、Plan、Completion Contract 与 Outcome 出发，理解 Agent 任务如何形成、变更、执行和被证据验收。
+description: 区分 Request、Task Definition、Plan、Steering 与 Completion，理解 Agent 任务如何形成、变更和被证据验收。
 ---
 
-# 04｜Agent 任务的语义
+# 04｜Agent 的任务边界：Goal、Plan、Steering 与 Completion
 
-> 状态：🟢 第一版
-
-在[从模型调用到 Agent](01-agent-primer.md)中，Goal 与 Completion Contract 是动态执行闭环的起点和终点；[Agent Runtime 的执行语义](02-agent-runtime-semantics.md)解释了 Run、Attempt 与 Outcome；[Agent 状态的语义地图](03-agent-state-semantics.md)又要求每条状态声明绑定 Scope、Version 与 Provenance。把三者连起来以后，还剩下一个看似简单、实际经常缺位的对象：**这次执行究竟承诺完成什么？**
+在[从模型调用到 Agent](01-agent-primer.md)中，Goal 与 Completion Contract 是动态执行闭环的起点和终点；[Agent Runtime](02-agent-runtime-semantics.md)解释了 Run、Attempt 与 Outcome；[Agent 的状态边界](03-agent-state-semantics.md)又要求每条状态声明绑定 Scope、Version 与 Provenance。把三者连起来以后，还剩下一个看似简单、实际经常缺位的对象：**这次执行究竟承诺完成什么？**
 
 很多系统直接把最后一条用户消息传给 `runner.run()`，随后把消息历史、系统提示词、计划和工具结果都塞进同一个 Context。模型看起来知道任务，Runtime 也确实在运行，但系统未必能回答：
 
@@ -26,12 +24,7 @@ description: 从 Intent、Goal、Constraint、Plan、Completion Contract 与 Out
 
 ## 一个“测试全绿，但任务失败”的结果
 
-继续使用贯穿前三篇文章的任务：**修复仓库中失败的认证测试，并证明修改有效。** 用户还明确要求：
-
-- 不得修改公开 API；
-- 不得覆盖工作区中已有的用户改动；
-- 只处理这次失败，不顺带升级依赖；
-- 最终提供测试命令、退出码和对应代码版本。
+继续使用贯穿前三篇的任务：**修复失败的认证测试，并证明修改有效**；同时不得修改公开 API、覆盖用户改动或顺带升级依赖，最终要提供测试命令、退出码和代码版本。
 
 Agent 读取日志后发现，把 `Authorize(user)` 改成 `Authorize(user, policy)` 最容易通过测试。它修改生产代码，也更新了测试调用点，随后全量测试变绿，并输出“修复完成”。
 
@@ -77,29 +70,19 @@ User Request
 
 Task Contract 也不是法律合同，更不要求所有 SDK 实现同名类。它是一种工程契约：只要系统承诺长期运行、暂停恢复、多人协作或产生真实副作用，就必须能重建当时执行所依据的目标与边界。
 
-## 九个概念分别保护什么
+## 五层任务模型
 
-| 概念 | 回答的问题 | 典型来源 | 可以怎样变化 | 不应替代 |
-| --- | --- | --- | --- | --- |
-| User Request | 用户实际说了什么 | Message、附件、UI 操作 | 只能追加、撤回或引用，原记录不应被改写 | Intent、Task |
-| Intent | 用户为什么要做这件事 | 对 Request 与上下文的解释 | 可经澄清修正 | 可执行 Goal |
-| Goal | 真实世界最终要发生什么变化 | 用户确认、业务需求 | 需显式 Amendment | Plan、输出文本 |
-| Constraint | 解空间受到什么限制 | 用户、环境、业务规则 | 依来源和授权变更 | Preference |
-| Invariant | 执行期间始终不能破坏什么 | 安全、兼容、数据完整性要求 | 通常需要更高等级授权 | 最终检查项 |
-| Preference | 多个可行解之间偏好什么 | 用户偏好、成本目标 | 可按优先级降级 | 硬约束 |
-| Policy | 系统允许谁在什么条件下做什么 | 组织、平台、权限控制面 | 独立于 Task 发布与撤销 | Prompt 中的提醒 |
-| Plan | 当前准备怎样达成 Goal | Agent、Planner、Workflow | 可随 Observation 重写 | Contract、事实 |
-| Completion / Outcome | 凭什么算完成、为何停止 | Contract、Verifier、Runtime | Verdict 随新证据重算；历史 Outcome 不改写 | Final Response |
+与其平铺一组容易混用的名词，不如把任务理解为五层对象：
 
-这里有几个关键边界。
+| 层次 | 包含什么 | 保护的边界 |
+| --- | --- | --- |
+| Request / Intent | 原始消息、附件、用户动机与解释 | 原始表达不能被模型摘要改写成事实 |
+| Task Definition | Goal、Scope、Non-goal、Constraint、Invariant、Preference、Policy 引用 | 规定要改变什么、不能改变什么、谁有权授权 |
+| Plan | 当前路径、步骤、假设与预算分配 | 可随 Observation 重写，但不能静默降低 Goal |
+| Steering / Amendment | 新证据、计划提示、契约修订、取消或新任务 | 新输入必须先分类，再决定是否产生新版本 |
+| Completion / Acceptance | Condition、Evidence、Verdict、Delivery 与人工接受 | 模型只能提出完成，证据才有资格裁决完成 |
 
-**Intent 不等于 Goal。** “我想尽快恢复服务”描述动机；“将版本回滚到 `v42` 并让健康检查恢复”才接近可执行 Goal。理解 Intent 有助于在多种方案之间取舍，却不能代替明确目标。
-
-**Constraint 不等于 Policy。** “只改认证模块”可以来自当前任务；“生产发布必须双人审批”来自外部控制面。Task 可以引用 Policy Version，却没有权修改它。Policy 拒绝后，让模型换一种说法继续执行并不叫 Replan，而是绕过控制。
-
-**Invariant 不只是最后再检查一次的条件。** “不得覆盖用户改动”如果在中间步骤已经被破坏，即使 Agent 最后尝试恢复文件，也可能丢失无法重建的内容。Invariant 应在高风险 Action 前形成门禁，而不只是 Completion 时做事后验尸。
-
-**Plan 不是事实。** “下一步修改 `auth.go`”只是一条候选路径。文件结构、错误原因或权限变化都可能推翻它；计划被证伪时应该改 Plan，不应该顺便降低 Goal。
+其中四个区别最关键：Intent 解释“为什么”，Goal 说明“世界要怎样改变”；任务内 Constraint 不等于外部 Policy；Invariant 必须在高风险 Action 前形成门禁，而不只是最后检查；Plan 是可证伪假设，不是 Contract 或事实。
 
 ## Task Contract 固定的是执行依据
 
@@ -146,17 +129,9 @@ Contract 也不应该直接等于 Model Context。Context 是对当前 Model Tur
 
 ### Assumption 是待偿还的认知债务
 
-从自然语言编译 Task 时，不可能消除所有未知，但系统必须区分三类信息：
+自然语言编译 Task 时，应区分 **Confirmed**、带来源与失效条件的 **Inferred**，以及产品为了继续执行而采用、允许用户纠正的 **Defaulted**。猜错日志语言可能只影响效率；猜错仓库、生产环境或可修改范围会改变真实副作用，必须在 Action 前验证或澄清。
 
-- **Confirmed**：由有权来源明确确认，或者由权威系统直接观察；
-- **Inferred**：根据上下文推断，带有来源、置信和失效条件；
-- **Defaulted**：产品为了继续执行采用的默认值，并且用户可以看见或纠正。
-
-“用户没有反对”不能自动把 Inferred 升级成 Confirmed，“此前一直这样”也不能把 Default 变成 Policy。一个 Assumption 是否允许保留，取决于它失真后的影响：猜错日志语言可能只影响搜索效率；猜错目标仓库、生产环境或可修改文件范围则会改变真实副作用，应当在 Action 前验证或请求澄清。
-
-因此 Task Draft 可以携带 `assumptions` 与 `open_questions`，Ready Contract 却要为每一项给出处理结果：已验证、被授权接受、通过确定性默认解决，或仍是阻塞项。执行中 Observation 推翻 Assumption 时，系统应先评估 Contract Impact；如果它只是计划依据，Replan 即可，如果它参与 Goal、Scope、Invariant 或证据标准，就必须进入 Amendment。
-
-这种显式处理还有一个运营价值：当任务失败时，可以区分“模型选错行动”和“任务从错误前提开始”。前者主要改进 Planner 或 Tool，后者应改进澄清、来源治理与任务编译流程。
+Task Draft 可以保留 `assumptions` 与 `open_questions`；进入 Ready 后，每项都应被验证、显式接受、确定性默认或标为阻塞。Observation 只推翻计划依据时可以 Replan；影响 Goal、Scope、Invariant 或证据标准时必须 Amendment。
 
 ## Goal 应描述世界变化，而不只是输出形状
 
@@ -233,39 +208,24 @@ Session / Context
         └── Logical Run R43
 ```
 
-这仍是分析坐标，不要求所有框架实现相同对象树。它强调四条边界：
+这套坐标只强调四条边界：Session 可以包含多个 Task；每个 Run 必须绑定 Contract Version；Retry / Resume 可以创建新 Attempt，但不能顺便换 Goal；一个产品级 Task 也可以包含执行、独立验证和人工验收等多个 Run。更细的身份和恢复语义见 [02｜Agent Runtime](02-agent-runtime-semantics.md)。
 
-1. **Session 不是 Task。** 一段会话可以讨论多个任务，也可以在没有活动任务时只交换消息；相同连续上下文不意味着共享同一 Goal。
-2. **Run 应知道自己执行哪个 Contract Version。** 至少每个 Action、Event 与 Completion Verdict 都应能追溯到当时生效的版本。
-3. **Attempt 不能顺便换目标。** Retry 或 Resume 可以创建新 Attempt，却仍要维护原 Run 的因果身份；如果任务已经实质变化，应显式决定 Amend、Supersede 或 New Run。
-4. **Task 可以高于一次 Runtime 调用。** 一个产品级任务可能包含执行、独立验证和人工验收等多个 Run；反过来，一次 Handoff 也可能仍处于同一 Run。
-
-### Task Status 不能压缩所有维度
-
-产品经常只提供 `pending / running / done / failed`，却把四种状态压进了同一字段：
+产品还不应把所有状态压进 `pending / running / done / failed`：
 
 | 维度 | 回答的问题 | 示例 |
 | --- | --- | --- |
-| Specification | 任务规范是否已经可以执行 | Draft、Ready、Superseded |
-| Execution | 当前有没有执行者、运行到哪里 | Queued、Running、Paused、Terminal |
-| Satisfaction | Goal Conditions 是否被证据满足 | Unassessed、Satisfied、Unsatisfied、Unknown |
-| Delivery / Acceptance | 结果是否已送达并被责任人接受 | Pending Delivery、Delivered、Accepted、Rejected |
+| Specification | 任务规范是否可执行 | Draft、Ready、Superseded |
+| Execution | 当前是否在运行 | Queued、Running、Paused、Terminal |
+| Satisfaction | Goal 是否被证据满足 | Unassessed、Satisfied、Unsatisfied、Unknown |
+| Delivery / Acceptance | 结果是否送达并被接受 | Delivered、Accepted、Rejected |
 
-四个维度可以产生看似矛盾、实际合理的组合：
-
-- Contract 已 Ready，但还没有任何 Run；
-- Run 已 Failed，Task 仍可由新的 Run 继续完成；
-- Run 已正常结束，但 Verdict 是 `unknown`；
-- Artifact 已 Delivered，用户尚未 Acceptance；
-- 旧 Contract 已 Superseded，其历史 Run 与 Verdict 仍必须保留。
-
-协议或 UI 可以为了互操作把它们投影成较少状态，但内部不能丢失原因。否则一次 Worker Crash 会被误报成“任务失败”，一次模型正常返回又会被误报成“任务完成”。
+Run 失败后 Task 仍可由新 Run 完成；Run 正常结束时 Verdict 也可能是 `unknown`；Artifact 已交付也不代表用户已经接受。UI 可以简化展示，但内部不能丢失这些原因。
 
 ![Task Contract、Run 与完成证据的关系](../assets/images/agent-task-contract.svg)
 
 移动端可打开 [SVG 原图](../assets/images/agent-task-contract.svg) 查看细节。图中上层是 Contract 的形成与修订，下层是绑定特定版本的执行和证据链。最重要的关系是：**新 Contract 不能改写旧 Run 已经发生的事实，旧证据也不能未经重新验证就证明新 Contract。**
 
-Contract 更新后是否允许同一 Logical Run 继续，没有唯一答案。低风险澄清可能在安全边界更新版本并继续；改变 Goal、权限、受保护对象或完成标准时，通常更适合停止旧 Run、Reconcile 已发生 Effect，再创建清晰的新 Run。无论选择哪种策略，历史 Event 都必须保留当时生效的 `contract_version`。
+低风险澄清可以在安全边界更新版本并继续；改变 Goal、权限、受保护对象或完成标准时，通常应停止旧 Run、Reconcile 已发生 Effect，再创建新 Run。无论采用哪种策略，历史 Event 都必须保留当时生效的 `contract_version`。
 
 ## Steering 首先是输入分类
 
@@ -282,34 +242,16 @@ Agent 运行中收到新消息，不能一律追加到 Context 后继续。系�
 | Cancel / Supersede | “先别修了，改成只输出诊断报告” | 原 Task 终止；创建替代 Contract | 是 |
 | Independent Request | “再帮另一个仓库修同类问题” | 新 Task | 新身份 |
 
-一个可审计的变更协议可以写成：
+一个可审计的变更协议可以压缩为：
 
 ```text
-Classify Input
-→ Assess Contract Impact
-→ Pause at Safe Boundary
-→ Reconcile Effects under Old Version
-→ Draft Amendment
-→ Authorize and Persist New Version
-→ Resume or Start New Run
+Classify Input → Assess Impact → Pause Safely → Reconcile Old Effects
+→ Authorize Amendment → Resume or Start New Run
 ```
 
-其中最难的是 **Reconcile**。假设 Agent 已按 v1 修改文件，用户在 v2 新增“不得修改该文件”：系统不能只替换 Context，然后假装新约束从一开始就成立。它需要说明旧修改是否保留、撤销、补偿或交给人处理，并重新建立 Workspace Version。
+难点在 `Reconcile`：如果 v1 已经修改文件，而 v2 新增“不得修改该文件”，系统不能只替换 Context。它必须说明旧修改如何保留、撤销、补偿或交给人处理。
 
-并非所有字段变化都具有相同影响。修正标题错别字可能只更新展示元数据；补充一条等价证据来源可能只需要重跑 Verifier；修改 Goal、Invariant、输入基线或允许的副作用集合，则可能使旧 Plan、审批、Effect 与 Evidence 全部失效。成熟系统不应只比较两份 JSON 是否不同，而要为 Contract 字段定义 **Change Impact**：
-
-```text
-cosmetic
-< evidence-only
-< replan-required
-< reauthorization-required
-< new-run-required
-< incompatible / new-task
-```
-
-Amendment 还应保存 `parent_version`、修改字段、来源、授权者、理由与生效时间。这样才能回答一个生产事故中最关键的问题：某个 Action 是在新约束生效前合法发生，还是旧 Worker 在失去资格后继续执行。Contract Version 解决“依据是什么”，Attempt Lease 与 Fencing 继续解决“现在谁有资格提交”；二者不能互相替代。
-
-“用户补充了一句话”也不自动代表有权修改所有字段。任务提出者可能可以调整 Scope，却不能覆盖组织 Policy；Reviewer 可以验收结果，却未必可以追加生产权限。完整的授权链属于 Safety 与 Harness Engineering，Task Contract 在这里只需保存来源和授权结果，避免模型把自然语言出现过的内容都当成同等有效命令。
+变更影响也有层级：`cosmetic < evidence-only < replan < reauthorize < new-run < new-task`。Amendment 应保存父版本、修改字段、来源、授权者和生效时间。用户补充一句话不自动代表有权修改所有字段；组织 Policy 与权限仍由外部控制面决定。
 
 ## Completion 是一份带版本的裁决
 
@@ -353,62 +295,17 @@ Verdict 必须回答：
 - 哪些判断来自确定性检查，哪些来自 Judge 或人工；
 - 失败是任务未满足、执行故障、策略拒绝还是结果未知。
 
-在本文沿用的 Runtime 语义中，只有 Completion Contract 通过，Run 才进入 `Completed`。`Failed` 表示 Runtime 无法履行执行契约，`Cancelled` 与 `TimedOut` 保留停止原因，`Stopped` 表示预算或策略使其受控终止，`Paused` 则仍不是终态。
+在本文沿用的 Runtime 语义中，只有 Completion Contract 通过，Run 才进入 `Completed`；`Failed`、`Cancelled`、`TimedOut`、`Stopped` 与 `Paused` 分别保留执行故障、停止原因和是否仍可继续。许多 SDK 在 Final Output 形成时即可结束 Agent Loop，但应用仍要用测试、数据库状态、Artifact 或人工验收判断业务 Goal。
 
-这比许多 SDK 的默认循环退出条件更强。例如 [OpenAI Agents SDK 的 Runner](https://openai.github.io/openai-agents-python/running_agents/)接收字符串、Input Items 或可恢复的 `RunState`；当模型产生符合输出类型且没有 Tool Call 的 Final Output 时，Agent Loop 可以结束。[Input/Output Guardrails](https://openai.github.io/openai-agents-python/guardrails/) 能检查输入与最终输出，但“最终输出已经形成”仍不自动证明外部业务 Goal 达成。应用需要把测试、数据库状态、Artifact 或人工验收组合成自己的 Completion Contract。
+Completion Contract 本质上是一套证据策略：每个 Condition 需要 Predicate / Rubric、证据类型、Evaluator 版本、World Scope / Freshness 和失败语义。多个 Condition 也不是计算简单通过率；Required Invariant 未验证，不能被其他绿色指标平均掉。
 
-**Delivery 与 Acceptance 也应分开。** 报告已经写入 Artifact Store，说明交付物可用；用户是否认可开放式分析、设计或创作，可能仍需要 `needs_human`。系统不应为了获得一个漂亮的自动成功率，假装所有任务都有客观判定器。
+Verifier 不是事实制造者。LLM-as-Judge 可以判断文风，却不应仅凭 Transcript 断言生产资源已经创建。Delivery 与 Acceptance 也应分开：Artifact 可用不代表开放式任务已被责任人认可，必要时 Verdict 应明确返回 `needs_human`。
 
-### Completion Contract 是证据策略，不是一句标准答案
+## 通往 Multi-Agent：委派的是子契约
 
-每个可执行 Condition 至少需要五类元数据：
+Multi-Agent 委派时，Child Assignment 至少要携带父任务版本、派生 Goal、允许 Scope、继承约束、输入版本、预算、预期 Artifact、证据要求与验收责任人。子 Agent 可以在自己的 Scope 内规划，却不能放宽父任务的不变量；父 Agent 也必须在合并后重新验证兼容性和全局 Completion Contract。
 
-```text
-Condition
-= Predicate or Rubric
-+ Required Evidence Type
-+ Evaluator and Version
-+ Freshness / World Scope
-+ Failure Semantics
-```
-
-`Predicate` 说明判断什么；Evidence Type 说明接受测试回执、数据库查询、Artifact Hash 还是人工签字；Evaluator Version 说明由哪版规则或 Judge 评估；Freshness 说明证据对应哪个世界、多久后失效；Failure Semantics 则区分 `false`、`unknown`、`not_applicable` 和 `evaluator_failed`。
-
-多个 Condition 也不是简单统计通过率。生产发布可能要求：
-
-```text
-all(required_invariants)
-AND all(required_postconditions)
-AND any(approved_delivery_routes)
-AND no(blocking_unknowns)
-```
-
-某个可选质量 Rubric 得分偏低可以触发人工复核；一个安全 Invariant 未验证却不能被另外十个绿色指标“平均掉”。因此 Completion Contract 需要逻辑组合、阻塞等级和证据归属，而不是一张没有权重语义的 Checklist。
-
-Verifier 也不是事实制造者。LLM-as-Judge 可以判断文风或解释质量，却不应仅凭 Transcript 断言生产资源已经创建；单元测试可以证明特定输入集的行为，却不能证明没有越权读取。每个 Condition 应选择离事实源最近、权限边界最清楚的证据通道，并把 Judge 的推断与环境 Observation 分开记录。
-
-## 委派的是子契约，不是一段 Prompt
-
-Multi-Agent 系统常把任务拆给 Specialist，但真正需要传递的不只是目标摘要。一个 Child Assignment 至少应携带：
-
-```text
-parent_task_id + parent_contract_version
-derived_goal + allowed_scope
-inherited_constraints + policy references
-input versions + budget
-expected artifact + evidence requirements
-acceptance owner
-```
-
-子 Agent 可以在自己的 Scope 内动态规划，却不能放宽父任务的不变量。例如父任务禁止修改公开 API，子 Agent 不能因为自己的测试更容易通过就移除这条约束。父 Agent 也不能看到三个子任务都 `Completed` 便直接宣布成功；它还要验证：
-
-- 子结果是否基于同一个父 Contract Version；
-- 多个 Patch、Artifact 或 State Delta 是否彼此兼容；
-- 全局 Invariant 在合并后是否仍成立；
-- 子任务留下的 Unknown 和 Residual Risk 是否可接受；
-- 父 Completion Contract 是否获得端到端证据。
-
-Handoff 与 Child Task 也不是同义词。[OpenAI Agents SDK 的 Handoff](https://openai.github.io/openai-agents-python/handoffs/) 可以在同一 Run 内更换当前 Agent；[tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/tool/) 使用 InvocationID 与 ParentInvocationID 描述父子 Agent 调用；[A2A](https://a2a-protocol.org/latest/topics/life-of-a-task/) 则把跨 Agent 的有状态工作暴露为显式 Task。它们解决的执行或协议边界不同，应用仍需决定任务契约怎样派生和验收。
+Handoff、Agent-as-Tool 与 Child Task 解决的控制权和生命周期并不相同。它们怎样形成协作拓扑、隔离状态、处理部分失败并完成团队收敛，详见 [05｜Multi-Agent：委派、协作与团队收敛](05-multi-agent-collaboration.md)。无论采用哪一种方式，子契约派生、约束继承和父任务验收都不能被省略。
 
 ## 八类失败：从“看起来完成”追到契约缺口
 
@@ -437,43 +334,20 @@ Handoff 与 Child Task 也不是同义词。[OpenAI Agents SDK 的 Handoff](http
 | OpenAI Agents SDK | Run Input、RunState、Guardrail、Handoff、RunResult | Runner 驱动 Tool/Handoff 循环；RunState 可恢复中断；Guardrail 检查输入、工具与最终输出 | 应用定义领域 Goal、外部世界检查和 Completion Verdict |
 | LangGraph | Thread、Graph State、Task、Checkpoint、Interrupt | Thread 聚合多次 Run 的 Graph State；Checkpoint/Interrupt 支持更新、暂停和恢复 | State Schema 与 Workflow 必须显式保存 Contract Version 和变更规则 |
 
-A2A 的 Task 最接近一个跨 Agent 可追踪 Unit of Work。其官方 [Life of a Task](https://a2a-protocol.org/latest/topics/life-of-a-task/) 文档区分无状态 Message 与有状态 Task，使用 `contextId` 聚合相关交互，并要求终态 Task 的 Refinement 创建新 Task。这为协议可追溯性提供了清晰身份，但 A2A Task 的 `status`、`artifacts` 与 `history` 仍不是本文完整的 Task Contract：一个协议可以说 Task 已 `completed`，领域应用仍要说明由谁、根据哪些条件得出这一状态。
+A2A 的 Task 最接近跨 Agent 可追踪 Unit of Work，但它的 `status`、`artifacts` 与 `history` 仍不会替领域应用定义 Goal、Invariant 和充分证据。其他 Runtime 也说明同一边界：拥有 Run、Invocation、Thread 或可恢复 State，不代表自动拥有稳定任务规范。
 
-另外四类 Runtime 更直接说明了另一条边界：**拥有 Run、Invocation、Thread 或可恢复 State，不代表自动拥有稳定任务规范。** 如果应用只把自然语言输入放进历史，Resume 可以恢复执行位置，却仍可能恢复到一个已经漂移的目标。
+## 任务边界检查
 
-## 任务设计的八条不变量
+面对一个 Agent Framework、Harness 或产品，可以先问八个问题：
 
-可以把全文压缩成八条产品级约束：
-
-1. **每个可执行 Task 必须拥有稳定身份、来源和明确的 Contract Version。**
-2. **Goal、Constraint、Invariant、Preference 与 Policy 必须可以被机器或审查者区分。**
-3. **Plan 可以被证据重写，Contract 只能被有权限的 Amendment 修改。**
-4. **每个 Action、Event 和 Verdict 必须能追溯到当时生效的 Contract Version。**
-5. **Session 连续性不能替代 Task 身份，Attempt 恢复不能顺便更换 Goal。**
-6. **Completion Evidence 必须绑定 Condition、World Version、来源与新鲜度。**
-7. **Unknown、NeedsClarification 与 NeedsHuman 必须是可表达状态，而不是失败文案。**
-8. **子任务成功必须经过父契约的合并与端到端验收。**
-
-## 阅读或设计任务系统时的检查清单
-
-面对一个 Agent Framework、Harness 或产品，可以继续追问：
-
-1. 原始 User Request 与系统解释后的 Intent 分别保存在哪里？
-2. Task 何时从 Draft 进入可执行状态，谁有权确认？
-3. Goal 描述的是输出、步骤，还是可观察的世界变化？
-4. Constraint、Invariant、Preference 与 Policy 怎样区分？
-5. Scope 与 Non-goal 是否显式，Agent 能否自行扩张？
-6. Task Contract、Plan、Run State 与 World 分别怎样版本化？
-7. Run、Attempt、Event 和 Tool Effect 是否记录 `contract_version`？
-8. 新消息怎样分类为证据、计划提示、契约修订或新 Task？
-9. Amendment 生效前，旧版本已经产生的副作用怎样 Reconcile？
-10. 权限或 Policy 变化后，已批准 Action 是否重新验证？
-11. Completion Contract 在何时建立，能否被执行者临时降低？
-12. Evidence 是否绑定 Workspace、Artifact、Schema 与外部资源版本？
-13. Verdict 怎样表达 Unsatisfied、Unknown 与 NeedsHuman？
-14. Runtime Outcome、Artifact Delivery 与用户 Acceptance 是否分离？
-15. 子任务怎样继承约束、提交证据并由父任务验收？
-16. 终态 Task 的修订是改写历史、创建新版本，还是创建关联的新 Task？
+1. **Request 与 Contract 是否分离**：原始表达、系统解释和已授权 Task 分别保存在哪里？
+2. **任务定义是否可区分**：Goal、Scope、Constraint、Invariant、Preference 与 Policy 各由谁决定？
+3. **Plan 能否失败而 Goal 不漂移**：Observation 到来后改的是路径，还是验收标准？
+4. **执行是否绑定版本**：Run、Action、Event 和 Verdict 能否追溯当时的 Contract Version？
+5. **Steering 是否先分类**：新消息是证据、计划提示、Amendment、Cancel 还是 New Task？
+6. **旧 Effect 是否被协调**：新约束生效前已经发生的副作用怎样保留、撤销或补偿？
+7. **完成是否依赖证据**：Evidence 是否绑定 Condition、World Version、来源与新鲜度，并表达 Unknown / NeedsHuman？
+8. **委派是否保留父边界**：子任务怎样继承约束、提交 Artifact，并由父任务做端到端验收？
 
 如果这些问题没有答案，“Agent 正在执行一个任务”通常只意味着模型正在消费一段上下文。
 

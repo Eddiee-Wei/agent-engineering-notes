@@ -1,15 +1,13 @@
 ---
-title: Agent State Semantics
-nav_title_zh: Agent 状态语义
+title: "Agent State Boundaries: Context, Session, Memory, and Artifacts"
+nav_title_zh: Agent 的状态边界：Context、Session、Memory 与 Artifact
 nav_order: 3
-description: 从 Context、Run State、Session、Memory、Store、Checkpoint 与 Artifact 出发，理解 Agent 状态的事实边界、提交、一致性与恢复契约。
+description: 区分决策输入、连续性、恢复与产物，理解 Context、Run State、Session、Memory、Checkpoint 与 Artifact 的状态边界。
 ---
 
-# 03｜Agent 状态的语义地图
+# 03｜Agent 的状态边界：Context、Session、Memory 与 Artifact
 
-> 状态：🟢 第一版
-
-在[从模型调用到 Agent](01-agent-primer.md)中，State 是动态闭环得以延续的必要条件；在[Agent Runtime 的执行语义](02-agent-runtime-semantics.md)中，Run、Attempt、Event、Session 与 Checkpoint 又把“状态”拆成了不同身份和生命周期。真正把 Agent 放进生产以后，问题会继续向外扩张：
+在[从模型调用到 Agent](01-agent-primer.md)中，State 是动态闭环得以延续的必要条件；在[Agent Runtime](02-agent-runtime-semantics.md)中，Run、Attempt、Event、Session 与 Checkpoint 又把“状态”拆成了不同身份和生命周期。真正把 Agent 放进生产以后，问题会继续向外扩张：
 
 - 当前计划存在 Run State，历史消息存在 Session，为什么服务重启后仍不能恢复？
 - 工具已经修改代码，Checkpoint 还停在修改之前，应该相信谁？
@@ -26,30 +24,11 @@ description: 从 Context、Run State、Session、Memory、Store、Checkpoint 与
 
 ## 一个“测试已经通过”的事故
 
-继续使用前两篇文章的任务：**修复仓库中失败的测试，并证明修改有效。**
+继续使用前两篇的任务：**修复仓库中失败的测试，并证明修改有效。** Run `R42` 在 Workspace Commit `C1` 上写入 Effect `E7`，测试通过并生成 `report@v3`；Runtime 随即流式展示“修复完成”，但 Session 写入超时。客户端从旧 Checkpoint 创建新 Attempt 时，另一个 Run 已把 Workspace 更新到 `C2`，新 Attempt 却仍准备重放 `E7`。
 
-一次看似成功的执行可能发生以下过程：
+此时必须分别回答：Workspace 里真实存在什么，`E7` 是否发生、回执是否丢失，Run State 和 Session 各提交到哪里，Checkpoint 能否精确恢复，以及 `report@v3` 是否仍对应当前版本。
 
-1. Run `R42` 在 Workspace Commit `C1` 上开始，模型决定修改 `auth.go`；
-2. Tool Call 使用 Effect ID `E7` 写入 Patch，测试随后通过；
-3. 测试报告被保存为 Artifact `report@v3`；
-4. Runtime 生成 Final Candidate，发布“修复完成”的流式事件；
-5. Session 写入发生超时，调用方不知道消息和状态是否真正提交；
-6. 客户端重试，调度器从旧 Checkpoint `K2` 创建 Attempt `A2`；
-7. 另一个 Run 已经把同一 Workspace 更新到 `C2`，Tool Schema 也发布了新版本；
-8. `A2` 仍准备重新执行 `E7`。
-
-此时，“任务是否完成”至少包含七个不同问题：
-
-- Workspace 里真实存在什么修改？
-- `E7` 是没有执行、执行失败，还是执行成功但回执丢失？
-- Run State 是否记录了测试通过及其证据？
-- Session 是否保存了面向用户的连续历史？
-- Checkpoint 是否足以在新 Attempt 中精确恢复？
-- `report@v3` 是否对应当前 Workspace？
-- UI 展示的完成状态是否早于必要数据的持久提交？
-
-如果系统只有一个可变的 `state` 字典，这些问题会互相覆盖。更糟的是，最后写入的值看起来往往最完整，却未必最接近事实。
+如果系统只有一个可变的 `state` 字典，这些问题会互相覆盖；最后写入的值看起来最完整，却未必最接近事实。
 
 ## State 不是 Value，而是一条声明
 
@@ -101,7 +80,7 @@ Agent 数据库并不拥有整个世界：
 
 > **Checkpoint 可以恢复 Runtime 的认知，不能自动回滚真实世界。**
 
-## 七个概念分别在保护什么
+## 三组状态边界
 
 ![Agent 状态语义地图](../assets/images/agent-state-map.svg)
 
@@ -117,7 +96,13 @@ Agent 数据库并不拥有整个世界：
 | Checkpoint | 从哪个已提交切面继续 | Run / Graph / Step | 状态、控制位置与恢复元数据 | 不能证明外部副作用已回滚 |
 | Artifact | 哪个独立产物被输入、生成或交付 | Session / User / Run / Task | 命名、版本化、可独立授权的大对象 | 不应承载 Runtime 控制状态 |
 
-这七个概念不是一条从短期到长期的线。它们更像六种语义平面加一个基础设施底座：Context 属于决策投影，Run State 属于执行，Session 属于连续性，Memory 属于复用，Checkpoint 属于恢复，Artifact 属于输入与交付，Store 则在下方提供存取能力。
+这些概念不是一条从短期到长期的线，可以先按责任归为三组：
+
+- **决策输入**：Context 是一次决策看到的投影；
+- **连续性**：Run State 维持当前执行，Session 维持交互，Memory 维持跨任务复用；
+- **恢复与输出**：Checkpoint 固定恢复切面，Artifact 固定输入和交付物；Store 在下方提供存取能力。
+
+同一个数据库可以承载多种角色，但不能因此抹掉它们不同的 Scope、Owner、Version 和生命周期。
 
 ## Context：一次决策的编译产物
 
@@ -158,7 +143,7 @@ Context Frame
 1. **可重建**：关键事实仍能从更权威的 Session、Run State、Memory、Artifact 或外部系统重新获取；
 2. **带来源**：影响高风险决策的信息应保留来源、版本和新鲜度，而不只是变成一段无出处文本。
 
-把 Context 当数据库，会让压缩后的内容逐渐取代原始事实；把全部数据库内容都塞进 Context，则会把权限、噪声和成本问题一起推给模型。Context Engineering 后续要解决“怎样选”，本文只强调：**Context 是视图，不是仓库。**
+把 Context 当数据库，会让压缩后的内容逐渐取代原始事实；把全部数据库内容都塞进 Context，则会把权限、噪声和成本问题一起推给模型。选择与装配策略可以不断演进，但必须守住一个边界：**Context 是视图，不是仓库。**
 
 ## Run State：当前执行的操作事实
 
@@ -174,24 +159,7 @@ Run State 服务于一个 Logical Run，典型内容包括：
 
 它与进程内变量的区别在于语义，而不是介质。一个 Run State 可以只存在内存中，也可以持续持久化；但只要系统承诺 Pause、Resume 或 Worker 故障恢复，就必须说明哪些字段已经提交，哪些仍只是当前 Attempt 的临时变量。
 
-### 同一个 Run 也不能随意共享可变对象
-
-Multi-Agent、并行 Tool 和 Graph 分支会同时产生状态更新。共享一个 Map 并使用互斥锁，只解决内存级数据竞争，不解决业务级冲突：
-
-- 两个分支都读取 `workspace_version=C1`，随后分别生成互不兼容的 Patch；
-- 一个分支把任务标为完成，另一个分支刚发现验证失败；
-- 子 Agent 使用父 Agent 的键名覆盖了父任务进度；
-- Worker `A1` 的租约已经过期，却在新 Worker `A2` 之后提交结果。
-
-系统需要定义：
-
-- 聚合边界：哪些字段必须一起提交；
-- 逻辑写入者：谁有权更新某类状态；
-- 合并语义：覆盖、追加、Reducer、Compare-and-Swap 或显式冲突；
-- Branch / Namespace：父子 Agent 和并行任务怎样隔离；
-- Lease / Fencing：旧执行者怎样被阻止继续写入。
-
-锁保护“同时写”，版本保护“基于什么状态写”，Fencing 则保护“现在还有没有资格写”。三者不是同一个问题。
+并行 Tool、Graph 分支和 Multi-Agent 都可能同时更新 Run State。互斥锁只解决内存竞争，不能解决两个分支基于旧 Workspace 生成冲突 Patch，或旧 Attempt 在失去租约后继续提交。系统仍需定义聚合边界、逻辑写入者、合并规则、Branch / Namespace 与 Lease / Fencing。锁保护“同时写”，版本保护“基于什么写”，Fencing 保护“现在还有没有资格写”。多 Agent 之间怎样隔离 Context、共享最小状态并交换版本化 Artifact，详见 [05｜Multi-Agent](05-multi-agent-collaboration.md)。
 
 ## Session：连续性边界，不是事务边界
 
@@ -219,24 +187,7 @@ Session 首先回答：
 
 [tRPC-Agent-Go 的 Noop Session](https://trpc-group.github.io/trpc-agent-go/session/noop/)仍会在一次 Run 内创建瞬时 Session，同时不会禁用独立配置的 Memory、Artifact 或 Graph Checkpoint 服务。这说明 Session 的语义可以存在于不持久化的实现中，其他状态能力也不应被折叠成 Session 的开关。
 
-### Session 并发最容易制造“合理但错误”的历史
-
-假设用户快速发送两条消息，触发 `R1` 和 `R2`：
-
-1. 两个 Run 都读取 Session Version `S10`；
-2. `R2` 先完成，提交 `S11`；
-3. `R1` 随后用自己基于 `S10` 的完整副本覆盖 Session；
-4. 数据库最后是 `S11` 或 `S12`，但 `R2` 的结果消失。
-
-这不是线程安全问题，而是 **Lost Update**。常见选择包括：
-
-- 同一 Session 单写者或串行 Run；
-- Event Append + 单调序号，而不是覆盖完整历史；
-- 乐观并发控制，提交时比较 Session Version；
-- 允许并发，但为每个 Run 建立 Branch，随后显式合并；
-- 把不需要共享的状态留在 Run，而不是写进 Session。
-
-“最后写入获胜”只有在业务明确允许覆盖时才是策略；默认使用它，等于把冲突隐藏成成功。
+Session 并发最容易制造“合理但错误”的历史：两个 Run 都读取 `S10`，较晚结束的旧 Run 用完整副本覆盖新结果。这是 Lost Update，不是线程安全问题。可以选择单写者、Event Append、乐观版本或隔离 Branch；“最后写入获胜”只有在业务明确允许覆盖时才是一种策略。
 
 ## Memory：事实发布流程，不是历史备份
 
@@ -251,30 +202,9 @@ Candidate
 → Correct / Expire / Delete
 ```
 
-Session History 中出现过的信息只是 Memory Candidate。它可能是：
+Session History 中出现过的信息只是 Memory Candidate：它可能是稳定偏好，也可能是模型推测、临时约束、过期信息或不可信内容。把每条历史自动写入长期 Memory，会造成错误固化、时效漂移、作用域泄漏、反馈放大和删除失效。
 
-- 用户明确表达的稳定偏好；
-- 模型基于不完整证据做出的推测；
-- 只在某次任务有效的临时约束；
-- 已经过期的组织信息；
-- 从不可信网页或工具结果中读到的内容。
-
-如果系统把每条历史自动写入长期 Memory，会产生几类风险：
-
-- **错误固化**：模型推测被当成用户事实；
-- **时效漂移**：旧权限、职位、项目状态继续影响决策；
-- **作用域泄漏**：Session 内秘密被提升到 User 或 App；
-- **反馈放大**：模型读取自己过去的错误，再以此生成更确信的错误；
-- **删除失效**：原 Session 已删除，抽取出的 Memory 仍然存在。
-
-一条可用于高风险决策的 Memory 至少应有：
-
-- 来源与创建主体；
-- User / App / Project 等 Scope；
-- 明确事实、推断还是偏好；
-- 创建、验证和最后使用时间；
-- 置信、版本或关联实体；
-- TTL、撤销与删除路径。
+可用于高风险决策的 Memory 至少要记录来源与创建主体、User / App / Project Scope、事实 / 推断 / 偏好类型、验证与最后使用时间、版本或置信，以及 TTL、更正和删除路径。
 
 Memory 也不等于 Knowledge。Memory 通常来自用户或 Agent 经历，强调个体连续性和复用；Knowledge 更接近可维护、可引用、面向多个任务的外部事实。两者都可能使用向量检索，但共享检索技术不会让它们拥有相同权威性。
 
@@ -332,35 +262,9 @@ class RecoveryContract:
 
 [LangGraph](https://docs.langchain.com/oss/python/langgraph/persistence)的 `StateSnapshot` 除了 values，还包含 next、tasks、writes、step 与 parent；其 Pending Writes 机制避免恢复时重跑同一 super-step 中已经成功的节点。[tRPC-Agent-Go Graph](https://trpc-group.github.io/trpc-agent-go/graph/)同样把 per-invocation state、pending writes、checkpoint namespace 与恢复联系起来。这些实现细节共同说明：只有 Value 的 Snapshot 不足以恢复控制流。
 
-### Event Log 不自动等于 Checkpoint
+Event Log 可以帮助重建状态，但不会自动成为 Checkpoint：事件还必须完整、有序、可去重，状态转换要版本兼容，外部副作用要有稳定身份与回执。Agent 的模型输出和 Tool 通常不具备天然确定性，不能仅因为“保存了 Event”就假设可以像确定性 Workflow 一样安全重放。
 
-Event Log 可以成为重建状态的来源，但需要满足：
-
-- 事件完整、顺序明确、可去重；
-- State Transition 确定且版本兼容；
-- 外部副作用有稳定身份与回执；
-- 旧代码重放不会产生不同决定；
-- 重放与真实执行有清晰隔离。
-
-[Temporal](https://docs.temporal.io/workflow-execution)通过 Event History 重放确定性的 Workflow Code，并让外部交互通过 Activity 发生；Agent Runtime 中的模型输出和外部 Tool 通常不具备天然确定性，因此不能把“保存 Event”直接等同于 Temporal 式 Durable Execution。
-
-### Resume 是五阶段协议
-
-```text
-Load
-→ Validate
-→ Reconcile
-→ Acquire Ownership
-→ Continue
-```
-
-1. **Load**：读取 Checkpoint、State、Pending Effect 与引用；
-2. **Validate**：检查 Schema、Tool、Agent、Graph、权限和配置兼容性；
-3. **Reconcile**：重新观察 Workspace、Artifact 与外部副作用；
-4. **Acquire Ownership**：建立新 Attempt，获取 Lease / Fencing Token；
-5. **Continue**：从明确 Cursor 前进，而不是让模型猜测原进度。
-
-任何一步无法证明安全时，正确结果可能是 `Needs Review`、`Stopped` 或创建 New Run，而不是继续自动化。
+Resume 更适合被理解为五步协议：`Load → Validate → Reconcile → Acquire Ownership → Continue`。它先读取恢复信封，再校验 Runtime 版本和权限，重新观察 Workspace、Artifact 与待处理 Effect，建立新 Attempt 并取得 Lease，最后从明确 Cursor 前进。无法证明安全时，正确结果是 `Needs Review`、`Stopped` 或 New Run，而不是让模型猜回原进度。
 
 ## Artifact：独立产物不是一个超大的 State 字段
 
@@ -423,100 +327,23 @@ Events      --fold-------> State Projection
 
 因此，“把 Session 存进 Memory”“把 State 放进 Context”“从 Event 恢复 Checkpoint”都不是复制字段这么简单。真正需要设计的是箭头：谁触发变换、变换损失什么、何时提交、失败后哪一侧仍是事实源。
 
-## Durability Vector：完成不是一个布尔值
+## 跨 Store 的提交、并发与生命周期
 
-前一篇文章区分了 Event 的 Produced、Validated、Committed、Published 与 Consumed。跨状态平面以后，提交关系更复杂：
+状态分布在多个 Store 和外部系统以后，以下问题会直接破坏事实一致性与恢复正确性：
 
-```python
-durability = {
-    "world_effect": "committed",
-    "run_state": "committed",
-    "session": "unknown",
-    "checkpoint": "committed",
-    "artifact": "committed",
-    "memory": "not_required",
-    "terminal_event": "published",
-}
-```
+| 工程问题 | 需要守住的语义 | 常见控制 |
+| --- | --- | --- |
+| 可见完成早于提交 | Final Token、Run State、Session、Artifact 与真实世界可能处于不同提交状态 | Completion Gate、Outbox、明确 Pending / Unknown |
+| Session Lost Update | 每个可变聚合都有 Version 与冲突边界 | 单写者、Event Append、CAS、Branch |
+| 未知 Effect 被重试 | 同一逻辑行动拥有稳定意图身份和可查询回执 | Effect ID、Idempotency Key、Reconcile |
+| Zombie Attempt | 只有当前执行所有者可以提交 | Lease、Fencing Token、Attempt Version |
+| 旧 Checkpoint 强行恢复 | 恢复点绑定 Runtime 与外部世界版本 | 兼容校验、迁移、拒绝 Resume |
+| Memory 污染 | Memory 是带来源和失效规则的发布结果 | Candidate、验证、TTL、更正与撤销 |
+| Artifact 漂移 | 引用固定到不可歧义版本 | Version、Content Hash、Lineage |
 
-这可以称为一次执行的 **Durability Vector**。它不是必须实现成统一数据结构，而是一种审查方式：不要再用一个 `done=true` 遮蔽多个系统各自的提交状态。
+Agent 往往同时写文件系统、数据库、对象存储和第三方 API，它们通常没有全局事务。与其宣称 Exactly-once，更实际的做法是缩小原子边界，让状态和待发布事件可恢复，让消费者去重，并在结果未知时先 Reconcile。Effect ID 还必须表达“同一份行动意图”，不能只靠参数 Hash 猜测。
 
-对于修复测试：
-
-- Patch 已写入目标 Workspace；
-- 测试基于同一 Workspace Version 通过；
-- 测试报告 Artifact 已持久化；
-- Run Outcome 与必要引用已提交；
-
-这些可能是 Completion Contract 的必要条件。Memory 发布通常不是；Session 更新失败是否阻止完成，则取决于产品是否承诺连续对话必须与结果原子一致。
-
-> **用户可见完成应该由必要的持久化分量决定，而不是由最先到达的 Final Token 决定。**
-
-### 跨 Store 提交没有魔法事务
-
-Agent 经常同时写文件系统、数据库、对象存储、Event Bus 和第三方 API。它们通常不共享全局事务。
-
-如果业务状态已经写入，而 Terminal Event 发布前进程崩溃，就形成 Dual Write。可行策略不是假装拥有 Exactly-once，而是缩小原子边界：
-
-- 在同一事务中提交状态与 Outbox Record；
-- 后台 Relay 以 At-least-once 发布；
-- Consumer 使用 Event ID 去重；
-- 外部写操作使用 Effect ID / Idempotency Key；
-- 无法确定结果时先 Reconcile，再决定是否重试。
-
-[Microsoft 的 Transactional Outbox 说明](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/transactional-out-box-cosmos)展示了将业务状态和待发布事件先写入同一事务，再异步投递的基本做法。Agent Runtime 不必照搬具体数据库实现，但必须正视相同的 Dual Write 问题。
-
-## 七类生产失败：从症状追到不变量
-
-| 失败模式 | 错误假设 | 用户可见后果 | 必须维护的不变量 | 常见控制 |
-| --- | --- | --- | --- | --- |
-| Session Lost Update | 同一 Session 不会并发执行 | 较晚结束的旧 Run 覆盖新结果 | 每个可变聚合有 Version 与冲突边界 | CAS、单写者、Event Append、Branch |
-| 可见完成早于提交 | Final Event 就是完成 | 刷新后结果消失或无法恢复 | 必要 Durability 分量先提交 | Commit Gate、Outbox、明确 Pending |
-| 未知 Effect 被重试 | Timeout 等于没执行 | 重复发信、部署、扣费或写文件 | 同一逻辑动作有稳定 Effect ID | Idempotency Key、Receipt、Reconcile |
-| Zombie Attempt | 同一 Run 只有一个 Worker | 旧 Worker 覆盖新 Attempt | 只有当前 Owner 可以提交 | Lease、Fencing Token、Attempt Version |
-| 旧 Checkpoint 强行恢复 | 代码和 Schema 永远兼容 | 参数错位、跳错节点、重复 Tool | 恢复点绑定 Runtime Fingerprint | 兼容校验、迁移、拒绝 Resume |
-| Memory 污染 | 历史里的内容都能复用 | 错误偏好和过期权限持续生效 | Memory 是带来源和失效规则的声明 | Candidate、验证、TTL、撤销 |
-| Artifact 漂移 | 文件名唯一代表内容 | 恢复或审计使用错误版本 | Artifact Reference 固定不可歧义版本 | Version、Content Hash、Lineage |
-
-这些控制并不保证“永不失败”。它们的价值是让失败变得可识别：系统知道当前是冲突、未知、过期、不兼容还是缺失，而不是把所有异常重新包装成一段自然语言交给模型猜。
-
-### Idempotency Key 必须表达同一份意图
-
-[AWS 关于幂等 API 的工程说明](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/)强调由调用方提供稳定 Request ID，并校验同一 ID 是否被用于不同参数。仅对参数做 Hash 并不总能表达用户意图：两个参数完全相同的“创建资源”请求，可能真的是想创建两个资源。
-
-对应到 Agent：
-
-- Effect ID 应在 Logical Action 首次形成时产生；
-- Retry 和 Resume 必须复用同一 Effect ID；
-- 同一 Effect ID 若出现不同参数，应当报冲突而不是覆盖；
-- 回执应能回答这份意图创建了哪个外部资源；
-- Effect ID 的保留时间应覆盖可能的迟到重试。
-
-Idempotency 不是“Tool 是 PUT 请求”这么简单，而是 Runtime 与外部系统共同维护的意图身份。
-
-## 生命周期与删除也是状态语义
-
-状态设计常从创建和读取开始，却在真正运营以后遇到：
-
-- Session 已删除，抽取出的 Memory 是否仍保留？
-- 用户要求删除数据，Checkpoint、Artifact 与 Trace 中的引用怎样处理？
-- Artifact 已过期，历史 Run 是否还能解释自己的完成证据？
-- Checkpoint 无限增长，哪些可以压缩、归档或删除？
-- Idempotency Record 过早清理，迟到请求是否会重复执行？
-- User、Project、Tenant 的 Namespace 变化后，旧数据由谁迁移？
-
-创建时没有定义删除、失效和迁移路径，通常意味着系统还没有真正拥有这份状态。
-
-不同角色应拥有不同 Retention：
-
-- Session 可以按对话生命周期清理；
-- Memory 可能需要用户级更正与遗忘；
-- Checkpoint 取决于 Run 是否仍可能恢复或审计；
-- Artifact 取决于交付、合规和存储成本；
-- Effect Receipt 至少覆盖 Retry 与迟到请求窗口；
-- Context 通常不应被当作新的长期副本永久保存。
-
-级联删除也不能只靠数据库外键。Memory、Artifact 和外部系统可能位于不同 Store，需要显式 Data Lineage、Deletion Event 与可核验的清理结果。
+生命周期同样属于语义：Session、Memory、Checkpoint、Artifact 与 Effect Receipt 应有不同的 Retention、更正和删除路径。创建时没有定义失效、迁移与级联删除，通常意味着系统还没有真正拥有这份状态。
 
 ## 不同框架怎样落在这张地图上
 
@@ -537,39 +364,18 @@ Idempotency 不是“Tool 是 PUT 请求”这么简单，而是 Runtime 与外�
 - 并发时谁拥有写权限；
 - 崩溃后凭什么安全继续。
 
-## 状态设计的八条不变量
+## 状态边界检查
 
-可以把全文压缩成八条产品级约束：
+面对一个 Agent Framework、Harness 或产品，可以用八条约束检查它的状态设计：
 
-1. **Model Context 必须可以从更权威的来源重新编译。**
-2. **每个可变状态聚合必须拥有身份、版本和逻辑写入者。**
-3. **Session 连续性不能替代 Run 的执行身份。**
-4. **Checkpoint 不得暗示外部世界已经回滚。**
-5. **每个可重试副作用必须拥有稳定 Effect ID 和可查询回执。**
-6. **Memory 写入是事实发布，不是历史日志追加。**
-7. **Artifact Reference 必须固定版本、Hash 或其他不可歧义身份。**
-8. **Resume 必须重新验证外部世界、Runtime 兼容性和执行所有权。**
-
-## 阅读或设计状态系统时的检查清单
-
-面对一个 Agent Framework、Harness 或产品，可以继续追问：
-
-1. 这份数据属于 Context、Run、Session、Memory、Checkpoint 还是 Artifact？
-2. 它的稳定身份包含 tenant、user、session、run、attempt、branch 中的哪些部分？
-3. 谁创建、谁可以更新、谁负责验证？
-4. 它是权威事实、Observation、Projection、Cache 还是模型信念？
-5. Value 对应哪个外部对象和版本？
-6. 更新采用覆盖、追加、Reducer 还是 Compare-and-Swap？
-7. 同一 Session 的并发 Run 怎样排序或隔离？
-8. State Commit 与 Event Publish 哪个先发生，崩溃窗口是什么？
-9. 外部 Tool 结果未知时，怎样查询、去重或补偿？
-10. Checkpoint 是否包含 Control Cursor、Pending Effect 和 Runtime Fingerprint？
-11. Resume 前重新验证哪些 Workspace、权限、Lease 与 Artifact？
-12. Memory 如何从 Candidate 变成已发布信息，怎样更正和失效？
-13. Artifact Reference 是否固定版本与内容摘要？
-14. 各 Store 的事务边界、可用性和一致性分别是什么？
-15. 哪些 Durability 分量是任务 Completed 的必要条件？
-16. Session、Memory、Checkpoint、Artifact 和 Effect Receipt 分别何时删除？
+1. **先定角色再定存储**：这份数据属于 Context、Run、Session、Memory、Checkpoint 还是 Artifact？
+2. **投影可重建**：Model Context 能否从更权威、带来源的版本重新编译？
+3. **写入有身份**：每个可变聚合是否有 Scope、Version、逻辑写入者与冲突规则？
+4. **连续性不混用**：Session 是否被误当成 Run 身份、事务或恢复点？
+5. **恢复会校准现实**：Checkpoint 是否包含控制位置、待处理 Effect 与 Runtime 指纹，并在 Resume 时重查外部世界？
+6. **复用经过发布**：Memory 是否区分 Candidate、已验证事实、时效和撤销路径？
+7. **产物引用不漂移**：Artifact Reference 是否固定版本、Hash、来源与访问范围？
+8. **提交与生命周期明确**：哪些 Store 必须先提交才能显示完成，各角色何时更正、迁移和删除？
 
 如果这些问题没有答案，“支持状态、记忆和恢复”仍然只是功能名称。
 
@@ -589,7 +395,7 @@ Context、Run State、Session、Memory、Store、Checkpoint 与 Artifact 的区�
 
 > **状态系统的目标不是让 Agent 永远记得更多，而是让它在崩溃、并发、重试和变化之后，仍然知道什么可以相信、什么必须重查，以及下一步怎样安全发生。**
 
-这些状态最终都要服务于某个可追溯的任务版本：Goal 与 Constraint 怎样形成 Contract、Plan 怎样在不改变任务的前提下重写、完成证据怎样绑定 Contract 与 World Version，详见 [04｜Agent 任务的语义](04-agent-task-semantics.md)。
+这些状态最终都要服务于某个可追溯的任务版本：Goal 与 Constraint 怎样形成 Contract、Plan 怎样在不改变任务的前提下重写、完成证据怎样绑定 Contract 与 World Version，详见 [04｜Agent 的任务边界](04-agent-task-semantics.md)。
 
 ## 参考资料
 
