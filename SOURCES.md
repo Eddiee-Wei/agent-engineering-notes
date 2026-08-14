@@ -65,6 +65,30 @@ title: 官方资料索引
 - [OpenAI Agents SDK for Python](https://github.com/openai/openai-agents-python) — Runtime 语义检查版本：[992abf7](https://github.com/openai/openai-agents-python/tree/992abf763d24881bab55663de6a93cf58f1c6118)，2026-07-30；状态语义检查版本：[2cec489](https://github.com/openai/openai-agents-python/tree/2cec48924bcd5f514091aaf6ae2a38683710437e)，2026-07-31；任务语义检查版本：[e943ded](https://github.com/openai/openai-agents-python/tree/e943deda36b4dd43249df1236e32318acbc61473)，2026-08-03
 - [LangGraph](https://github.com/langchain-ai/langgraph) — 状态语义检查版本：[b2926a0](https://github.com/langchain-ai/langgraph/tree/b2926a0ff9589c28c7e01fe7cdbb337b86d5a4b4)，2026-07-31；任务语义复核版本：[b2926a0](https://github.com/langchain-ai/langgraph/tree/b2926a0ff9589c28c7e01fe7cdbb337b86d5a4b4)，2026-08-03
 
+## 框架章节版本基线
+
+以下版本用于 `frameworks/` 章节的逐项源码核对，统一检查于 **2026-08-13**。版本号只说明本文观察窗口，不表示各语言实现之间具有相同发布节奏或完全相同能力。
+
+| 框架 | 章节基线 | 发布日期 | 源码锚点 |
+| --- | --- | --- | --- |
+| Agno | v2.9.0 | 2026-08-13 | [`b889441`](https://github.com/agno-agi/agno/tree/b8894410bc40f94c82377b5e7f2eb59a6528fdac) |
+| AutoGen | python-v0.7.5；当前进入维护模式 | 2025-09-30 | [`83afbf5`](https://github.com/microsoft/autogen/tree/83afbf5857aac683340d4c692194e548b1e8edda) |
+| CrewAI | 1.15.15 | 2026-08-12 | [`28d868c`](https://github.com/crewAIInc/crewAI/tree/28d868c4f4d2e9a17ce00db3444e99b7f41347bb) |
+| Google ADK | Python v2.6.3；Go v2.2.0；Java v1.7.1；TypeScript main v1.6.0；Kotlin v0.7.0 | 2026-08-03—2026-08-10 | [Python v2.6.3](https://github.com/google/adk-python/releases/tag/v2.6.3) 及各语言官方 Release |
+| LangChain | `langchain==1.3.15` | 2026-08-11 | [`f4bc503`](https://github.com/langchain-ai/langchain/tree/f4bc5031dbcf24edb0374a07830915a285222567) |
+| Langflow | v1.11.3 | 2026-08-11 | [`14ad03a`](https://github.com/langflow-ai/langflow/tree/14ad03a3f03bc071186286f65c08e847f7f5d88c) |
+| LangGraph | 1.2.11 | 2026-08-11 | [`644815f`](https://github.com/langchain-ai/langgraph/tree/644815f9e5bc52ad8f7a5227a456227e9c3e639b) |
+| AgentScope | v2.0.6 | 2026-08-07 | [`29b5923`](https://github.com/agentscope-ai/agentscope/tree/29b5923) |
+| DeerFlow | v2.0.0 | 2026-06-25 | [`7e7f041`](https://github.com/bytedance/deer-flow/tree/7e7f041) |
+| tRPC-Agent-Go | v1.11.1 | 2026-08-13 | [`03069cd`](https://github.com/trpc-group/trpc-agent-go/tree/03069cd2d41860d6431caff00a4ae29cc592f281) |
+
+## 横向研究与评价校准
+
+- [Towards a Science of Scaling Agent Systems — Google Research](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/) — 180 组配置的受控研究；并行可分解任务与顺序强依赖任务需要不同协作结构，访问于 2026-08-13
+- [How we built our multi-agent research system — Anthropic](https://www.anthropic.com/engineering/multi-agent-research-system) — 生产多 Agent 研究系统的并行、上下文、评测与运营经验，访问于 2026-08-13
+- [Open Agent Specification: Enabling Cross-Framework Comparison of AI Agents — CAIS 2026](https://dl.acm.org/doi/10.1145/3786335.3813130) — 同一声明式 Agent 规格在 LangGraph、CrewAI、AutoGen 与 WayFlow 上仍呈现不同执行行为，访问于 2026-08-13
+- [Auto-SLURP — Findings of EMNLP 2025](https://aclanthology.org/2025.findings-emnlp.596/) — 面向智能助手端到端工具执行的多 Agent 框架评测；提示可靠性仍不能由框架名称直接推断，访问于 2026-08-13
+
 ## 国外框架
 
 - [Agno](https://github.com/agno-agi/agno)
