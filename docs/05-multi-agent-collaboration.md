@@ -100,7 +100,7 @@ Handoff 更像客服分诊后的接管：路由 Agent 识别到请求属于退�
 Child Assignment
 = parent_task_id + parent_contract_version
  + derived_goal + allowed_scope + inherited_invariants
- + pinned_inputs + authority + budget + deadline
+ + pinned_inputs + authority_envelope + budget + deadline
  + expected_artifacts + evidence_standard + acceptance_owner
 ```
 
@@ -127,7 +127,7 @@ Team 通常提供成员目录、可见性规则、任务分配、消息或共享
 - **Cycle**：生成—评审—修订反复执行，但必须有停止条件；
 - **Graph**：用显式节点、边、条件路由和状态转换表达复杂控制流。
 
-这些结构本身不要求每个节点都是 Agent。一个 Graph 可以混合确定性函数、工具、Human Approval 和 Agent 节点。Graph 的检查点、恢复、边条件和调度实现详见 [Graph Engineering](../engineering/graph-engineering.md)；在多 Agent 协作中，Graph 主要负责承载参与者之间的依赖和控制边界。
+这些结构本身不要求每个节点都是 Agent。一个 Graph 可以混合确定性函数、工具、Human Approval 和 Agent 节点；检查点、恢复、边条件和调度共同承载参与者之间的依赖与控制边界。
 
 ### 第二层：决策权怎样分配
 
@@ -204,6 +204,27 @@ Context 中还要区分：
 ### Authority 不能只写在角色提示词里
 
 “你是只读研究员，请不要修改文件”是软约束，不是权限边界。真正的只读角色应拿不到写工具或写凭据，文件系统和网络策略也应确定性限制其作用域。[tRPC-Agent-Go 的 Explorer 示例](https://trpc-group.github.io/trpc-agent-go/zh/multiagent/)把只读行为放进 Agent 指令有助于表达意图，但生产系统仍需由工具集、Sandbox 和 Policy 执行边界。
+
+### 委派必须收窄 Capability，而不是复制父级权限
+
+父 Agent 有权修改整个仓库，不表示用于调查测试失败的 Child Task 也应获得同样权限。子级有效授权应当是多个边界的交集：
+
+```text
+Child Capability
+⊆ Parent Capability
+∩ Child Assignment Scope
+∩ Current Policy
+∩ Environment Boundary
+∩ Remaining Budget and Time
+```
+
+一个 Authority Envelope 至少要固定：委派者与接收者、允许 Action、Resource / Workspace、参数约束、有效期、预算、是否允许继续委派、父 Grant / Task / Run，以及撤销引用。子 Agent 的角色名、工具描述和自然语言 Assignment 可以解释职责，却不能扩大这个交集。
+
+[OAuth 2.0 Token Exchange（RFC 8693）](https://datatracker.ietf.org/doc/html/rfc8693)区分 Impersonation 与 Delegation：前者让调用者在既定上下文中以另一主体身份行动，后者保留“调用者代表主体行动”的组合关系。Agent 协作通常更需要后者，因为审计必须同时回答最终责任 Principal 和实际 Actor；只有确实要求身份替代、且策略明确允许时，才应使用 Impersonation。即便 Token Exchange 能发行更窄 Scope 的 Token，授权服务器与 Runtime 仍要验证 Audience、Resource、Task Scope 和环境边界，不能把“成功拿到 Token”当成所有动作都被允许。
+
+委派链还要能撤销。父 Task 取消、成员被移除、Scope 收窄、Credential 泄漏或 Policy 更新以后，应阻止未开始的子动作，并将撤销传播给后代 Grant。已经提交给外部系统的动作不会因为撤销自动回滚；Runtime 必须把它们标成 `confirmed`、`unknown` 或 `compensation_required`。RFC 8693 明确指出交换出的 Token 与来源 Token 之间不必天然存在紧密的撤销关联，[OAuth 2.0 Token Revocation（RFC 7009）](https://datatracker.ietf.org/doc/html/rfc7009)也允许实现按策略级联到相关 Token 或 Grant，因此 Agent Runtime 不能假设撤销会自动沿任务树完成。
+
+完整的 Principal、Capability、Credential、Approval、Delegation 与 Revocation 模型见 [07｜Agent 的授权边界](07-agent-authorization-semantics.md)。Multi-Agent 还要守住三条不变量：**子级不能比父级更有权，撤销必须沿委派血缘传播，父级仍对合并结果负责。**
 
 ## Team Runtime：创建参与者只是开始
 
@@ -286,6 +307,8 @@ Multi-Agent 的核心难点不是让成员说话，而是把多个不完整、�
 
 父级可以按需读取 Transcript，却不应通过猜测自然语言聊天记录来恢复子任务承诺。
 
+Peer Message 也只能形成 Claim，而不能直接形成共享事实。接收者应保留消息作者、代表的 Principal、来源 Observation / Artifact、适用 Scope、版本和时间；父级把它纳入综合结果时，要能说明是 `wasDerivedFrom` 哪些证据、由谁 `wasAttributedTo`，以及 Actor 是否 `actedOnBehalfOf` 某个上游 Principal。这些关系可用 [W3C PROV-DM](https://www.w3.org/TR/prov-dm/)表达；关键不是采用某个格式，而是团队共识不能抹去来源和委派链。
+
 ### Merge 是显式策略
 
 不同任务需要不同合并器：
@@ -362,12 +385,13 @@ return verdict
 4. **子契约能否追溯**：父版本、派生 Goal、继承约束、输入版本、预算、Artifact 和验收者是否明确？
 5. **拓扑分层了吗**：数据流、决策权和成员组织是否被混成一个名词？
 6. **隔离边界在哪里**：Context、State、Artifact、Workspace、Authority 与 Budget 分别怎样约束？
-7. **生命周期能否闭合**：Spawn、Join、Cancel、Timeout、Retry、Partial Failure 和 Orphan 谁负责？
-8. **共享事实怎样形成**：Peer Message 怎样经过来源校验后才能进入共享状态？
-9. **Merge 策略是什么**：Reducer、Ranker、Synthesizer、Integrator 或 Human Gate 依据什么工作？
-10. **验证是否针对合并版本**：子分支证据能否证明最终 Artifact，冲突后是否重新验证？
-11. **团队何时算完成**：谁对父 Completion Contract 做全局 Verdict？Unknown 怎样升级？
-12. **复杂度是否值得**：成功率、延迟、成本、错误传播和恢复性相对基线是否真的改善？
+7. **委派是否只会收窄**：Child Capability 是否受 Parent Grant、Assignment、Policy、Budget 与 Delegation Depth 的共同限制？
+8. **生命周期能否闭合**：Spawn、Join、Cancel、Timeout、Retry、Partial Failure 和 Orphan 谁负责？撤销怎样传播到后代 Grant？
+9. **共享事实怎样形成**：Peer Message 怎样经过来源校验后才能进入共享状态？
+10. **Merge 策略是什么**：Reducer、Ranker、Synthesizer、Integrator 或 Human Gate 依据什么工作？
+11. **验证是否针对合并版本**：子分支证据能否证明最终 Artifact，冲突后是否重新验证？
+12. **团队何时算完成**：谁对父 Completion Contract 做全局 Verdict？Unknown 怎样升级？
+13. **复杂度是否值得**：成功率、延迟、成本、错误传播和恢复性相对基线是否真的改善？
 
 ## 结论
 
@@ -394,6 +418,9 @@ Agent-as-Tool、Handoff、Child Task 和 Team 决定控制权与生命周期；C
 
 ## 参考资料
 
+- [OAuth 2.0 Token Exchange — RFC 8693](https://datatracker.ietf.org/doc/html/rfc8693)
+- [OAuth 2.0 Token Revocation — RFC 7009](https://datatracker.ietf.org/doc/html/rfc7009)
+- [PROV-DM: The PROV Data Model — W3C](https://www.w3.org/TR/prov-dm/)
 - [Multi Agent — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/zh/multiagent/)
 - [Team — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/zh/team/)
 - [Task Run — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/zh/taskrun/)

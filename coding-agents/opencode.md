@@ -4,4 +4,4 @@ title: OpenCode
 
 # OpenCode
 
-> 状态：todo
+敬请期待。

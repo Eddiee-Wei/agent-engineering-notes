@@ -2,7 +2,7 @@
 title: "Agent State Boundaries: Context, Session, Memory, and Artifacts"
 nav_title_zh: Agent 的状态边界：Context、Session、Memory 与 Artifact
 nav_order: 3
-description: 区分决策输入、连续性、恢复与产物，理解 Context、Run State、Session、Memory、Checkpoint 与 Artifact 的状态边界。
+description: 区分观察、声明、决策输入、连续性、恢复与产物，理解 Agent 如何保存状态并判断什么可以相信。
 ---
 
 # 03｜Agent 的状态边界：Context、Session、Memory 与 Artifact
@@ -15,6 +15,7 @@ description: 区分决策输入、连续性、恢复与产物，理解 Context�
 - 两个 Run 同时更新一个 Session，后写入者是否有权覆盖前一个 Run？
 - Memory 里记录了“用户允许修改生产配置”，这条信息由谁确认，何时失效？
 - Artifact 文件名没有变化，内容已经迭代三版，Checkpoint 引用的究竟是哪一版？
+- 工具返回“请求已受理”以后，系统为什么不能直接写成“部署成功”？
 
 这些并不是多加几个数据库字段就能解决的问题。它们来自一个更根本的误解：把 Context、Run State、Session、Memory、Store、Checkpoint 和 Artifact 当成七种可以随意互换的“存储”。
 
@@ -59,6 +60,44 @@ State Claim
 - **Observed At**：何时观察到，此后外部状态是否已改变。
 
 这不是要求把每个布尔值包装成复杂对象，而是要求系统知道哪些字段可以简化，哪些声明一旦失去身份和版本就不再可信。
+
+### Observation、Claim 与 Evidence 不是同一个对象
+
+Agent 的认知链更适合写成：
+
+```text
+World
+  → Observation
+  → Claim
+  → Evidence Package
+  → Verification
+  → Accepted / Rejected / Unknown
+```
+
+- **Observation** 是某个来源在特定时间和 Scope 下返回的原始记录，例如进程退出码、HTTP 响应、文件摘要或用户输入；
+- **Claim** 是系统根据一个或多个 Observation 表达的可判断命题，例如“当前 Commit 上测试通过”；
+- **Evidence Package** 固定支持或反驳 Claim 的来源引用、版本、采集方式、时间与完整性；
+- **Verification** 按明确 Predicate、Rubric 或人工责任判断证据是否足够；
+- **Unknown** 表示证据缺失、冲突、过期或无法覆盖命题，而不是一个低概率的 `false`。
+
+Tool Result 只自动产生 Observation，不自动产生正确的 Claim。`HTTP 202 Accepted` 可以证明服务接收了请求，却不能单独证明部署已经完成；`exit_code=0` 可以证明该进程如何退出，却不一定证明命令运行在目标 Workspace、覆盖了全部测试，或结果在当前版本仍成立。解析器、模型和 Verifier 都可能从同一回执形成不同层次的 Claim，因此原始回执与派生声明应分开保存。
+
+| 记录 | 例子 | 可以直接推出什么 | 不能直接推出什么 |
+| --- | --- | --- | --- |
+| 原始 Observation | `pytest` 返回退出码 0 | 该进程按此退出码结束 | 目标 Commit 的所有要求已经满足 |
+| 环境 Claim | `tests_passed@commit=C1` | 一个需要证据支持的命题 | 永久事实，或 C2 上仍成立 |
+| 模型推断 | “失败可能来自时区” | 可指导下一步验证的 Hypothesis | 已确认根因 |
+| Verification Result | Required Conditions 在 C1 上通过 | 在给定标准和证据范围内成立 | 用户已接受、权限仍有效或未来不会回归 |
+
+### Provenance、Freshness 与 Confidence 各回答不同问题
+
+可信声明至少需要三个互不替代的维度：
+
+1. **Provenance** 回答“它从哪里来、由谁观察、经过什么变换”。[W3C PROV-DM](https://www.w3.org/TR/prov-dm/)用 Derivation、Attribution、Association、Delegation 与 Invalidation 表达实体、活动和主体之间的来源关系，适合保存“谁观察、谁转述、谁代表谁行动”的血缘，而不是只留下最终文本。
+2. **Freshness** 回答“它对哪个世界版本、在多长时间内仍可使用”。时间新不等于版本新；昨天对固定 Commit 的测试证据可以稳定，刚刚读取但未绑定资源版本的缓存却可能已经陈旧。
+3. **Confidence** 回答“在现有证据下，对 Claim 的认知把握有多大”。它不是调用高风险工具的权限，也不能把缺失证据变成证据。高置信推断仍可能需要审批，低置信但可验证的假设则可以触发只读调查。
+
+当来源冲突时，系统不应简单使用最后写入者、最长回答或最高自报置信。更稳妥的顺序是：先检查 Scope 和版本是否其实不同，再比较来源权威性、直接性、独立性与新鲜度；仍不能消解时保留多个 Claim 和冲突边，返回 `unknown` 或升级人工。后续重新观察可以让 Claim 进入 `superseded`、`invalidated` 或 `revalidated`，但不应改写旧 Event 当时记录的内容。
 
 ### Agent 最重要的状态往往在 Runtime 外面
 
@@ -210,6 +249,12 @@ Memory 也不等于 Knowledge。Memory 通常来自用户或 Agent 经历，强�
 
 > **Memory Write 是一次事实发布，而不是日志追加。**
 
+### Memory 不能自动升级为 Skill
+
+Memory 保存的是以后可能再次使用的事实、偏好或经验；Skill 封装的是完成某类任务时可复用的说明、步骤、脚本和工具约定。一次成功轨迹可以同时产生 Memory Candidate 和 Skill Candidate，但二者不是同一种发布物：前者回答“以后应该记住什么”，后者回答“以后允许按什么流程行动”。
+
+一条轨迹只证明某个版本在某个环境里曾经成功，不能证明流程已经通用、权限边界正确或依赖仍然存在。从 Experience / Memory 到 Skill 至少还需要去上下文化、去敏、评测、安全审查、授权、版本化发布与回滚；加载后仍要经过 Tool Policy、Approval 与 Sandbox。`SKILL.md` 是能力描述和装配格式，不是安全边界本身。状态系统必须守住一条原则：**复用数据不能静默晋升为可执行能力，派生关系必须能撤销。**
+
 ## Store：基础设施能力不能反推数据语义
 
 Store 可能指 KV Store、Document Store、Vector Store、Blob Store、Event Store，甚至只是一个框架定义的通用持久化接口。它回答：
@@ -306,10 +351,13 @@ Artifact 不是只能在最后出现。中间分析、计划和测试报告也�
 七个概念之间常见的是语义变换：
 
 ```text
-World       --observe----> Run State
+World       --observe----> Observation
+Observation --record-----> Run State
+Observation --derive-----> Claim / Evidence Package
 Run State   --snapshot---> Checkpoint
 Sources     --select-----> Context
 Session     --promote----> Memory
+Experience  --derive-----> Skill Candidate
 Run State   --materialize> Artifact
 Artifact    --reference--> Run State / Session / Context
 Events      --fold-------> State Projection
@@ -318,9 +366,12 @@ Events      --fold-------> State Projection
 每种变换都有不同失败模式：
 
 - `observe` 可能读取到过期、局部或结果未知的世界；
+- `record` 要保留原始回执、观察主体、时间和世界版本，不能只存解析后的结论；
+- `derive` 必须保留来源、变换、Scope、版本和冲突，不能把推断伪装成原始事实；
 - `select` 是有损投影，不能反向覆盖来源；
 - `snapshot` 必须绑定控制位置与版本；
 - `promote` 需要验证、去敏和 Scope 审查；
+- Skill Candidate 还要经过泛化、权限审查、评测、版本化发布与撤销门禁；
 - `materialize` 需要原子命名、版本和血缘；
 - `reference` 需要防止悬空与版本漂移；
 - `fold` 依赖完整、有序、兼容的 Event。
@@ -338,7 +389,7 @@ Events      --fold-------> State Projection
 | 未知 Effect 被重试 | 同一逻辑行动拥有稳定意图身份和可查询回执 | Effect ID、Idempotency Key、Reconcile |
 | Zombie Attempt | 只有当前执行所有者可以提交 | Lease、Fencing Token、Attempt Version |
 | 旧 Checkpoint 强行恢复 | 恢复点绑定 Runtime 与外部世界版本 | 兼容校验、迁移、拒绝 Resume |
-| Memory 污染 | Memory 是带来源和失效规则的发布结果 | Candidate、验证、TTL、更正与撤销 |
+| Claim / Memory 污染 | 可复用声明是带来源和失效规则的发布结果 | Candidate、证据、冲突、TTL、更正与撤销 |
 | Artifact 漂移 | 引用固定到不可歧义版本 | Version、Content Hash、Lineage |
 
 Agent 往往同时写文件系统、数据库、对象存储和第三方 API，它们通常没有全局事务。与其宣称 Exactly-once，更实际的做法是缩小原子边界，让状态和待发布事件可恢复，让消费者去重，并在结果未知时先 Reconcile。Effect ID 还必须表达“同一份行动意图”，不能只靠参数 Hash 猜测。
@@ -366,16 +417,18 @@ Agent 往往同时写文件系统、数据库、对象存储和第三方 API，�
 
 ## 状态边界检查
 
-面对一个 Agent Framework、Harness 或产品，可以用八条约束检查它的状态设计：
+面对一个 Agent Framework、Harness 或产品，可以用十条约束检查它的状态设计：
 
 1. **先定角色再定存储**：这份数据属于 Context、Run、Session、Memory、Checkpoint 还是 Artifact？
-2. **投影可重建**：Model Context 能否从更权威、带来源的版本重新编译？
-3. **写入有身份**：每个可变聚合是否有 Scope、Version、逻辑写入者与冲突规则？
-4. **连续性不混用**：Session 是否被误当成 Run 身份、事务或恢复点？
-5. **恢复会校准现实**：Checkpoint 是否包含控制位置、待处理 Effect 与 Runtime 指纹，并在 Resume 时重查外部世界？
-6. **复用经过发布**：Memory 是否区分 Candidate、已验证事实、时效和撤销路径？
-7. **产物引用不漂移**：Artifact Reference 是否固定版本、Hash、来源与访问范围？
-8. **提交与生命周期明确**：哪些 Store 必须先提交才能显示完成，各角色何时更正、迁移和删除？
+2. **观察与声明分离**：原始 Tool Receipt、解析结果、模型推断和 Verification Result 是否可区分？
+3. **证据可追溯**：Claim 是否绑定 Provenance、World Version、Freshness 与冲突状态，并能表达 Unknown？
+4. **投影可重建**：Model Context 能否从更权威、带来源的版本重新编译？
+5. **写入有身份**：每个可变聚合是否有 Scope、Version、逻辑写入者与冲突规则？
+6. **连续性不混用**：Session 是否被误当成 Run 身份、事务或恢复点？
+7. **恢复会校准现实**：Checkpoint 是否包含控制位置、待处理 Effect 与 Runtime 指纹，并在 Resume 时重查外部世界？
+8. **复用经过发布**：Memory 与 Skill Candidate 是否区分来源、验证、时效和撤销路径？
+9. **产物引用不漂移**：Artifact Reference 是否固定版本、Hash、来源与访问范围？
+10. **提交与生命周期明确**：哪些 Store 必须先提交才能显示完成，各角色何时更正、迁移和删除？
 
 如果这些问题没有答案，“支持状态、记忆和恢复”仍然只是功能名称。
 
@@ -391,6 +444,8 @@ Context、Run State、Session、Memory、Store、Checkpoint 与 Artifact 的区�
 - Artifact 保护输入与交付物的身份和版本；
 - Store 为这些语义提供不同强度的持久化能力。
 
+Observation、Claim 与 Evidence 横跨这些角色：Observation 可以进入 Run State，Claim 可以被投影进 Context，Evidence 可以固化为 Artifact，经过发布的结论才可能进入 Memory。无论落在哪里，它们都不能失去来源、Scope、版本和失效条件。
+
 成熟的 Agent 产品不会因为“数据已经保存”就宣布状态安全。它会继续追问：保存的是事实还是投影，写入基于哪个版本，外部副作用是否已经发生，谁仍拥有提交权，以及恢复以后会不会重复伤害真实世界。
 
 > **状态系统的目标不是让 Agent 永远记得更多，而是让它在崩溃、并发、重试和变化之后，仍然知道什么可以相信、什么必须重查，以及下一步怎样安全发生。**
@@ -399,6 +454,7 @@ Context、Run State、Session、Memory、Store、Checkpoint 与 Artifact 的区�
 
 ## 参考资料
 
+- [PROV-DM: The PROV Data Model — W3C](https://www.w3.org/TR/prov-dm/)
 - [Context management — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/context/)
 - [Sessions — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/sessions/)
 - [RunState — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/ref/run_state/)

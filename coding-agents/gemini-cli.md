@@ -4,4 +4,4 @@ title: Gemini CLI
 
 # Gemini CLI
 
-> 状态：todo
+敬请期待。

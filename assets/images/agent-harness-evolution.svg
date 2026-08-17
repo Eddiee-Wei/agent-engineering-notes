@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Harness 从 Prompt Wrapper 到受控进化系统的压力链</title>
+  <desc id="desc">图分为三层。上层区分 Model、Runtime、Harness 与外部世界的责任边界；中层以八个阶段展示 Harness 如何在失败压力下依次吸收工具循环、运行时、工作区、上下文与状态、治理、持久与多 Agent、评测闭环；下层展示环境证据如何通过评测和版本化回归继续推动 Harness 演化。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #ffffff; }
+      .frame { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 8 8; }
+      .box { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .soft { fill: #eeeeea; stroke: #181816; stroke-width: 2; }
+      .active { fill: #181816; stroke: #181816; stroke-width: 2; }
+      .risk { fill: #fff2ef; stroke: #a43b32; stroke-width: 2; }
+      .success { fill: #edf6ef; stroke: #376a42; stroke-width: 2; }
+      .label { fill: #181816; font: 600 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-light { fill: #ffffff; font: 600 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub-light { fill: #deded8; font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .frame-label { fill: #6d6d67; font: 600 15px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .step { fill: #6d6d67; font: 600 12px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .step-light { fill: #deded8; font: 600 12px "IBM Plex Mono", monospace; letter-spacing: .04em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.4; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #6d6d67; stroke-width: 2.1; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 12px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .note { fill: #42423e; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .note-strong { fill: #181816; font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="1040" rx="18"/>
+
+  <rect class="frame" x="35" y="30" width="1210" height="225" rx="24"/>
+  <text class="frame-label" x="65" y="65">RESPONSIBILITY BOUNDARY · MODEL PROPOSES, HARNESS MAKES WORK REAL</text>
+
+  <rect class="box" x="70" y="100" width="205" height="92" rx="14"/>
+  <text class="label" x="172" y="132">Model</text>
+  <text class="sub" x="172" y="157">interpret · reason · propose</text>
+  <text class="sub" x="172" y="178">产生候选动作</text>
+
+  <rect class="box" x="335" y="100" width="205" height="92" rx="14"/>
+  <text class="label" x="437" y="132">Agent Runtime</text>
+  <text class="sub" x="437" y="157">run loop · event · resume</text>
+  <text class="sub" x="437" y="178">推进一次执行</text>
+
+  <rect class="active" x="600" y="88" width="320" height="116" rx="16"/>
+  <text class="label-light" x="760" y="123">Agent Harness</text>
+  <text class="sub-light" x="760" y="150">context · tools · workspace · policy</text>
+  <text class="sub-light" x="760" y="174">artifacts · recovery · evidence</text>
+  <text class="sub-light" x="760" y="194">把能力变成受控工程行为</text>
+
+  <rect class="box" x="980" y="100" width="230" height="92" rx="14"/>
+  <text class="label" x="1095" y="132">Application / World</text>
+  <text class="sub" x="1095" y="157">repo · API · user · platform</text>
+  <text class="sub" x="1095" y="178">接收可审计 Effect</text>
+
+  <path class="edge" d="M 275 146 L 334 146"/>
+  <path class="edge" d="M 540 146 L 599 146"/>
+  <path class="edge" d="M 920 146 L 979 146"/>
+  <text class="note" x="70" y="228">Workflow 决定业务路径；Harness 决定每一步在什么上下文、权限、工作区和证据要求下真正执行。</text>
+
+  <rect class="frame" x="35" y="285" width="1210" height="485" rx="24"/>
+  <text class="frame-label" x="65" y="320">EVOLUTION PRESSURE · EACH FAILURE ADDS A NEW SYSTEM CONTRACT</text>
+
+  <rect class="box" x="70" y="360" width="250" height="120" rx="14"/>
+  <text class="step" x="92" y="387">01 · WRAP</text>
+  <text class="label" x="195" y="416">Prompt Wrapper</text>
+  <text class="sub" x="195" y="443">压力：输出不可行动</text>
+  <text class="sub" x="195" y="464">新增：输入 / 输出协议</text>
+
+  <rect class="box" x="365" y="360" width="250" height="120" rx="14"/>
+  <text class="step" x="387" y="387">02 · ACT</text>
+  <text class="label" x="490" y="416">Tool Loop</text>
+  <text class="sub" x="490" y="443">压力：需要观察后再行动</text>
+  <text class="sub" x="490" y="464">新增：Action / Observation</text>
+
+  <rect class="soft" x="660" y="360" width="250" height="120" rx="14"/>
+  <text class="step" x="682" y="387">03 · RUN</text>
+  <text class="label" x="785" y="416">Agent Runtime</text>
+  <text class="sub" x="785" y="443">压力：循环无法暂停与恢复</text>
+  <text class="sub" x="785" y="464">新增：Run / Event / Stop</text>
+
+  <rect class="soft" x="955" y="360" width="250" height="120" rx="14"/>
+  <text class="step" x="977" y="387">04 · ISOLATE</text>
+  <text class="label" x="1080" y="416">Workspace Harness</text>
+  <text class="sub" x="1080" y="443">压力：副作用污染真实环境</text>
+  <text class="sub" x="1080" y="464">新增：Workspace / Sandbox</text>
+
+  <path class="edge" d="M 320 420 L 364 420"/>
+  <path class="edge" d="M 615 420 L 659 420"/>
+  <path class="edge" d="M 910 420 L 954 420"/>
+
+  <rect class="active" x="70" y="575" width="250" height="120" rx="14"/>
+  <text class="step-light" x="92" y="602">08 · LEARN</text>
+  <text class="label-light" x="195" y="631">Evaluation-driven</text>
+  <text class="sub-light" x="195" y="658">压力：失败只能靠人工猜测</text>
+  <text class="sub-light" x="195" y="679">新增：Trace / Eval / Regression</text>
+
+  <rect class="soft" x="365" y="575" width="250" height="120" rx="14"/>
+  <text class="step" x="387" y="602">07 · COORDINATE</text>
+  <text class="label" x="490" y="631">Durable / Multi-Agent</text>
+  <text class="sub" x="490" y="658">压力：长任务与协作失去所有权</text>
+  <text class="sub" x="490" y="679">新增：Lease / Delegate / Merge</text>
+
+  <rect class="risk" x="660" y="575" width="250" height="120" rx="14"/>
+  <text class="step" x="682" y="602">06 · GOVERN</text>
+  <text class="label" x="785" y="631">Governed Harness</text>
+  <text class="sub" x="785" y="658">压力：模型可绕过文字约束</text>
+  <text class="sub" x="785" y="679">新增：Policy / Approval / Audit</text>
+
+  <rect class="soft" x="955" y="575" width="250" height="120" rx="14"/>
+  <text class="step" x="977" y="602">05 · CONTINUE</text>
+  <text class="label" x="1080" y="631">Context / State</text>
+  <text class="sub" x="1080" y="658">压力：长任务遗忘与漂移</text>
+  <text class="sub" x="1080" y="679">新增：Context / Artifact / Checkpoint</text>
+
+  <path class="edge" d="M 1080 480 L 1080 574"/>
+  <path class="edge" d="M 955 635 L 911 635"/>
+  <path class="edge" d="M 660 635 L 616 635"/>
+  <path class="edge" d="M 365 635 L 321 635"/>
+  <text class="edge-label" x="1120" y="532">more pressure</text>
+  <text class="note-strong" x="70" y="738">进化不是组件堆叠：</text>
+  <text class="note" x="228" y="738">每一阶段都把一种不可接受的随机性，改写成可执行、可恢复、可验证的系统契约。</text>
+
+  <rect class="frame" x="35" y="800" width="1210" height="205" rx="24"/>
+  <text class="frame-label" x="65" y="835">EVIDENCE LOOP · THE HARNESS ITSELF BECOMES A VERSIONED ENGINEERING SYSTEM</text>
+
+  <rect class="box" x="70" y="870" width="225" height="82" rx="13"/>
+  <text class="label" x="182" y="902">Environment Evidence</text>
+  <text class="sub" x="182" y="928">receipt · diff · test · trace</text>
+
+  <rect class="box" x="350" y="870" width="225" height="82" rx="13"/>
+  <text class="label" x="462" y="902">Evaluation</text>
+  <text class="sub" x="462" y="928">outcome · trajectory · policy</text>
+
+  <rect class="soft" x="630" y="870" width="225" height="82" rx="13"/>
+  <text class="label" x="742" y="902">Harness Change</text>
+  <text class="sub" x="742" y="928">tool · context · guardrail</text>
+
+  <rect class="success" x="910" y="870" width="300" height="82" rx="13"/>
+  <text class="label" x="1060" y="902">Versioned Regression Gate</text>
+  <text class="sub" x="1060" y="928">prove improvement before rollout</text>
+
+  <path class="edge" d="M 295 911 L 349 911"/>
+  <path class="edge" d="M 575 911 L 629 911"/>
+  <path class="edge" d="M 855 911 L 909 911"/>
+  <path class="edge-dashed" d="M 1060 952 C 1060 986, 182 986, 182 953"/>
+</svg>

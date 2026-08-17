@@ -227,7 +227,22 @@ Run 失败后 Task 仍可由新 Run 完成；Run 正常结束时 Verdict 也可�
 
 低风险澄清可以在安全边界更新版本并继续；改变 Goal、权限、受保护对象或完成标准时，通常应停止旧 Run、Reconcile 已发生 Effect，再创建新 Run。无论采用哪种策略，历史 Event 都必须保留当时生效的 `contract_version`。
 
-## Steering 首先是输入分类
+## 人怎样进入 Agent 闭环：六种控制转移
+
+Human-in-the-loop 不是一个统一的“等用户回复”状态。人进入闭环可能是在补信息、授权一次动作、修改任务、抢回控制、接管责任或接受交付；如果 Runtime 只暴露一个 `pending_user_input`，恢复后就无法判断这条回复究竟允许改变什么。
+
+| 交互类型 | 人在回答什么问题 | 默认改变什么 | 默认不代表什么 |
+| --- | --- | --- | --- |
+| **Clarification** | “你缺的事实或偏好是什么？” | 补充 Request / Context；必要时形成 Contract Amendment | 不自动批准副作用，也不证明回答者有权改 Policy |
+| **Approval** | “是否允许这个具体候选动作发生？” | 为绑定 Action、Resource、参数和时限的授权条件提供决策 | 不等于永久授权，不自动扩展其他工具或后续 Run |
+| **Steering** | “当前路径或要求怎样调整？” | 可能只改 Plan，也可能修订 Contract | 不是所有新消息都属于同一 Task |
+| **Interrupt** | “现在先停下来。” | 发出 Pause / Cancel / Supersede 控制信号 | 不是事务回滚，已经发生的 Effect 仍需协调 |
+| **Escalation** | “系统无法在现有责任与证据内继续，谁来接管判断？” | 转移决策责任，返回 Blocker、Options、Evidence 与截止时间 | 不自动把执行凭据或无限 Scope 交给接管者 |
+| **Acceptance** | “交付是否满足责任人的业务预期？” | 在 Delivery 与 Completion Verdict 之后记录接受、拒绝或要求修订 | 不追溯批准此前未授权的行为，也不等于测试通过 |
+
+这六类交互可以出现在同一个 UI 中，却必须在协议层拥有不同 `kind`、目标对象和响应 Schema。Clarification 可以返回结构化字段；Approval 必须引用稳定 Action ID；Interrupt 要传播到当前执行栈；Acceptance 则应绑定交付物和 Contract Version。
+
+### Steering 首先是输入分类
 
 Agent 运行中收到新消息，不能一律追加到 Context 后继续。系统应先判断它改变了哪一层：
 
@@ -252,6 +267,43 @@ Classify Input → Assess Impact → Pause Safely → Reconcile Old Effects
 难点在 `Reconcile`：如果 v1 已经修改文件，而 v2 新增“不得修改该文件”，系统不能只替换 Context。它必须说明旧修改如何保留、撤销、补偿或交给人处理。
 
 变更影响也有层级：`cosmetic < evidence-only < replan < reauthorize < new-run < new-task`。Amendment 应保存父版本、修改字段、来源、授权者和生效时间。用户补充一句话不自动代表有权修改所有字段；组织 Policy 与权限仍由外部控制面决定。
+
+### 控制转移必须留下恢复信封
+
+每次离开自动执行前，系统应把“为什么停、谁能回答、回答允许改变什么”固化，而不是只保存最后一条聊天消息：
+
+```python
+class HumanControlRequest:
+    request_id: str
+    kind: Literal[
+        "clarification", "approval", "steering",
+        "interrupt", "escalation", "acceptance",
+    ]
+    run_id: str
+    contract_version: int
+    target_ref: str
+    question: str
+    allowed_responses: list[str]
+    required_principal: str | None
+    capability_requirement: str | None
+    expires_at: datetime | None
+    resume_cursor: str | None
+```
+
+恢复时的影响可以用四条边界判断：
+
+| 回复结果 | Contract | Logical Run | Authority | Delivery / Acceptance |
+| --- | --- | --- | --- | --- |
+| 补充缺失事实 | 通常不变；若基线改变则升版 | 同一 Run 从安全点继续或重验 | 不变 | 不变 |
+| 批准绑定动作 | 通常不变 | 同一 Run，可创建新 Attempt | 只增加本次动作所需的有界条件 | 不变 |
+| 修改 Goal / Scope / Invariant | 必须升版 | Reconcile 后显式 Resume 或 New Run | 重新求交集并授权 | 旧交付候选失效或需重验 |
+| Interrupt / Cancel | 不改写历史版本 | Pause 或进入受控终态 | 未开始动作不再可用；必要时撤销 | 已发生 Effect 单独处理 |
+| Escalate | 通常不变 | 保持 Paused / Stopped 直到责任人决策 | 不自动扩权 | 记录责任转移和待决问题 |
+| Accept / Reject Delivery | 不改变执行时契约 | 原 Run 已有 Outcome，修订应建新 Task/Run | 不追溯改变 | 形成 Accepted / Rejected / Revision Requested |
+
+[MCP Elicitation](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation)把 `accept`、`decline` 与 `cancel` 定义为不同动作，说明“用户没有提供数据”和“用户取消整个交互”不是同一种结果。[OpenAI Agents SDK 的 Human-in-the-loop](https://openai.github.io/openai-agents-python/human_in_the_loop/)让受保护 Tool Call 产生 interruption，并按 Tool Call ID 批准或拒绝后恢复原始 Run；[A2A 规范](https://a2a-protocol.org/dev/specification/)也分别暴露 `TASK_STATE_INPUT_REQUIRED` 与 `TASK_STATE_AUTH_REQUIRED`。这些实现名称不完全相同，但共同证明：缺信息与缺授权必须分开建模。
+
+Approval 的授权封装、Principal 校验、过期与撤销见 [07｜Agent 的授权边界](07-agent-authorization-semantics.md)。在任务层，关键是明确每次人机交互怎样改变 Task 与 Run。
 
 ## Completion 是一份带版本的裁决
 
@@ -299,7 +351,7 @@ Verdict 必须回答：
 
 Completion Contract 本质上是一套证据策略：每个 Condition 需要 Predicate / Rubric、证据类型、Evaluator 版本、World Scope / Freshness 和失败语义。多个 Condition 也不是计算简单通过率；Required Invariant 未验证，不能被其他绿色指标平均掉。
 
-Verifier 不是事实制造者。LLM-as-Judge 可以判断文风，却不应仅凭 Transcript 断言生产资源已经创建。Delivery 与 Acceptance 也应分开：Artifact 可用不代表开放式任务已被责任人认可，必要时 Verdict 应明确返回 `needs_human`。
+Verifier 不是事实制造者。LLM-as-Judge 可以判断文风，却不应仅凭 Transcript 断言生产资源已经创建。Delivery 与 Acceptance 也应分开：Artifact 可用不代表开放式任务已被责任人认可，必要时 Verdict 应明确返回 `needs_human`。Acceptance 是对交付责任的裁决，不是对执行过程的追溯授权；一个人可以接受合规交付，却不能用“接受结果”洗白未审批的高风险动作。
 
 ## 通往 Multi-Agent：委派的是子契约
 
@@ -338,16 +390,17 @@ A2A 的 Task 最接近跨 Agent 可追踪 Unit of Work，但它的 `status`、`a
 
 ## 任务边界检查
 
-面对一个 Agent Framework、Harness 或产品，可以先问八个问题：
+面对一个 Agent Framework、Harness 或产品，可以先问九个问题：
 
 1. **Request 与 Contract 是否分离**：原始表达、系统解释和已授权 Task 分别保存在哪里？
 2. **任务定义是否可区分**：Goal、Scope、Constraint、Invariant、Preference 与 Policy 各由谁决定？
 3. **Plan 能否失败而 Goal 不漂移**：Observation 到来后改的是路径，还是验收标准？
 4. **执行是否绑定版本**：Run、Action、Event 和 Verdict 能否追溯当时的 Contract Version？
 5. **Steering 是否先分类**：新消息是证据、计划提示、Amendment、Cancel 还是 New Task？
-6. **旧 Effect 是否被协调**：新约束生效前已经发生的副作用怎样保留、撤销或补偿？
-7. **完成是否依赖证据**：Evidence 是否绑定 Condition、World Version、来源与新鲜度，并表达 Unknown / NeedsHuman？
-8. **委派是否保留父边界**：子任务怎样继承约束、提交 Artifact，并由父任务做端到端验收？
+6. **人机控制类型是否分离**：Clarification、Approval、Interrupt、Escalation 与 Acceptance 是否拥有不同目标和恢复语义？
+7. **旧 Effect 是否被协调**：新约束生效前已经发生的副作用怎样保留、撤销或补偿？
+8. **完成是否依赖证据**：Evidence 是否绑定 Condition、World Version、来源与新鲜度，并表达 Unknown / NeedsHuman？
+9. **委派是否保留父边界**：子任务怎样继承约束、提交 Artifact，并由父任务做端到端验收？
 
 如果这些问题没有答案，“Agent 正在执行一个任务”通常只意味着模型正在消费一段上下文。
 
@@ -370,6 +423,9 @@ Agent 的自治不来自自由解释任务，而来自在稳定契约内动态�
 
 ## 参考资料
 
+- [Elicitation — Model Context Protocol](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation)
+- [Human-in-the-loop — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/human_in_the_loop/)
+- [A2A Protocol Specification](https://a2a-protocol.org/dev/specification/)
 - [Life of a Task — Agent2Agent Protocol](https://a2a-protocol.org/latest/topics/life-of-a-task/)
 - [A2A Protocol Specification](https://github.com/a2aproject/A2A/blob/2cdf197805cf3eb780714f730cdfd24bce1c9998/docs/specification.md)
 - [tRPC-Agent API — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/trpcagent/)

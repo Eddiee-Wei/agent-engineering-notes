@@ -2,7 +2,7 @@
 title: "Agent Runtime: How a Run Starts, Progresses, and Ends"
 nav_title_zh: Agent Runtime：一次运行如何开始、推进与结束
 nav_order: 2
-description: 从 Run、Attempt、Step、Event 到暂停、取消与终态，理解一次 Agent 运行如何开始、推进与结束。
+description: 从 Trigger、Activation、Run、Attempt、Step、Event 到暂停、取消与终态，理解一次 Agent 运行如何被激活、推进与结束。
 ---
 
 # 02｜Agent Runtime：一次运行如何开始、推进与结束
@@ -42,6 +42,59 @@ description: 从 Run、Attempt、Step、Event 到暂停、取消与终态，理�
 从用户界面看，这可能只是“一问一答”；从模型看，是多轮生成；从 Runtime 看，是带暂停和恢复的一次逻辑执行；从进程看，恢复前后甚至可能是两次执行尝试；从事件消费者看，则是一串文本、工具、状态和控制事件。
 
 如果把它们全部叫作“对话轮次”，生命周期会立刻失真。
+
+## Run 怎样被激活：Request 只是一个入口
+
+`runner.run(...)` 是代码入口，却不一定是一次 Logical Run 的业务起点。Agent 可以由前台消息、Webhook、领域事件、定时计划或持续任务的唤醒条件触发；同一个 Standing Task 还可能在不同时间产生多个 Run。反过来，一次 HTTP 请求也可能只是在查询、取消或恢复既有 Run，而不是创建新 Run。
+
+```text
+Standing Task / Request
+        ↓
+Trigger → Normalize → Authenticate / Authorize → Deduplicate / Admit
+        → Bind Task Contract and Session → Create Logical Run → Acquire Attempt
+```
+
+不同入口需要保留不同的触发证据：
+
+| 激活来源 | 创建 Run 前需要固定什么 | 典型风险 |
+| --- | --- | --- |
+| 用户请求 / 前台消息 | Principal、原始消息、回复目标、Session 与 Task Draft | 客户端断线后 Run 被误取消，或重复发送产生两个 Run |
+| Webhook / 领域事件 | Event ID、Source、Subject、发生时间与来源版本 | 至少一次投递造成重复副作用，乱序事件基于旧世界执行 |
+| Schedule / Cron | Schedule ID、计划触发时间、时区与 Misfire Policy | 服务恢复后漏跑、补跑过多或同一时刻重复触发 |
+| Standing Task / Monitor | Task Contract Version、唤醒条件、检查游标与冷却规则 | 每次轮询都创建工作，旧条件失效后仍继续运行 |
+| 远端 Agent / Protocol Task | 调用方身份、上游 Task / Context、回传通道与截止时间 | 上游重试产生重复子任务，取消和终态无法关联 |
+
+可以把这些字段包装成 **Activation Record**。它不是新的万能对象，而是要求 Runtime 在创建 Run 前能够回答：谁因为什么触发了工作、是否已经处理过、绑定哪个任务版本、允许使用什么权限，以及结果应回到哪里。
+
+```python
+class ActivationRecord:
+    activation_id: str
+    trigger_id: str
+    trigger_type: str
+    source: str
+    subject: str | None
+    occurred_at: datetime | None
+    scheduled_for: datetime | None
+    principal_id: str
+    task_id: str
+    contract_version: int
+    session_id: str | None
+    capability_ref: str
+    reply_to: str | None
+    dedupe_key: str
+```
+
+`trigger_id` 或幂等键用于识别重复投递；Admission Control 决定当前是否允许启动；Task Contract 决定触发事件究竟只是 Observation，还是足以授权一次新的执行。[CloudEvents](https://github.com/cloudevents/spec/blob/ce@stable/cloudevents/spec.md)要求生产者让同一 `source` 下的 `id` 能唯一标识事件，并允许重发的同一事件沿用 ID，正好为消费端去重提供身份；但去重只防重复激活，不能替代工具副作用的幂等。
+
+### Schedule 与 Standing Task 不是 Run
+
+Schedule 表达“什么时候尝试激活”，Standing Task 表达“长期承诺在什么条件下工作”，Run 才是一次具体因果执行。三者必须拥有不同身份：暂停或完成一次 Run，不会自动删除下一次计划；撤销 Standing Task，则应阻止后续 Trigger 创建新 Run。
+
+定时语义还必须明确：重叠执行是 `Allow`、`Forbid` 还是 `Replace`，错过触发是跳过、只补一次还是逐次补跑，Deadline 和时区怎样解释。[Kubernetes CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)公开暴露并发策略、起始截止时间和时区，也明确提醒调度是近似的，某些情况下可能创建两个 Job 或漏建 Job。因此，事件处理和任务动作都应按可能重复设计，而不是把 Cron 当成 Exactly-once 承诺。
+
+Resume 通常不是再次激活一个新 Run。审批通过、外部结果到达或 Worker 重新取得执行权时，更合理的身份关系是同一 Logical Run 创建新 Attempt，并保留原 Activation、Contract 与已发生 Effect。只有目标、Scope 或任务身份已经改变，才应明确创建 New Run 或 New Task。
+
+[tRPC-Agent-Go 的 OpenClaw Runtime](https://trpc-group.github.io/trpc-agent-go/openclaw-runtime/)把消息入口、Gateway、Cron、Session 与 Runner 组合成长时间运行外壳，也说明了一个重要分层：Trigger 属于运行入口和产品控制面，Runner 承接规范化后的执行；调度能力本身不等于 Agent 决策能力。
 
 ## 先建立一套可推理的坐标
 
@@ -96,14 +149,15 @@ Logical Run 表示“这是同一个目标执行”，Attempt 表示“这是该
 
 ## Runtime 实际承诺了什么
 
-框架的 API 可能只暴露 `runner.run(...)`，但一个完整 Runtime 至少要履行六类责任：
+框架的 API 可能只暴露 `runner.run(...)`，但一个完整 Runtime 至少要履行七类责任：
 
-1. **建立身份与输入边界**：创建 Run / Attempt，装配 Session、工具、策略和预算；
-2. **驱动决策与行动**：调用模型、解析候选行动、调度工具并回传 Observation；
-3. **执行确定性治理**：校验 Schema、权限、审批、并发和资源限制；
-4. **提交并发布事实**：保存状态、回执和进度，向 UI 或上层 Workflow 发出 Event；
-5. **处理控制转移**：响应暂停、Steering、取消、超时和外部唤醒；
-6. **形成明确终态**：区分完成、受控停止、失败、取消和超时，并清理资源。
+1. **规范化激活**：保留 Trigger 身份，去重并执行 Admission；
+2. **建立身份与输入边界**：创建 Run / Attempt，装配 Session、工具、策略和预算；
+3. **驱动决策与行动**：调用模型、解析候选行动、调度工具并回传 Observation；
+4. **执行确定性治理**：校验 Schema、授权、审批、并发和资源限制；
+5. **提交并发布事实**：保存状态、回执和进度，向 UI 或上层 Workflow 发出 Event；
+6. **处理控制转移**：响应暂停、Steering、取消、超时和外部唤醒；
+7. **形成明确终态**：区分完成、受控停止、失败、取消和超时，并清理资源。
 
 一个框架无关的接口可以长成这样：
 
@@ -295,17 +349,18 @@ Session 可以持久化 Event 和 State，却不因此自动成为 Runtime Check
 
 ## 阅读或设计 Runtime 时的检查清单
 
-面对任何 Agent Framework，可以先问九个问题：
+面对任何 Agent Framework，可以先问十个问题：
 
-1. 根执行由哪个 API 创建，稳定 Run ID 在哪里？
-2. Run、Attempt、Agent Invocation、模型调用和工具调用怎样关联？
-3. `Turn`、`Step`、`Round` 分别以什么为边界？
-4. Event 是否有稳定身份、顺序和因果关系，哪些会持久化？
-5. 状态提交、Event 发布和客户端消费分别在什么时候完成？
-6. Pause、Cancel、Timeout 和工具错误各自怎样改变 Run？
-7. Resume、Retry、Replay 和 New Run 是否拥有不同身份与入口？
-8. 结果未知的外部副作用怎样查询、去重或补偿？
-9. Session 并发、快照版本和 Runtime 配置变化怎样处理？
+1. Run 由 Request、Event、Schedule 还是 Standing Task 激活，重复触发怎样去重？
+2. 根执行由哪个 API 创建，稳定 Run ID 在哪里？
+3. Run、Attempt、Agent Invocation、模型调用和工具调用怎样关联？
+4. `Turn`、`Step`、`Round` 分别以什么为边界？
+5. Event 是否有稳定身份、顺序和因果关系，哪些会持久化？
+6. 状态提交、Event 发布和客户端消费分别在什么时候完成？
+7. Pause、Cancel、Timeout 和工具错误各自怎样改变 Run？
+8. Resume、Retry、Replay 和 New Run 是否拥有不同身份与入口？
+9. 结果未知的外部副作用怎样查询、去重或补偿？
+10. Session 并发、快照版本和 Runtime 配置变化怎样处理？
 
 一个框架拥有名为 Runner、Session 或 Event 的类型，不代表它已经提供相同的执行保证。
 
@@ -314,6 +369,7 @@ Session 可以持久化 Event 和 State，却不因此自动成为 Runtime Check
 Run、Turn、Step、Event 和 Session 不是越多越专业的名词，而是对不同工程边界的回答：
 
 - **Session** 回答“哪些执行共享连续上下文”；
+- **Trigger / Activation** 回答“谁因为什么触发这次执行，以及重复到达怎样处理”；
 - **Run** 回答“当前哪个目标正在被执行”；
 - **Attempt** 回答“哪次物理执行正在承载它”；
 - **Model Turn 与 Step** 回答“决策和行动怎样推进”；
@@ -330,6 +386,9 @@ Run、Turn、Step、Event 和 Session 不是越多越专业的名词，而是对
 
 ## 参考资料
 
+- [CloudEvents Specification](https://github.com/cloudevents/spec/blob/ce@stable/cloudevents/spec.md)
+- [CronJob — Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
+- [OpenClaw Runtime — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/openclaw-runtime/)
 - [Runner — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/runner/)
 - [Session — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/session/)
 - [Agent — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/agent/)

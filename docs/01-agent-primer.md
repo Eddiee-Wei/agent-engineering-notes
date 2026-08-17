@@ -47,6 +47,8 @@ Agent 在不同框架和产品里指向的抽象并不完全相同：有时是�
 - 控制权被什么确定性规则约束？
 - 行动怎样被环境证据校正？
 
+这里的**控制权不等于授权**。模型可以决定“下一步建议运行测试”，但是否允许执行、能访问哪个仓库、是否需要审批，仍由 Principal、Policy、Capability 与 Credential 共同决定；完整模型见 [07｜Agent 的授权边界](07-agent-authorization-semantics.md)。同样，工具返回内容只是一次带来源和时间的 **Observation**，模型据此形成的是可验证、可撤回的 **Claim**，而不是自动获得一条永久事实；它们的状态语义在 [03｜Agent 的状态边界](03-agent-state-semantics.md)中展开。
+
 ## 从模型调用到生产 Agent
 
 下表把几个经常混用的概念放在同一条能力阶梯上：
@@ -208,11 +210,13 @@ Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色�
 | Model | 理解输入、生成候选计划、选择工具、形成参数、根据观察调整 | 不直接拥有真实权限、持久化和副作用 |
 | Agent Runtime | 驱动循环、执行工具、管理 Run/Session/Event/State、Streaming、取消和错误传播 | 不等于模型，也不等于完整产品 |
 | Workflow / Multi-Agent | 显式控制流、路由、并行、Handoff、共享状态与协作 | 多节点或多角色不等于更可靠 |
-| Agent Harness | 上下文装配、Workspace、工具注册、Sandbox、Approval、Artifact、恢复、观测与评测 | Harness 是模型周围的执行与控制环境 |
+| [Agent Harness](06-agent-harness-evolution.md) | 上下文装配、Workspace、工具注册、Sandbox、Approval、Artifact、恢复、观测与评测 | Harness 是模型周围的执行与控制环境 |
 | 垂直应用 | 领域任务、业务规则、专业工具与用户体验 | 例如 Coding Agent 还需代码库、Shell、测试和 Git 能力 |
 | 产品与平台 | 身份、租户、计费、云端执行、团队协作与治理 | 产品能力不能反推底层 Agent 抽象相同 |
 
-这也解释了为什么框架会出现 `Runner`、`Event` 和 `Session`。以本项目关注的 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go/tree/fff1eedd0054f8c7149d59f4b35895b48387d243) 为例，Agent 定义行为，Runner 以用户和 Session 驱动运行，调用方消费 Event Stream；取消信号则通过运行上下文传入。类似地，OpenAI Agents SDK 的 Runner 会在模型输出、工具调用与最终结果之间持续循环。
+Structured Output、多模态输入、模型路由与降级、生成参数和 Prompt Caching，首先属于 **Model Access / Inference** 能力。它们会改变候选输出的格式、延迟、成本和供应商兼容性，却不会自动提供 Run 身份、工具权限、持久状态或完成判定。尤其是 Prompt Caching：它复用的是满足供应商规则的稳定输入前缀，不是缓存模型的判断或任务结果；系统正确性不能依赖“这次应该命中缓存”。完整系统仍要分别处理 Prompt、Context 与 Production Engineering 中的布局、成本、发布和运行约束。
+
+这也解释了为什么框架会出现 `Runner`、`Event` 和 `Session`。以 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go/tree/fff1eedd0054f8c7149d59f4b35895b48387d243) 为例，Agent 定义行为，Runner 以用户和 Session 驱动运行，调用方消费 Event Stream；取消信号则通过运行上下文传入。类似地，OpenAI Agents SDK 的 Runner 会在模型输出、工具调用与最终结果之间持续循环。
 
 这些对象不是为了“把简单事情复杂化”，而是在回答几个模型本身无法负责的问题：
 
@@ -234,7 +238,7 @@ Multi-Agent 也不自动增加有效自治。把一个任务拆成多个角色�
 | --- | --- | --- |
 | 可靠性 | 模型错误、工具错误、策略拒绝和系统故障怎样区分？Retry 会不会重复副作用？ | Loop / Tool Engineering |
 | 状态与恢复 | Session、Run State、Memory 与 Checkpoint 各保存什么？恢复时怎样校准外部世界？ | [02｜Runtime](02-agent-runtime-semantics.md)、[03｜状态边界](03-agent-state-semantics.md) |
-| 安全 | 权限、Sandbox、审批和参数约束在哪里确定性生效？ | Safety / Harness Engineering |
+| 安全 | Principal、Capability、Credential、审批、撤销和 Sandbox 在哪里确定性生效？ | [07｜授权边界](07-agent-authorization-semantics.md) / Safety / Harness Engineering |
 | 可观测性 | 能否关联模型决策、工具回执、状态变化、成本与停止原因？ | Observability Engineering |
 | 评测 | Outcome 是否真实达成，Trajectory 是否合理，Policy、成本和多次 Trial 是否可接受？ | Evaluation Engineering |
 

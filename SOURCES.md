@@ -10,6 +10,10 @@ title: 官方资料索引
 
 - [A practical guide to building agents — OpenAI](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) — 访问于 2026-07-29
 - [Building effective agents — Anthropic](https://www.anthropic.com/engineering/building-effective-agents) — 发布于 2024-12-19，访问于 2026-07-29
+- [Effective harnesses for long-running agents — Anthropic](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) — 发布于 2025-11-26，访问于 2026-08-14
+- [Unrolling the Codex agent loop — OpenAI](https://openai.com/index/unrolling-the-codex-agent-loop/) — 访问于 2026-08-14
+- [Unlocking the Codex harness: how we built the App Server — OpenAI](https://openai.com/index/unlocking-the-codex-harness/) — 发布于 2026-02-04，访问于 2026-08-14
+- [Harness engineering: leveraging Codex in an agent-first world — OpenAI](https://openai.com/index/harness-engineering/) — 发布于 2026-02-11，访问于 2026-08-14
 - [Function calling — OpenAI API](https://developers.openai.com/api/docs/guides/function-calling) — 访问于 2026-07-29
 - [Running agents — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/running_agents/) — 访问于 2026-07-30
 - [Results — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/results/) — 访问于 2026-07-30
@@ -17,6 +21,7 @@ title: 官方资料索引
 - [Sessions — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/sessions/) — 访问于 2026-07-30
 - [Context management — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/context/) — 访问于 2026-07-31
 - [RunState — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/ref/run_state/) — 访问于 2026-07-31
+- [Human-in-the-loop — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/human_in_the_loop/) — 访问于 2026-08-07
 - [Guardrails — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/guardrails/) — 访问于 2026-08-03
 - [Handoffs — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/handoffs/) — 访问于 2026-08-03
 - [Multi-agent orchestration — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/multi_agent/) — 访问于 2026-08-04
@@ -29,10 +34,12 @@ title: 官方资料索引
 - [Agent teams — Claude Code](https://code.claude.com/docs/en/agent-teams) — 访问于 2026-08-04
 - [Teams — Microsoft AutoGen](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/teams.html) — 访问于 2026-08-04
 - [A2A Key Concepts](https://a2a-protocol.org/latest/topics/key-concepts/) — 访问于 2026-08-04
+- [A2A Protocol Specification](https://a2a-protocol.org/dev/specification/) — 访问于 2026-08-07
 - [Towards a Science of Scaling Agent Systems — Google Research](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/) — 访问于 2026-08-04
 - [How we built our multi-agent research system — Anthropic](https://www.anthropic.com/engineering/multi-agent-research-system) — 访问于 2026-08-04
 - [Building a C compiler with a team of parallel agents — Anthropic](https://www.anthropic.com/engineering/building-c-compiler) — 访问于 2026-08-04
 - [Runner — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/runner/) — 访问于 2026-07-30
+- [OpenClaw Runtime — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/openclaw-runtime/) — 访问于 2026-08-07
 - [Session — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/session/) — 访问于 2026-07-30
 - [Noop Session — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/session/noop/) — 访问于 2026-07-31
 - [Graph Agent — tRPC-Agent-Go](https://trpc-group.github.io/trpc-agent-go/graph/) — 访问于 2026-07-31
@@ -51,9 +58,19 @@ title: 官方资料索引
 - [Temporal Workflow Execution](https://docs.temporal.io/workflow-execution) — 访问于 2026-07-31
 - [Making retries safe with idempotent APIs — AWS Builders' Library](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) — 访问于 2026-07-31
 - [Transactional Outbox — Microsoft Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/transactional-out-box-cosmos) — 访问于 2026-07-31
+- [CloudEvents Specification](https://github.com/cloudevents/spec/blob/ce@stable/cloudevents/spec.md) — 访问于 2026-08-07
+- [CronJob — Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) — 访问于 2026-08-07
+- [Authorization — Model Context Protocol](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) — 访问于 2026-08-07
+- [Elicitation — Model Context Protocol](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation) — 访问于 2026-08-07
+- [OAuth 2.0 Token Exchange — RFC 8693](https://datatracker.ietf.org/doc/html/rfc8693) — 发布于 2020-01，访问于 2026-08-07
+- [OAuth 2.0 Token Revocation — RFC 7009](https://datatracker.ietf.org/doc/html/rfc7009) — 发布于 2013-08，访问于 2026-08-07
+- [OAuth 2.0 Protected Resource Metadata — RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728) — 访问于 2026-08-07
+- [Resource Indicators for OAuth 2.0 — RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707) — 访问于 2026-08-07
+- [PROV-DM: The PROV Data Model — W3C](https://www.w3.org/TR/prov-dm/) — W3C Recommendation，访问于 2026-08-07
 - [Trustworthy agents in practice — Anthropic](https://www.anthropic.com/research/trustworthy-agents) — 发布于 2026-04-09，访问于 2026-07-29
 - [Demystifying evals for AI agents — Anthropic](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) — 发布于 2026-01-09，访问于 2026-07-29
 - [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) — arXiv:2210.03629
+- [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](https://arxiv.org/abs/2405.15793) — arXiv:2405.15793，访问于 2026-08-14
 - [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) — arXiv:2303.11366
 - [Executable Code Actions Elicit Better LLM Agents](https://arxiv.org/abs/2402.01030) — arXiv:2402.01030
 

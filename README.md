@@ -6,9 +6,9 @@
 
 ## About
 
-一些关于 Agent 的工程笔记。内容从实际使用的 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 展开，逐步延伸到其他 Agent Framework、Harness 和 Coding Agent。
+一些关于 Agent 的工程笔记。内容从实际使用的 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 展开，也记录其他 Agent Framework 与 Harness 的设计取舍。
 
-这里会有源码阅读、应用记录、框架对照、小型实验，以及在实践中形成或改变的判断。
+这里整理源码阅读、框架对照、小型实验，以及在实践中形成或改变的判断。
 
 ## Sections
 
@@ -17,36 +17,11 @@
 - [Agent Application](agent-application/)
 - [Agent Engineering](engineering/)
 
-## Adding content
-
-在下面任一目录中新建 Markdown，即可自动继承统一外观：
-
-| 目录 | 自动归属 |
-| --- | --- |
-| `docs/` | Agent Fundamentals |
-| `frameworks/`、`agent-framework/` | Agent Framework |
-| `coding-agents/`、`agent-application/` | Agent Application |
-| `engineering/` | Agent Engineering |
-
-自动收录的 Agent 基础与 Agent 工程页面需要标题和排序值：
-
-```yaml
----
-title: Example Note
-nav_title_zh: 示例笔记
-nav_order: 3
----
-```
-
-Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`；两者按 `nav_order` 排序并生成连续序号，新增内容无需修改导航。框架与应用因为包含固定分组、指定顺序和跨目录复用，统一由 [`_data/navigation.yml`](_data/navigation.yml) 管理；章节页、首页目录和侧栏会自动同步并生成连续序号。页面结构组件集中在 [`_includes/`](_includes/)。
-
 ## Scope
 
-- 向下看 Model、Tool、Runner、Event、Session、Memory 与 Graph 等基础抽象。
-- 横向看 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope、DeerFlow 与 tRPC-Agent-Go 的不同选择。
-- 向上看 Dify、Coze、LangGraph 如何组装 Agent 应用，以及 Codex、Claude Code、Gemini CLI、OpenCode 如何实现 Coding Agent。
-- 以 Prompt、Context、Harness、Loop 的演进主线，整理 Tool、Memory、Graph、Evaluation、Safety 与 Production 等工程方法。
-- 通过项目和实验验证其中的设计取舍。
+- 从 Model、Tool、Runner、Event、Session、Memory、Harness、Authorization 与 Graph 等基础抽象理解 Agent。
+- 对照 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope、DeerFlow 与 tRPC-Agent-Go 的不同工程选择。
+- 用源码、官方资料和可验证实验校准结论。
 
 ## Contents
 
@@ -57,6 +32,8 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [03｜Agent State Boundaries: Context, Session, Memory, and Artifacts](docs/03-agent-state-semantics.md)
 - [04｜Agent Task Boundaries: Goal, Plan, Steering, and Completion](docs/04-agent-task-semantics.md)
 - [05｜Multi-Agent: Delegation, Collaboration, and Team Convergence](docs/05-multi-agent-collaboration.md)
+- [06｜Agent Harness Evolution: From Prompt Wrapper to a Trustworthy Execution System](docs/06-agent-harness-evolution.md)
+- [07｜Agent Authorization Boundaries: Principal, Capability, Delegation, Approval, Credential, and Revocation](docs/07-agent-authorization-semantics.md)
 
 ### International Frameworks
 
@@ -74,40 +51,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - [DeerFlow](frameworks/deerflow.md) — 带 Skills、Sandbox、Memory 与 Subagent 的 Super-Agent Harness
 - [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — Go 原生 Runner、Event、Graph 与 Evaluation 运行栈
 
-### 组装 Agent
-
-- [Dify](agent-application/dify.md) — todo
-- [Coze](agent-application/coze.md) — todo
-- [LangGraph](frameworks/langgraph.md) — todo
-
-### Coding Agents
-
-- [Codex](coding-agents/codex.md) — todo
-- [Claude Code](coding-agents/claude-code.md) — todo
-- [Gemini CLI](coding-agents/gemini-cli.md) — todo
-- [OpenCode](coding-agents/opencode.md) — todo
-
-### Agent Engineering
-
-#### Evolution
-
-- [50｜Prompt Engineering](engineering/prompt-engineering.md) — todo
-- [51｜Context Engineering](engineering/context-engineering.md) — todo
-- [52｜Harness Engineering](engineering/harness-engineering.md) — todo
-- [53｜Loop Engineering](engineering/loop-engineering.md) — todo
-
-#### Capabilities, Orchestration, and Operations
-
-- [54｜Tool Engineering](engineering/tool-engineering.md) — todo
-- [55｜Memory Engineering](engineering/memory-engineering.md) — todo
-- [56｜Knowledge Engineering](engineering/knowledge-engineering.md) — todo
-- [57｜Graph Engineering](engineering/graph-engineering.md) — todo
-- [58｜Multi-Agent Engineering](engineering/multi-agent-engineering.md) — todo
-- [59｜Evaluation Engineering](engineering/evaluation-engineering.md) — todo
-- [60｜Observability Engineering](engineering/observability-engineering.md) — todo
-- [61｜Safety Engineering](engineering/safety-engineering.md) — todo
-- [62｜Production Engineering](engineering/production-engineering.md) — todo
-
 ## Notes
 
 - LangChain 更接近组件与集成生态。
@@ -120,7 +63,6 @@ Agent 基础会自动收集 `docs/`，Agent 工程会自动收集 `engineering/`
 - AgentScope 2.x 把 Agent、工具、记忆、Workspace 与 Agent-as-a-Service 组合为一体；评测模块仍处于相对 v1 的重构阶段。
 - DeerFlow 2.0 更接近带 Sandbox、Memory、Skill 和 Subagent 的 SuperAgent Harness。
 - tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。
-- Codex、Claude Code、Gemini CLI 和 OpenCode 位于更上层：它们把模型、工具、执行环境、权限、交互界面和软件工程工作流组合成产品。
 
 ## 资料与许可
 
