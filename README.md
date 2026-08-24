@@ -6,7 +6,7 @@
 
 ## About
 
-一些关于 Agent 的工程笔记。内容从实际使用的 [tRPC-Agent-Go](https://github.com/trpc-group/trpc-agent-go) 展开，也记录其他 Agent Framework 与 Harness 的设计取舍。
+一些关于 Agent 的工程笔记，记录不同 Agent Framework 与 Harness 的设计取舍。
 
 这里整理源码阅读、框架对照、小型实验，以及在实践中形成或改变的判断。
 
@@ -20,7 +20,7 @@
 ## Scope
 
 - 从 Model、Tool、Runner、Event、Session、Memory、Harness、Authorization 与 Graph 等基础抽象理解 Agent。
-- 对照 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope、DeerFlow 与 tRPC-Agent-Go 的不同工程选择。
+- 对照 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope 与 DeerFlow 的不同工程选择。
 - 用源码、官方资料和可验证实验校准结论。
 
 ## Contents
@@ -49,7 +49,6 @@
 
 - [AgentScope](frameworks/agentscope.md) — Agent SDK、Workspace 与 Agent-as-a-Service
 - [DeerFlow](frameworks/deerflow.md) — 带 Skills、Sandbox、Memory 与 Subagent 的 Super-Agent Harness
-- [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — Go 原生 Runner、Event、Graph 与 Evaluation 运行栈
 
 ## Notes
 
@@ -62,7 +61,6 @@
 - CrewAI 以 Crews 组织自主的多 Agent 协作，以 Flows 提供事件驱动、有状态的精确编排。
 - AgentScope 2.x 把 Agent、工具、记忆、Workspace 与 Agent-as-a-Service 组合为一体；评测模块仍处于相对 v1 的重构阶段。
 - DeerFlow 2.0 更接近带 Sandbox、Memory、Skill 和 Subagent 的 SuperAgent Harness。
-- tRPC-Agent-Go 提供 Go 原生的 Agent Runtime、Graph、状态、协议、评测和可观测性，是本项目的工程参照。
 
 ## 资料与许可
 
