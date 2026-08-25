@@ -1,10 +1,11 @@
 ---
 layout: default
 title: "Prompt Cache：省下的不是 Token，而是重复计算"
+nav_order: 1
 description: 从 Attention、KV Cache、Prefill 与跨请求前缀复用，理解 Prompt Cache 的原理、质量边界和工程实践。
 ---
 
-<span class="eyebrow">AGENT ENGINEERING · DAILY ESSAY</span>
+<span class="eyebrow">05 · NOTES · 01</span>
 
 # Prompt Cache：省下的不是 Token，而是重复计算
 
@@ -14,7 +15,7 @@ Prompt Cache 经常被描述成一项“输入打折”功能。这个说法没�
 
 当两个模型请求拥有相同的 token 前缀时，推理服务可以复用这段前缀已经完成的 Attention 计算，只处理新出现的后缀。服务商少做了大量重复的 Prefill，缓存输入才有了更低的价格和更短的首 token 延迟。
 
-![Prompt Token 经过 Prefill 形成 KV Cache Blocks，以及缓存命中和未命中时的后续处理路径](../../assets/images/prompt-cache-computation-flow-labeled.png)
+![Prompt Token 经过 Prefill 形成 KV Cache Blocks，以及缓存命中和未命中时的后续处理路径](../assets/images/prompt-cache-computation-flow-labeled.png)
 
 *蓝色方块代表可复用的 KV Cache Blocks。绿色路径表示命中后复用前缀、只计算新后缀；红色路径表示未命中时执行完整 Prefill。两条路径最终都会进入 Decode，重新生成本轮回答。*
 
@@ -94,7 +95,7 @@ Coding Agent 每轮依然会发送完整的逻辑上下文，最多再附加 cac
 
 真实流程是客户端发送 Prompt 和缓存提示，服务端完成 tokenize、路由、前缀匹配、KV Block 恢复和后续推理：
 
-![Prompt Cache 从前缀查找到 Prefill 与 Decode 的完整流程](../../assets/images/prompt-cache-prefill-decode.svg)
+![Prompt Cache 从前缀查找到 Prefill 与 Decode 的完整流程](../assets/images/prompt-cache-prefill-decode.svg)
 
 `prompt_cache_key` 不是 Cache 本身。它通常帮助请求路由和缓存分区，最终能否命中仍取决于实际前缀是否一致。OpenAI 的公开流程就是先使用 `prompt_cache_key` 和初始前缀 hash 做路由，再在目标机器上查找相同前缀。[OpenAI Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
@@ -207,7 +208,7 @@ TTL 设计应该匹配请求节奏：高频 Agent 循环适合短 TTL；会被�
 
 Prompt Cache 通常要求从第 0 个 token 开始精确匹配，不是“意思相近”就能命中。
 
-![稳定前缀与动态前置字段对缓存命中范围的影响](../../assets/images/prompt-cache-prefix-stability.svg)
+![稳定前缀与动态前置字段对缓存命中范围的影响](../assets/images/prompt-cache-prefix-stability.svg)
 
 因此最有效的排列是：
 

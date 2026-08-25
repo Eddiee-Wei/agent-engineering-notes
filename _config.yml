@@ -48,6 +48,10 @@ defaults:
       path: "engineering"
     values:
       nav_section: engineering
+  - scope:
+      path: "notes"
+    values:
+      nav_section: notes
 
 exclude:
   - .git

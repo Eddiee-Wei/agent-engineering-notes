@@ -16,6 +16,7 @@
 - [Agent Framework](agent-framework/)
 - [Agent Application](agent-application/)
 - [Agent Engineering](engineering/)
+- [Notes](notes/)
 
 ## Scope
 
@@ -49,6 +50,13 @@
 
 - [AgentScope](frameworks/agentscope.md) — Agent SDK、Workspace 与 Agent-as-a-Service
 - [DeerFlow](frameworks/deerflow.md) — 带 Skills、Sandbox、Memory 与 Subagent 的 Super-Agent Harness
+
+### 随记
+
+- [01｜Prompt Cache：省下的不是 Token，而是重复计算](notes/prompt-cache-reuses-computation.md)
+- [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md)
+
+新增随记时，在 Front Matter 中把 `nav_order` 设为下一个整数；主页、侧栏与随记栏目页会按该字段自动排序。
 
 ## Notes
 
