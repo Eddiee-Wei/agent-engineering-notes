@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 700" role="img" aria-labelledby="title desc">
+  <title id="title">第一个变化 token 决定 Prompt Cache 的复用边界</title>
+  <desc id="desc">上半部分展示两个请求把稳定规则、工具和文档放在前面，只在末尾放不同问题，因此能命中长前缀。下半部分展示时间戳被放在最前面时，第二个 token 起就无法连续匹配，后面的相同内容也不能被前缀缓存复用。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #fffefa; }
+      .panel { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; }
+      .stable { fill: #dfeeff; stroke: #315f91; stroke-width: 2; }
+      .dynamic-a { fill: #ffe8ba; stroke: #8a6b19; stroke-width: 2; }
+      .dynamic-b { fill: #f7dfef; stroke: #8d5f7c; stroke-width: 2; }
+      .hit { fill: #edf8f1; stroke: #35745a; stroke-width: 2; }
+      .miss { fill: #fff0eb; stroke: #a75d4d; stroke-width: 2; }
+      .ghost { fill: #ffffff; stroke: #a8a8a1; stroke-width: 2; stroke-dasharray: 7 6; }
+      .label { fill: #181816; font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .row-label { fill: #181816; font: 600 17px "IBM Plex Mono", monospace; }
+      .eyebrow { fill: #6d6d67; font: 600 16px "IBM Plex Mono", monospace; letter-spacing: .05em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.3; marker-end: url(#arrow); }
+      .boundary { fill: none; stroke: #a75d4d; stroke-width: 2.2; stroke-dasharray: 7 6; }
+      .note { fill: #42423e; font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .mono { fill: #6d6d67; font: 14px "IBM Plex Mono", monospace; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="700" rx="18"/>
+  <text class="eyebrow" x="52" y="48">PREFIX STABILITY · FIRST DIFFERING TOKEN</text>
+
+  <rect class="panel" x="42" y="72" width="1196" height="305" rx="24"/>
+  <text class="row-label" x="72" y="111">GOOD · STABLE FIRST, DYNAMIC LAST</text>
+
+  <text class="row-label" x="73" y="163">Request A</text>
+  <g transform="translate(185 127)">
+    <rect class="stable" x="0" y="0" width="190" height="58" rx="12"/>
+    <text class="label" x="95" y="26">System Rules</text>
+    <text class="sub" x="95" y="46">稳定规则</text>
+    <rect class="stable" x="205" y="0" width="180" height="58" rx="12"/>
+    <text class="label" x="295" y="26">Tools</text>
+    <text class="sub" x="295" y="46">稳定 Schema</text>
+    <rect class="stable" x="400" y="0" width="230" height="58" rx="12"/>
+    <text class="label" x="515" y="26">Shared Context</text>
+    <text class="sub" x="515" y="46">文档 / few-shot</text>
+    <rect class="dynamic-a" x="645" y="0" width="260" height="58" rx="12"/>
+    <text class="label" x="775" y="26">Question A</text>
+    <text class="sub" x="775" y="46">动态后缀</text>
+  </g>
+
+  <text class="row-label" x="73" y="248">Request B</text>
+  <g transform="translate(185 212)">
+    <rect class="stable" x="0" y="0" width="190" height="58" rx="12"/>
+    <text class="label" x="95" y="26">System Rules</text>
+    <text class="sub" x="95" y="46">稳定规则</text>
+    <rect class="stable" x="205" y="0" width="180" height="58" rx="12"/>
+    <text class="label" x="295" y="26">Tools</text>
+    <text class="sub" x="295" y="46">稳定 Schema</text>
+    <rect class="stable" x="400" y="0" width="230" height="58" rx="12"/>
+    <text class="label" x="515" y="26">Shared Context</text>
+    <text class="sub" x="515" y="46">文档 / few-shot</text>
+    <rect class="dynamic-b" x="645" y="0" width="260" height="58" rx="12"/>
+    <text class="label" x="775" y="26">Question B</text>
+    <text class="sub" x="775" y="46">动态后缀</text>
+  </g>
+
+  <path class="boundary" d="M 825 119 L 825 290"/>
+  <text class="mono" x="825" y="313">first differing token</text>
+  <rect class="hit" x="270" y="325" width="740" height="38" rx="10"/>
+  <text class="label" x="640" y="351">长前缀命中：System + Tools + Shared Context 可直接复用</text>
+
+  <rect class="panel" x="42" y="400" width="1196" height="250" rx="24"/>
+  <text class="row-label" x="72" y="439">BAD · DYNAMIC CONTENT AT THE BEGINNING</text>
+
+  <text class="row-label" x="73" y="491">Request A</text>
+  <g transform="translate(185 455)">
+    <rect class="dynamic-a" x="0" y="0" width="170" height="58" rx="12"/>
+    <text class="label" x="85" y="26">Timestamp A</text>
+    <text class="sub" x="85" y="46">每次变化</text>
+    <rect class="ghost" x="185" y="0" width="200" height="58" rx="12"/>
+    <text class="label" x="285" y="26">System Rules</text>
+    <rect class="ghost" x="400" y="0" width="170" height="58" rx="12"/>
+    <text class="label" x="485" y="35">Tools</text>
+    <rect class="ghost" x="585" y="0" width="320" height="58" rx="12"/>
+    <text class="label" x="745" y="35">Same Long Context</text>
+  </g>
+
+  <text class="row-label" x="73" y="576">Request B</text>
+  <g transform="translate(185 540)">
+    <rect class="dynamic-b" x="0" y="0" width="170" height="58" rx="12"/>
+    <text class="label" x="85" y="26">Timestamp B</text>
+    <text class="sub" x="85" y="46">起点已不同</text>
+    <rect class="ghost" x="185" y="0" width="200" height="58" rx="12"/>
+    <text class="label" x="285" y="26">System Rules</text>
+    <rect class="ghost" x="400" y="0" width="170" height="58" rx="12"/>
+    <text class="label" x="485" y="35">Tools</text>
+    <rect class="ghost" x="585" y="0" width="320" height="58" rx="12"/>
+    <text class="label" x="745" y="35">Same Long Context</text>
+  </g>
+
+  <path class="boundary" d="M 366 447 L 366 614"/>
+  <rect class="miss" x="390" y="613" width="610" height="30" rx="9"/>
+  <text class="note" x="695" y="634">前缀在开头即断裂，后面相同内容也无法按连续前缀命中</text>
+</svg>
