@@ -469,6 +469,12 @@ a { -webkit-tap-highlight-color: transparent; }
   padding: 36px 64px 72px 72px;
 }
 
+.content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .page-outline {
   min-width: 0;
   border-left: 1px solid var(--line);
