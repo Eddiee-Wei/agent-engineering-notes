@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "yaml"
+require "date"
 
 ROOT = File.expand_path("..", __dir__)
 README_PATH = File.join(ROOT, "README.md")
@@ -13,12 +14,25 @@ SECTIONS_END = "<!-- AUTO-GENERATED:SECTIONS:END -->"
 CONTENTS_START = "<!-- AUTO-GENERATED:CONTENTS:START -->"
 CONTENTS_END = "<!-- AUTO-GENERATED:CONTENTS:END -->"
 
+def parse_yaml(source, filename)
+  YAML.safe_load(
+    source,
+    permitted_classes: [Date, Time],
+    aliases: true,
+    filename: filename
+  ) || {}
+end
+
+def load_yaml_file(path)
+  parse_yaml(File.read(path, encoding: "UTF-8"), path)
+end
+
 def front_matter(path)
   source = File.read(path, encoding: "UTF-8")
   match = source.match(/\A---\s*\n(.*?)\n---\s*\n/m)
   return {} unless match
 
-  YAML.load(match[1]) || {}
+  parse_yaml(match[1], path)
 end
 
 def markdown_path_for_url(url)
@@ -166,8 +180,8 @@ def replace_generated_block(source, start_marker, end_marker, generated)
   source.sub(pattern, "#{start_marker}\n#{generated}\n#{end_marker}")
 end
 
-navigation = YAML.load_file(NAVIGATION_PATH)
-config = YAML.load_file(CONFIG_PATH)
+navigation = load_yaml_file(NAVIGATION_PATH)
+config = load_yaml_file(CONFIG_PATH)
 records = page_records(config)
 original = File.read(README_PATH, encoding: "UTF-8")
 
