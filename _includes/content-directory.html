@@ -9,7 +9,7 @@
   <div class="content-directory">
     {% for section in site.data.navigation %}
       {% assign section_pages = site.pages | where: "nav_section", section.id | sort: "nav_order" %}
-      <section class="directory-group">
+      <section class="directory-group directory-group-{{ section.id }}">
         <a class="directory-heading" href="{{ section.url | relative_url }}">
           <span class="nav-index">{{ section.index }}</span>
           <span>
