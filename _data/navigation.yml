@@ -104,3 +104,14 @@
   description: Engineering practices that turn agent prototypes into reliable systems.
   description_zh: 把 Agent 原型变成可靠系统的工程实践。
   numbered: true
+
+- id: notes
+  index: "05"
+  label: Notes
+  label_zh: 随记
+  group_label: Notes
+  group_label_zh: 随记
+  url: /notes/
+  description: Exploratory notes and engineering observations recorded along the way.
+  description_zh: 在探索与实践过程中沉淀的随笔和工程观察。
+  numbered: true

@@ -1,10 +1,11 @@
 ---
 layout: default
 title: "Agent 架构如何塑造 Prompt Cache"
+nav_order: 2
 description: 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
 ---
 
-<span class="eyebrow">AGENT ENGINEERING · DAILY ESSAY</span>
+<span class="eyebrow">05 · NOTES · 02</span>
 
 # Agent 架构如何塑造 Prompt Cache
 
