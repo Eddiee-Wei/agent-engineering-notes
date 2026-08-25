@@ -77,18 +77,6 @@
   description_zh: 围绕 Agent 工作流构建的组装工具与 Coding Agent。
   numbered: true
   groups:
-    - label: Assembly Agents
-      label_zh: 组装 Agent
-      items:
-        - label: Dify
-          label_zh: Dify
-          url: /agent-application/dify/
-        - label: Coze
-          label_zh: Coze
-          url: /agent-application/coze/
-        - label: LangGraph
-          label_zh: LangGraph
-          url: /frameworks/langgraph/
     - label: Coding Agents
       label_zh: Coding Agent
       items:
@@ -110,6 +98,18 @@
         - label: OpenCode
           label_zh: OpenCode
           url: /coding-agents/opencode/
+    - label: Assembly Agents
+      label_zh: 组装 Agent
+      items:
+        - label: Dify
+          label_zh: Dify
+          url: /agent-application/dify/
+        - label: Coze
+          label_zh: Coze
+          url: /agent-application/coze/
+        - label: LangGraph
+          label_zh: LangGraph
+          url: /frameworks/langgraph/
 
 - id: engineering
   index: "05"
