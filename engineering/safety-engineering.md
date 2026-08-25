@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Safety Engineering
-nav_title_zh: 安全工程
+nav_title_zh: Safety Engineering
 nav_order: 12
 description: Controlling Agent capabilities, permissions, data boundaries, and high-risk actions.
 ---

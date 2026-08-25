@@ -5,7 +5,7 @@ nav_order: 2
 description: 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
 ---
 
-<span class="eyebrow">05 · NOTES · 02</span>
+<span class="eyebrow">01 · NOTES · 02</span>
 
 # Agent 架构如何塑造 Prompt Cache
 

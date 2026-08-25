@@ -1,5 +1,16 @@
-- id: agent
+- id: notes
   index: "01"
+  label: Notes
+  label_zh: 随记
+  group_label: Notes
+  group_label_zh: 随记
+  url: /notes/
+  description: Exploratory notes and engineering observations recorded along the way.
+  description_zh: 在探索与实践过程中沉淀的随笔和工程观察。
+  numbered: true
+
+- id: agent
+  index: "02"
   label: Agent Fundamentals
   label_zh: Agent 基础
   url: /agent/
@@ -8,7 +19,7 @@
   numbered: true
 
 - id: frameworks
-  index: "02"
+  index: "03"
   label: Agent Framework
   label_zh: Agent 框架
   group_label: Frameworks
@@ -56,7 +67,7 @@
           url: /frameworks/trpc-agent-go/
 
 - id: applications
-  index: "03"
+  index: "04"
   label: Agent Application
   label_zh: Agent 应用
   group_label: Applications
@@ -81,6 +92,12 @@
     - label: Coding Agents
       label_zh: Coding Agent
       items:
+        - label: Pi Agent
+          label_zh: Pi Agent
+          url: /coding-agents/pi-agent/
+        - label: DeepSeek Harness
+          label_zh: DeepSeek Harness
+          url: /coding-agents/deepseek-harness/
         - label: Codex
           label_zh: Codex
           url: /coding-agents/codex/
@@ -95,7 +112,7 @@
           url: /coding-agents/opencode/
 
 - id: engineering
-  index: "04"
+  index: "05"
   label: Agent Engineering
   label_zh: Agent 工程
   group_label: Engineering
@@ -103,15 +120,4 @@
   url: /engineering/
   description: Engineering practices that turn agent prototypes into reliable systems.
   description_zh: 把 Agent 原型变成可靠系统的工程实践。
-  numbered: true
-
-- id: notes
-  index: "05"
-  label: Notes
-  label_zh: 随记
-  group_label: Notes
-  group_label_zh: 随记
-  url: /notes/
-  description: Exploratory notes and engineering observations recorded along the way.
-  description_zh: 在探索与实践过程中沉淀的随笔和工程观察。
   numbered: true

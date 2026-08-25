@@ -50,6 +50,7 @@
 
 - [AgentScope](frameworks/agentscope.md) — Agent SDK、Workspace 与 Agent-as-a-Service
 - [DeerFlow](frameworks/deerflow.md) — 带 Skills、Sandbox、Memory 与 Subagent 的 Super-Agent Harness
+- [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — Go 原生 Agent Runtime、Graph、多 Agent 与评测栈
 
 ### 随记
 

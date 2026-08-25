@@ -5,7 +5,7 @@ nav_title_zh: 随记
 description: Exploratory notes and engineering observations recorded along the way.
 ---
 
-<span class="eyebrow">05 · NOTES</span>
+<span class="eyebrow">01 · NOTES</span>
 
 <h1 data-i18n data-en="Notes" data-zh="随记">Notes</h1>
 
