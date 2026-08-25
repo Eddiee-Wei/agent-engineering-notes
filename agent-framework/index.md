@@ -4,7 +4,7 @@ title: Agent Framework
 description: 十个 Agent 框架的源码阅读、运行时语义、版本演进与生产选型地图。
 ---
 
-<span class="eyebrow">02 · AGENT FRAMEWORK</span>
+<span class="eyebrow">03 · AGENT FRAMEWORK</span>
 
 <h1 data-i18n data-en="Agent Framework" data-zh="Agent 框架">Agent Framework</h1>
 

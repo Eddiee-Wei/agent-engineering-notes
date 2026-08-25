@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Memory Engineering
-nav_title_zh: 记忆工程
+nav_title_zh: Memory Engineering
 nav_order: 6
 description: Designing what Agents remember, retrieve, update, and forget.
 ---

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Loop Engineering
-nav_title_zh: Agent 循环工程
+nav_title_zh: Agent Loop
 nav_order: 4
 description: Designing Agent loops that plan, act, observe, verify, recover, and converge.
 ---

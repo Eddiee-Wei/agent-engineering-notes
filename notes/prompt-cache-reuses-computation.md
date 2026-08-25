@@ -5,7 +5,7 @@ nav_order: 1
 description: 从 Attention、KV Cache、Prefill 与跨请求前缀复用，理解 Prompt Cache 的原理、质量边界和工程实践。
 ---
 
-<span class="eyebrow">05 · NOTES · 01</span>
+<span class="eyebrow">01 · NOTES · 01</span>
 
 # Prompt Cache：省下的不是 Token，而是重复计算
 

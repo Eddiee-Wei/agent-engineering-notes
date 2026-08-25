@@ -5,7 +5,7 @@ nav_title_zh: Agent 基础
 description: A reading path through Agent definitions, runtime, state, task, multi-Agent collaboration, Harness evolution, and authorization boundaries.
 ---
 
-<span class="eyebrow">01 · AGENT FUNDAMENTALS</span>
+<span class="eyebrow">02 · AGENT FUNDAMENTALS</span>
 
 <h1 data-i18n data-en="Agent Fundamentals" data-zh="Agent 基础">Agent Fundamentals</h1>
 

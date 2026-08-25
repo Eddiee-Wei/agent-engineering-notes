@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Graph Engineering
-nav_title_zh: 图编排工程
+nav_title_zh: Graph Engineering
 nav_order: 8
 description: Engineering explicit stateful workflows for durable and controllable Agent execution.
 ---
