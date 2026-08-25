@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Prompt Cache 命中与未命中的完整推理路径</title>
+  <desc id="desc">请求先被序列化为 Prompt Tokens 并查询 Prefix Cache。命中时复用已有 KV Blocks，只 Prefill 新增后缀；未命中时完整 Prefill 并写入 KV Cache。两条路径最终都正常进入 Decode，逐 token 读取历史 KV 并追加新 KV。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas { fill: #fffefa; }
+      .lane { fill: #f7f7f5; stroke: #a8a8a1; stroke-width: 2; }
+      .prompt { fill: #eef5ff; stroke: #315f91; stroke-width: 2; }
+      .lookup { fill: #fff4cf; stroke: #8a6b19; stroke-width: 2; }
+      .hit { fill: #edf8f1; stroke: #35745a; stroke-width: 2; }
+      .miss { fill: #fff0eb; stroke: #a75d4d; stroke-width: 2; }
+      .neutral { fill: #ffffff; stroke: #181816; stroke-width: 2; }
+      .decode { fill: #eeeaf8; stroke: #5e547e; stroke-width: 2; }
+      .token { fill: #dbeaff; stroke: #315f91; stroke-width: 1.5; }
+      .token-dynamic { fill: #ffe8ba; stroke: #8a6b19; stroke-width: 1.5; }
+      .kv { fill: #dcefe4; stroke: #35745a; stroke-width: 1.5; }
+      .label { fill: #181816; font: 600 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label-small { fill: #181816; font: 600 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #6d6d67; font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .mono { fill: #5f5f59; font: 14px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .eyebrow { fill: #6d6d67; font: 600 16px "IBM Plex Mono", monospace; letter-spacing: .05em; }
+      .edge { fill: none; stroke: #42423e; stroke-width: 2.4; marker-end: url(#arrow); }
+      .edge-hit { fill: none; stroke: #35745a; stroke-width: 2.6; marker-end: url(#arrow); }
+      .edge-miss { fill: none; stroke: #a75d4d; stroke-width: 2.6; marker-end: url(#arrow); }
+      .edge-label { fill: #6d6d67; font: 14px "IBM Plex Mono", monospace; text-anchor: middle; }
+      .note { fill: #42423e; font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1280" height="820" rx="18"/>
+  <text class="eyebrow" x="55" y="52">PROMPT CACHE · PREFILL / DECODE</text>
+
+  <rect class="lane" x="42" y="74" width="1196" height="690" rx="26"/>
+
+  <rect class="prompt" x="310" y="105" width="660" height="104" rx="18"/>
+  <text class="label" x="640" y="139">请求序列化为 Prompt Tokens</text>
+  <text class="sub" x="640" y="168">System · Tools · History · RAG · User</text>
+  <g transform="translate(455 181)">
+    <rect class="token" x="0" y="0" width="46" height="18" rx="4"/>
+    <rect class="token" x="54" y="0" width="46" height="18" rx="4"/>
+    <rect class="token" x="108" y="0" width="46" height="18" rx="4"/>
+    <rect class="token" x="162" y="0" width="46" height="18" rx="4"/>
+    <rect class="token" x="216" y="0" width="46" height="18" rx="4"/>
+    <rect class="token-dynamic" x="270" y="0" width="46" height="18" rx="4"/>
+  </g>
+
+  <path class="edge" d="M 640 209 L 640 250"/>
+  <rect class="lookup" x="435" y="250" width="410" height="100" rx="18"/>
+  <text class="label" x="640" y="286">Prefix Cache Lookup</text>
+  <text class="sub" x="640" y="314">prefix hash → longest matching KV blocks</text>
+  <text class="mono" x="640" y="337">模型 / token / position / tenant / config 必须兼容</text>
+
+  <path class="edge-hit" d="M 520 350 L 330 410"/>
+  <text class="edge-label" x="405" y="379">HIT</text>
+  <path class="edge-miss" d="M 760 350 L 950 410"/>
+  <text class="edge-label" x="875" y="379">MISS</text>
+
+  <rect class="hit" x="100" y="410" width="460" height="154" rx="20"/>
+  <text class="label" x="330" y="447">复用已有 KV Blocks</text>
+  <text class="sub" x="330" y="477">跳过命中前缀的 Prefill</text>
+  <g transform="translate(195 498)">
+    <rect class="kv" x="0" y="0" width="46" height="28" rx="5"/>
+    <rect class="kv" x="54" y="0" width="46" height="28" rx="5"/>
+    <rect class="kv" x="108" y="0" width="46" height="28" rx="5"/>
+    <rect class="kv" x="162" y="0" width="46" height="28" rx="5"/>
+    <rect class="kv" x="216" y="0" width="46" height="28" rx="5"/>
+  </g>
+  <text class="mono" x="330" y="550">只计算 miss suffix，并追加新的 K/V</text>
+
+  <rect class="miss" x="720" y="410" width="460" height="154" rx="20"/>
+  <text class="label" x="950" y="447">完整 Prefill 输入</text>
+  <text class="sub" x="950" y="477">逐层计算所有 Prompt Token 的 K/V</text>
+  <rect class="neutral" x="815" y="498" width="270" height="37" rx="9"/>
+  <text class="label-small" x="950" y="523">写入 KV Cache / Block Table</text>
+  <text class="mono" x="950" y="550">为后续相同前缀建立可复用状态</text>
+
+  <path class="edge-hit" d="M 330 564 L 330 610 L 575 610"/>
+  <path class="edge-miss" d="M 950 564 L 950 610 L 705 610"/>
+
+  <rect class="decode" x="410" y="590" width="460" height="102" rx="20"/>
+  <text class="label" x="640" y="628">首 token 生成 → Decode</text>
+  <text class="sub" x="640" y="657">每步读取历史 K/V，并为新 token 追加 K/V</text>
+  <text class="mono" x="640" y="681">Prompt Cache 主要降低 TTFT；Decode 仍正常执行</text>
+
+  <rect class="neutral" x="210" y="715" width="860" height="62" rx="14"/>
+  <text class="note" x="640" y="742">同一模型输入下，命中只替换重复计算路径，不替换 Prompt，也不复用旧答案。</text>
+  <text class="mono" x="640" y="765">cache miss 应只影响成本与延迟，不应影响请求正确性</text>
+</svg>
