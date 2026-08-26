@@ -12,54 +12,93 @@
 
 ## Sections
 
-- [Agent Fundamentals](agent/)
-- [Agent Framework](agent-framework/)
-- [Agent Application](agent-application/)
-- [Agent Engineering](engineering/)
-- [Notes](notes/)
+<!-- AUTO-GENERATED:SECTIONS:START -->
+- [01 · 随记](notes/index.md)
+- [02 · Agent 基础](agent/index.md)
+- [03 · Agent 框架](agent-framework/index.md)
+- [04 · Agent 应用](agent-application/index.md)
+- [05 · Agent 工程](engineering/index.md)
+<!-- AUTO-GENERATED:SECTIONS:END -->
 
 ## Scope
 
 - 从 Model、Tool、Runner、Event、Session、Memory、Harness、Authorization 与 Graph 等基础抽象理解 Agent。
-- 对照 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope 与 DeerFlow 的不同工程选择。
+- 对照 Agno、AutoGen、CrewAI、ADK、LangChain、Langflow、LangGraph、AgentScope、DeerFlow 与 tRPC-Agent-Go 的不同工程选择。
 - 用源码、官方资料和可验证实验校准结论。
 
 ## Contents
 
-### Agent Fundamentals
+<!-- AUTO-GENERATED:CONTENTS:START -->
+### [01 · 随记](notes/index.md)
 
-- [01｜From Model Call to Agent: Definition, Loop, and Boundaries](docs/01-agent-primer.md)
-- [02｜Agent Runtime: How a Run Starts, Progresses, and Ends](docs/02-agent-runtime-semantics.md)
-- [03｜Agent State Boundaries: Context, Session, Memory, and Artifacts](docs/03-agent-state-semantics.md)
-- [04｜Agent Task Boundaries: Goal, Plan, Steering, and Completion](docs/04-agent-task-semantics.md)
-- [05｜Multi-Agent: Delegation, Collaboration, and Team Convergence](docs/05-multi-agent-collaboration.md)
-- [06｜Agent Harness Evolution: From Prompt Wrapper to a Trustworthy Execution System](docs/06-agent-harness-evolution.md)
-- [07｜Agent Authorization Boundaries: Principal, Capability, Delegation, Approval, Credential, and Revocation](docs/07-agent-authorization-semantics.md)
+- [01｜Prompt Cache：省下的不是 Token，而是重复计算](notes/prompt-cache-reuses-computation.md) — 从 Attention、KV Cache、Prefill 与跨请求前缀复用，理解 Prompt Cache 的原理、质量边界和工程实践。
+- [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md) — 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
 
-### International Frameworks
+### [02 · Agent 基础](agent/index.md)
 
-- [Agno](frameworks/agno.md) — Agent、Team、Workflow 与 AgentOS 的连续运行栈
-- [AutoGen](frameworks/autogen.md) — 0.2、0.4 分层重构与当前维护/迁移边界
-- [CrewAI](frameworks/crewai.md) — 角色式 Crews 与事件式 Flows
-- [Google ADK](frameworks/google-adk.md) — 多语言 Agent SDK、Runner/Event 语义与部署路径
-- [LangChain](frameworks/langchain.md) — Model、Tool、Middleware 与高层 Agent 组件层
-- [Langflow](frameworks/langflow.md) — 可视化 Flow、Component、LFX 与 Headless Runtime
-- [LangGraph](frameworks/langgraph.md) — 状态图、Checkpoint、Interrupt 与 Durable Execution
+- [01｜从模型调用到 Agent：定义、闭环与边界](docs/01-agent-primer.md) — 从一次模型调用出发，理解 Agent 的最小判定、执行闭环与工程边界。
+- [02｜Agent Runtime：一次运行如何开始、推进与结束](docs/02-agent-runtime-semantics.md) — 从 Trigger、Activation、Run、Attempt、Step、Event 到暂停、取消与终态，理解一次 Agent 运行如何被激活、推进与结束。
+- [03｜Agent 的状态边界：Context、Session、Memory 与 Artifact](docs/03-agent-state-semantics.md) — 区分观察、声明、决策输入、连续性、恢复与产物，理解 Agent 如何保存状态并判断什么可以相信。
+- [04｜Agent 的任务边界：Goal、Plan、Steering 与 Completion](docs/04-agent-task-semantics.md) — 区分 Request、Task Definition、Plan、Steering 与 Completion，理解 Agent 任务如何形成、变更和被证据验收。
+- [05｜Multi-Agent：委派、协作与团队收敛](docs/05-multi-agent-collaboration.md) — 从采用门槛、委派语义、协作拓扑、隔离边界到合并验收，理解多个 Agent 怎样共同完成一个父任务。
+- [06｜Agent Harness 的进化：从 Prompt Wrapper 到可托付的执行系统](docs/06-agent-harness-evolution.md) — 从 Prompt Wrapper、Tool Loop、Runtime、Workspace、状态连续性、治理到评测闭环，理解 Agent Harness 为什么演化成完整执行系统。
+- [07｜Agent 的授权边界：Principal、Capability、Delegation、Approval、Credential 与 Revocation](docs/07-agent-authorization-semantics.md) — 从 Principal、Policy、Capability、Credential 到 Approval、Delegation 与 Revocation，建立 Agent 行动授权的统一工程模型。
 
-### 国内大厂
+### [03 · Agent 框架](agent-framework/index.md)
 
-- [AgentScope](frameworks/agentscope.md) — Agent SDK、Workspace 与 Agent-as-a-Service
-- [DeerFlow](frameworks/deerflow.md) — 带 Skills、Sandbox、Memory 与 Subagent 的 Super-Agent Harness
-- [tRPC-Agent-Go](frameworks/trpc-agent-go.md) — Go 原生 Agent Runtime、Graph、多 Agent 与评测栈
+#### 国外框架
 
-### 随记
+- [01｜Agno](frameworks/agno.md) — Agno 2.x 的 Agent、Team、Workflow、AgentOS 运行时语义与生产工程边界。
+- [02｜AutoGen](frameworks/autogen.md) — AutoGen 0.2、0.4 分层重构与维护期的运行时、状态、多 Agent 和迁移边界。
+- [03｜CrewAI](frameworks/crewai.md) — CrewAI 1.x 的 Agent、Task、Crew、Flow、状态恢复与生产扩展边界。
+- [04｜ADK](frameworks/google-adk.md) — Google ADK 多语言 SDK 的 Event Loop、Agent、Workflow、Session、Plugin、恢复机制、部署与高并发生产实践。
+- [05｜LangChain](frameworks/langchain.md) — LangChain v1 的 Agent 组件、Middleware、状态、工具、流式接口、Multi-Agent 与高并发生产实践。
+- [06｜Langflow](frameworks/langflow.md) — Langflow 1.11 的可视化 Flow、Component、Agent、Workflow API、LFX、HITL、部署与高并发生产实践。
+- [07｜LangGraph](frameworks/langgraph.md) — LangGraph 1.2 的状态图、Pregel 执行、Checkpoint、Interrupt、Durable Execution、并行与生产扩展实践。
 
-- [01｜Prompt Cache：省下的不是 Token，而是重复计算](notes/prompt-cache-reuses-computation.md)
-- [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md)
+#### 国内大厂
 
-新增随记时，在 Front Matter 中把 `nav_order` 设为下一个整数；主页、侧栏与随记栏目页会按该字段自动排序。
+- [08｜AgentScope](frameworks/agentscope.md) — AgentScope v2.0.6 的运行时、状态、工具、服务化与版本演进
+- [09｜DeerFlow](frameworks/deerflow.md) — DeerFlow 2.0 的 super-agent harness、运行时边界与 1.0→2.0 演进
+- [10｜tRPC-Agent-Go](frameworks/trpc-agent-go.md) — tRPC-Agent-Go v1.11.1 的 Go 原生运行时、Graph、多 Agent 与版本演进
 
-## Notes
+### [04 · Agent 应用](agent-application/index.md)
+
+#### Coding Agent
+
+- [01｜Pi Agent](coding-agents/pi-agent.md)
+- [02｜DeepSeek Harness](coding-agents/deepseek-harness.md)
+- [03｜Codex](coding-agents/codex.md)
+- [04｜Claude Code](coding-agents/claude-code.md)
+- [05｜Gemini CLI](coding-agents/gemini-cli.md)
+- [06｜OpenCode](coding-agents/opencode.md)
+
+#### 组装 Agent
+
+- [07｜Dify](agent-application/dify.md) — Notes on assembling and operating Agent applications with Dify.
+- [08｜Coze](agent-application/coze.md) — Notes on assembling and operating Agent applications with Coze.
+- [09｜LangGraph](frameworks/langgraph.md) — LangGraph 1.2 的状态图、Pregel 执行、Checkpoint、Interrupt、Durable Execution、并行与生产扩展实践。
+
+### [05 · Agent 工程](engineering/index.md)
+
+- [01｜Prompt Engineering](engineering/prompt-engineering.md) — Engineering instructions, constraints, examples, and output contracts for reliable model interactions.
+- [02｜Context Engineering](engineering/context-engineering.md) — Building the dynamic information environment an Agent needs for each decision.
+- [03｜Agent Harness](engineering/harness-engineering.md) — Engineering the runtime, tools, state, permissions, and feedback systems around an Agent.
+- [04｜Agent Loop](engineering/loop-engineering.md) — Designing Agent loops that plan, act, observe, verify, recover, and converge.
+- [05｜Tool Engineering](engineering/tool-engineering.md) — Designing safe, understandable, and recoverable tool contracts for Agents.
+- [06｜Memory Engineering](engineering/memory-engineering.md) — Designing what Agents remember, retrieve, update, and forget.
+- [07｜Knowledge Engineering](engineering/knowledge-engineering.md) — Building trustworthy knowledge sources, retrieval pipelines, and evidence for Agents.
+- [08｜Graph Engineering](engineering/graph-engineering.md) — Engineering explicit stateful workflows for durable and controllable Agent execution.
+- [09｜Multi-Agent Engineering](engineering/multi-agent-engineering.md) — Designing effective delegation, communication, and coordination among multiple Agents.
+- [10｜Evaluation Engineering](engineering/evaluation-engineering.md) — Building repeatable evidence for Agent quality, regressions, and release decisions.
+- [11｜Observability Engineering](engineering/observability-engineering.md) — Making Agent decisions, actions, failures, latency, and cost inspectable.
+- [12｜Safety Engineering](engineering/safety-engineering.md) — Controlling Agent capabilities, permissions, data boundaries, and high-risk actions.
+- [13｜Production Engineering](engineering/production-engineering.md) — Operating Agent systems with reliability, scalability, cost control, and safe releases.
+<!-- AUTO-GENERATED:CONTENTS:END -->
+
+> 上述栏目和目录由网站导航及文章 Front Matter 生成。修改正文后运行 `ruby scripts/sync_readme_navigation.rb`，CI 会检查两者是否一致。
+
+## Observations
 
 - LangChain 更接近组件与集成生态。
 - LangGraph 强调有状态、长时间运行的图编排。
