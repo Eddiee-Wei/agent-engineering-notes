@@ -140,6 +140,22 @@ Skills 以 `SKILL.md` 提供渐进式说明和运行入口；v1.11 又增加会�
 
 v1.10 引入的 Workspace facade 把文件、命令与 Artifact 操作统一到代码执行器；当前实现有 local、container、Jupyter、E2B 和 OS sandbox 等路径。[Code Executor 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/codeexecutor.md)说明了接口与限制。Local workspace 只是本机执行，并非隔离；容器或 sandbox 也必须配置文件系统、网络、环境变量、进程和资源权限，不能仅因 backend 名称就视为安全。
 
+### 6.4 一次模型请求中的 Instruction、Skill 与资源
+
+tRPC-Agent-Go 选择把“初始指令从哪里来”交给 Go 应用，而不是替所有业务规定目录。LLMAgent 的 instruction 由代码或配置提供；v1.11.1 没有把 cwd 中的 `AGENTS.md`、`CLAUDE.md`、`SOUL.md` 变成通用协议。业务若采用这些文件，就要在 Runner/Agent 外把读取、作用域、租户隔离和重载一起设计好。只写一个 loader，而不回答后面四件事，通常只是把隐患藏进初始化代码。
+
+[v1.11.1 Skill 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/skill.md)把内置管线明确分为三层：
+
+1. 初始 system message 只放每个可用 Skill 的 `name` 与 `description`；
+2. 模型调用 `skill_load` 后，`SKILL.md` 正文与选定文档从下一次模型请求开始物化；
+3. 脚本不会内联进 Prompt，而是在 Workspace 执行，输出再作为 Event/工具结果返回。
+
+应用如果已确定要用哪个 Skill，可以通过 `WithSkillLoads` 在第一次模型请求前声明式预加载，避免先让模型判断。默认行为把已加载正文追加到 system message；可选模式把内容物化到 `skill_load` / `skill_select_docs` 的 tool result，以保持 system 前缀稳定、改善 Prompt Cache 复用。
+
+Session 持久化的是较小的“哪些 Skill/文档已加载”状态和工具 stub，不一定保存扩展后的整段正文；请求处理器再按这些状态物化每次请求。`SkillLoadMode` 决定选择按 turn、once 还是 session 保留。换句话说，Session 记住的是书签，模型请求拿到的是展开后的书页，Workspace 才是书本所在的地方。
+
+Skill 还可以激活候选 ToolSet：`skill_load` 成功后，相关工具 schema 从**下一次**模型请求才加入工具集合。模型看到 schema 不等于拿到工具实现或凭据，真正权限仍由 Tool、Workspace/Sandbox 与应用 Policy 执行。
+
 ## 7. Graph workflow、Checkpoint 与 HITL
 
 GraphAgent 适合把关键路径从“完全由模型临场决定”提升为显式图：
@@ -365,3 +381,4 @@ tRPC-Agent-Go 的辨识度在于：以一个很小的 `Agent.Run → Event chann
 - [Dynamic Workflow 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/dynamic-workflow.md)
 - [Evaluation 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/evaluation.md)
 - [Observability 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/observability.md)
+- [Skill 渐进加载与 Prompt Cache 文档](https://github.com/trpc-group/trpc-agent-go/blob/v1.11.1/docs/mkdocs/zh/skill.md)

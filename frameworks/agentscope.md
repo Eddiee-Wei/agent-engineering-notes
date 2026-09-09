@@ -117,6 +117,20 @@ v2.0.6 的 model adapter 覆盖 OpenAI Chat/Responses、Anthropic、DashScope、
 
 [v2.0.5](https://github.com/agentscope-ai/agentscope/releases/tag/v2.0.5)正式加入 Agent 结构化输出与 runtime-state awareness。实现不是“最后对文本做一次脆弱 JSON parse”，而是注入专用 `GenerateStructuredOutput` 工具、执行 JSON/Pydantic 校验，并允许受限的 grace iterations 修正结果；可在 [`_structured_output_tool.py`](https://github.com/agentscope-ai/agentscope/blob/v2.0.6/src/agentscope/agent/_structured_output_tool.py)验证。应用仍需处理模型未在预算内满足 schema 的失败分支。
 
+### 6.4 指令、Skill 与普通 Markdown 怎样进入 Context
+
+AgentScope 把一件事留给了应用自己决定：Agent 一开始相信什么。它是 SDK，不是替用户规定工作目录的 Coding Agent；v2.0.6 不会自动沿 cwd 寻找 `AGENTS.md`、`CLAUDE.md` 或 `SOUL.md`。基础 system prompt 由应用构造，system-prompt middleware 还能在请求前继续变换它。若业务需要文件约定，就要自己定义 loader，也要一并承担根目录、优先级、重载和预算。
+
+Skill 走另一条内置管线。`Toolkit` 注册 Skill 后，Agent 在每次准备 system prompt 时调用 `get_skill_instructions()`，先追加可用 Skill 的名称、描述和目录，以及“使用 skill viewer 读取完整说明”的指导；模型并未在此时拿到所有 `SKILL.md` 正文。模型选择 Skill、调用内置 viewer 后，完整说明作为工具结果进入后续 Context。源码可直接对照 [`Agent._get_system_prompt`](https://github.com/agentscope-ai/agentscope/blob/v2.0.6/src/agentscope/agent/_agent.py) 和 [`Toolkit.get_skill_instructions`](https://github.com/agentscope-ai/agentscope/blob/v2.0.6/src/agentscope/tool/_toolkit.py)。
+
+```text
+请求 #1：应用 system prompt + Skill 元数据目录 + 工具 schema
+响应 #1：调用 skill viewer
+请求 #2：历史 + viewer 返回的 SKILL.md 正文
+```
+
+普通 `xx.md`、Skill 关联文档和 Workspace 文件不会自动常驻；只有应用主动注入，或 Agent 用已注册工具翻开它们，内容才进入下一次请求。`AgentState`、Workspace 路径、权限判定也不是模型天然拥有的“意识”。Runtime 选择说出来的部分，才成为 Context；没有说出来的，仍只是运行时事实。
+
 ## 7. Workflow 与 Multi-Agent
 
 AgentScope 的 v2 核心更偏 Agent loop + service/team，而不是以任意 DAG 为唯一中心。可组合方式包括：
@@ -306,3 +320,4 @@ AgentScope v2 最有辨识度的价值，是把 **可编程 ReAct/event/middlewa
 - [AgentScope 1.0 论文](https://arxiv.org/abs/2508.16279)
 - [AgentScope 原始论文](https://arxiv.org/abs/2402.14034)
 - [AgentScope Runtime 合并/归档说明](https://github.com/agentscope-ai/agentscope-runtime)
+- [AgentScope v2.0.6 Toolkit 与 Skill Prompt](https://github.com/agentscope-ai/agentscope/blob/v2.0.6/src/agentscope/tool/_toolkit.py)

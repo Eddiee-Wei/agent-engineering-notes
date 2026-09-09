@@ -124,7 +124,24 @@ Model factory 通过配置的 class path 和参数创建 LangChain chat model，
 
 Skill 是带 `SKILL.md` 的结构化流程；基础 prompt 先放元数据，内容按需加载，可区分 public/custom，也可由用户显式 `/skill-name` 激活。v2.0.0 release 特别修复了 `allowed-tools` 元数据的强制执行，说明工具白名单是 runtime 约束而非只靠文字提示。[Skills 说明](https://github.com/bytedance/deer-flow/tree/v2.0.0#skills--tools)给出了加载与虚拟路径。
 
-### 7.3 Sandbox 边界
+### 7.3 Prompt、Skill 与工作区文件的装配时机
+
+DeerFlow v2.0.0 的重心是把一套 Super Agent 跑起来，而不是建立通用的 `AGENTS.md` / `SOUL.md` 文件协议。Lead Agent 与 Sub-Agent 的身份、工具用法、时间、Memory 和 Workspace，由配置与 middleware 在请求前拼成一个工作现场。仓库里恰好有同名 Markdown，并不足以让它获得入场券。
+
+Skill loader 扫描 public/custom Skill，并把简短目录放进初始 Prompt；真正的 `SKILL.md` 在模型选择或用户执行 `/skill-name` 后读取。若 Skill 再引用模板、长规范或脚本，这些资源位于 `/mnt/skills` 等虚拟路径，仍由文件/命令工具按需访问。于是典型链路是：
+
+```text
+请求 #1：Lead Agent Prompt + Memory/Workspace 动态说明 + Skill/Tool 目录
+响应 #1：加载 Skill 或 promotion 延迟工具
+请求 #2：历史 + Skill/Tool 结果 + 新工具 schema
+响应 #2：读取资料、执行命令或继续推理
+```
+
+普通 `xx.md` 要么由 Skill/应用点名，要么在 Workspace 里被工具真正读过，才会出现在后续上下文。Checkpointer 保存 Thread State 与消息历史，却不会因为 Sandbox 里多了一份文件，就替模型记住全文。这个区别很实在：Workspace 是书房，Context 是摊在桌上的几页纸。
+
+同样，`allowed-tools`、Sandbox provider 和 Host Bash 开关属于 Runtime 强制面。Prompt 可以提醒 Agent 不要越界，真正关上门的是这些配置。
+
+### 7.4 Sandbox 边界
 
 后端提供 Local 与 AIO/Docker，并可通过 provisioner 使用 Kubernetes Pod。AIO provider 才把 shell 放进容器；Local provider 的文件工具映射到宿主机线程目录，host bash 默认禁用，因为它不是安全隔离边界。[后端 README](https://github.com/bytedance/deer-flow/blob/v2.0.0/backend/README.md#sandbox-system)对此有明确说明。
 
@@ -307,3 +324,4 @@ DeerFlow 的 1.0→2.0 是从专用 Deep Research 图到通用 super-agent harne
 - [Backend Architecture](https://github.com/bytedance/deer-flow/blob/v2.0.0/backend/docs/ARCHITECTURE.md)
 - [RunManager 源码](https://github.com/bytedance/deer-flow/blob/v2.0.0/backend/packages/harness/deerflow/runtime/runs/manager.py)
 - [Subagent Executor 源码](https://github.com/bytedance/deer-flow/blob/v2.0.0/backend/packages/harness/deerflow/subagents/executor.py)
+- [DeerFlow v2.0.0 Skills 与 Tools](https://github.com/bytedance/deer-flow/tree/v2.0.0#skills--tools)
