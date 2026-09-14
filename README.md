@@ -33,6 +33,7 @@
 
 - [01｜Prompt Cache：省下的不是 Token，而是重复计算](notes/prompt-cache-reuses-computation.md) — 从 Attention、KV Cache、Prefill 与跨请求前缀复用，理解 Prompt Cache 的原理、质量边界和工程实践。
 - [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md) — 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
+- [03｜Agent 为什么会读这些 Markdown：从 AGENTS.md、SOUL.md 到 SKILL.md](notes/agent-markdown-files-context-loading.md) — 逐一拆解 AGENTS.md、CLAUDE.md、GEMINI.md、SOUL.md、MEMORY.md、SKILL.md 与普通 xx.md，理解它们怎样被发现、加载并进入模型请求。
 
 ### [02 · Agent 基础](agent/index.md)
 
@@ -66,12 +67,12 @@
 
 #### Coding Agent
 
-- [01｜Pi Agent](coding-agents/pi-agent.md)
-- [02｜DeepSeek Harness](coding-agents/deepseek-harness.md)
-- [03｜Codex](coding-agents/codex.md)
-- [04｜Claude Code](coding-agents/claude-code.md)
-- [05｜Gemini CLI](coding-agents/gemini-cli.md)
-- [06｜OpenCode](coding-agents/opencode.md)
+- [01｜Pi Agent](coding-agents/pi-agent.md) — Pi 如何在启动时装配 AGENTS.md、按需读取 Skill，并在调用时展开 Prompt 模板。
+- [02｜DeepSeek Harness](coding-agents/deepseek-harness.md) — DeepSeek Harness 如何把工作区指令做成可回放的 Session 内容，并在文件触达后增量刷新。
+- [03｜Codex](coding-agents/codex.md) — Codex 如何构建 AGENTS.md 指令链，并用渐进式 Skill 把流程与资源注入任务。
+- [04｜Claude Code](coding-agents/claude-code.md) — Claude Code 如何组合 CLAUDE.md、Rules、Auto Memory 与按需 Agent Skills。
+- [05｜Gemini CLI](coding-agents/gemini-cli.md) — Gemini CLI 如何分层加载 GEMINI.md、即时发现目录指令，并经确认激活 Skill。
+- [06｜OpenCode](coding-agents/opencode.md) — OpenCode 如何选择 AGENTS.md、组合自定义 Rules，并按需加载 Skill、Agent 与 Command Markdown。
 
 #### 组装 Agent
 
@@ -82,11 +83,11 @@
 ### [05 · Agent 工程](engineering/index.md)
 
 - [01｜Prompt Engineering](engineering/prompt-engineering.md) — Engineering instructions, constraints, examples, and output contracts for reliable model interactions.
-- [02｜Context Engineering](engineering/context-engineering.md) — Building the dynamic information environment an Agent needs for each decision.
+- [02｜Context Engineering](engineering/context-engineering.md) — 把指令、历史、工具、记忆与外部资料编译成 Agent 每次决策所需的 Context Frame。
 - [03｜Agent Harness](engineering/harness-engineering.md) — Engineering the runtime, tools, state, permissions, and feedback systems around an Agent.
 - [04｜Agent Loop](engineering/loop-engineering.md) — Designing Agent loops that plan, act, observe, verify, recover, and converge.
 - [05｜Tool Engineering](engineering/tool-engineering.md) — Designing safe, understandable, and recoverable tool contracts for Agents.
-- [06｜Memory Engineering](engineering/memory-engineering.md) — Designing what Agents remember, retrieve, update, and forget.
+- [06｜Memory Engineering](engineering/memory-engineering.md) — 从 MEMORY.md 到长期记忆服务：理解 Agent 如何形成、检索、使用、更正与遗忘记忆。
 - [07｜Knowledge Engineering](engineering/knowledge-engineering.md) — Building trustworthy knowledge sources, retrieval pipelines, and evidence for Agents.
 - [08｜Graph Engineering](engineering/graph-engineering.md) — Engineering explicit stateful workflows for durable and controllable Agent execution.
 - [09｜Multi-Agent Engineering](engineering/multi-agent-engineering.md) — Designing effective delegation, communication, and coordination among multiple Agents.

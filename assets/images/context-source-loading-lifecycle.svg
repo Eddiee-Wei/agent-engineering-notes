@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Context Compiler 生命周期</title>
+  <desc id="desc">展示常驻指令、Skill、普通文档、记忆和工具如何经发现、选择、规范化进入模型请求，并由模型响应和工具结果推动下一轮上下文。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#42423e"/>
+    </marker>
+    <style>
+      .canvas{fill:#fff}.lane{fill:#f7f7f5;stroke:#a8a8a1;stroke-width:2}.box{fill:#fff;stroke:#181816;stroke-width:2}.dark{fill:#181816;stroke:#181816;stroke-width:2}.lazy{fill:#eeeeea;stroke:#6d6d67;stroke-width:2}.label{fill:#181816;font:600 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-anchor:middle}.light{fill:#fff;font:600 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-anchor:middle}.sub{fill:#6d6d67;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-anchor:middle}.sub-light{fill:#deded8;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-anchor:middle}.edge{fill:none;stroke:#42423e;stroke-width:2.3;marker-end:url(#arrow)}.dash{fill:none;stroke:#6d6d67;stroke-width:2;stroke-dasharray:7 6;marker-end:url(#arrow)}.head{fill:#6d6d67;font:600 16px "IBM Plex Mono",monospace;letter-spacing:.04em}.note{fill:#42423e;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    </style>
+  </defs>
+  <rect class="canvas" width="1280" height="720" rx="18"/>
+  <rect class="lane" x="32" y="32" width="1216" height="230" rx="22"/>
+  <text class="head" x="60" y="67">SOURCES · 不同触发时机</text>
+  <rect class="box" x="60" y="100" width="190" height="90" rx="14"/><text class="label" x="155" y="133">常驻指令</text><text class="sub" x="155" y="158">启动 / Session</text><text class="sub" x="155" y="178">AGENTS · CLAUDE · SOUL</text>
+  <rect class="lazy" x="290" y="100" width="190" height="90" rx="14"/><text class="label" x="385" y="133">Skill</text><text class="sub" x="385" y="158">元数据先行</text><text class="sub" x="385" y="178">命中后加载正文</text>
+  <rect class="lazy" x="520" y="100" width="190" height="90" rx="14"/><text class="label" x="615" y="133">Reference</text><text class="sub" x="615" y="158">import / 检索 / read</text><text class="sub" x="615" y="178">任意 xx.md</text>
+  <rect class="lazy" x="750" y="100" width="190" height="90" rx="14"/><text class="label" x="845" y="133">Memory</text><text class="sub" x="845" y="158">Session / 检索策略</text><text class="sub" x="845" y="178">范围与预算过滤</text>
+  <rect class="box" x="980" y="100" width="190" height="90" rx="14"/><text class="label" x="1075" y="133">Tools</text><text class="sub" x="1075" y="158">schema 给模型</text><text class="sub" x="1075" y="178">实现留在 Runtime</text>
+  <path class="edge" d="M155 190 L155 320 L260 320"/><path class="edge" d="M385 190 L385 285 L330 285 L330 320"/><path class="edge" d="M615 190 L615 285 L400 285 L400 320"/><path class="edge" d="M845 190 L845 300 L470 300 L470 320"/><path class="edge" d="M1075 190 L1075 320 L540 320"/>
+  <rect class="lane" x="32" y="300" width="1216" height="185" rx="22"/>
+  <text class="head" x="60" y="335">COMPILE · 每次模型调用前形成可见快照</text>
+  <rect class="dark" x="260" y="365" width="280" height="82" rx="14"/><text class="light" x="400" y="397">Context Compiler</text><text class="sub-light" x="400" y="423">发现 · 作用域 · 选择 · 预算 · 渲染</text>
+  <rect class="box" x="710" y="365" width="310" height="82" rx="14"/><text class="label" x="865" y="397">Provider Request</text><text class="sub" x="865" y="423">system / messages / tools / config</text>
+  <path class="edge" d="M540 406 L709 406"/><text class="sub" x="625" y="390">Context Frame</text>
+  <rect class="lane" x="32" y="520" width="1216" height="165" rx="22"/>
+  <text class="head" x="60" y="555">LOOP · 新 Observation 改变下一轮</text>
+  <rect class="box" x="190" y="580" width="220" height="70" rx="14"/><text class="label" x="300" y="610">模型响应</text><text class="sub" x="300" y="632">文本或 tool call</text>
+  <rect class="lazy" x="530" y="580" width="220" height="70" rx="14"/><text class="label" x="640" y="610">Runtime 执行</text><text class="sub" x="640" y="632">权限 · 工具 · 副作用</text>
+  <rect class="box" x="870" y="580" width="220" height="70" rx="14"/><text class="label" x="980" y="610">Observation</text><text class="sub" x="980" y="632">tool result / 新指令 / 状态</text>
+  <path class="edge" d="M410 615 L529 615"/><path class="edge" d="M750 615 L869 615"/>
+  <path class="dash" d="M1020 580 L1120 500 L1120 340 L1020 340"/>
+  <path class="dash" d="M820 447 L640 540 L410 580"/>
+  <text class="note" x="60" y="703">同一用户任务通常包含多次模型请求；普通文件或 Skill 在工具返回后才进入下一轮，而工具代码与凭据始终留在模型外。</text>
+</svg>
