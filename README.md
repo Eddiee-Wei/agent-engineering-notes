@@ -34,6 +34,7 @@
 - [01｜Prompt Cache：省下的不是 Token，而是重复计算](notes/prompt-cache-reuses-computation.md) — 从 Attention、KV Cache、Prefill 与跨请求前缀复用，理解 Prompt Cache 的原理、质量边界和工程实践。
 - [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md) — 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
 - [03｜Agent 为什么会读这些 Markdown：从 AGENTS.md、SOUL.md 到 SKILL.md](notes/agent-markdown-files-context-loading.md) — 逐一拆解 AGENTS.md、CLAUDE.md、GEMINI.md、SOUL.md、MEMORY.md、SKILL.md 与普通 xx.md，理解它们怎样被发现、加载并进入模型请求。
+- [04｜工具结果太大怎么办：把上下文预算与文件生命周期分开](notes/tool-results-context-and-lifecycle.md) — 从一次工具输出过大的方案推演，理解按需文件化、Workspace 生命周期、共享会话与结果失效的工程边界。
 
 ### [02 · Agent 基础](agent/index.md)
 
