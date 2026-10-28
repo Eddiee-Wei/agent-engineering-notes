@@ -43,7 +43,7 @@
 - [03｜Agent 的状态边界：Context、Session、Memory 与 Artifact](docs/03-agent-state-semantics.md) — 区分观察、声明、决策输入、连续性、恢复与产物，理解 Agent 如何保存状态并判断什么可以相信。
 - [04｜Agent 的任务边界：Goal、Plan、Steering 与 Completion](docs/04-agent-task-semantics.md) — 区分 Request、Task Definition、Plan、Steering 与 Completion，理解 Agent 任务如何形成、变更和被证据验收。
 - [05｜Multi-Agent：委派、协作与团队收敛](docs/05-multi-agent-collaboration.md) — 从采用门槛、委派语义、协作拓扑、隔离边界到合并验收，理解多个 Agent 怎样共同完成一个父任务。
-- [06｜Agent Harness 的进化：从 Prompt Wrapper 到可托付的执行系统](docs/06-agent-harness-evolution.md) — 从 Prompt Wrapper、Tool Loop、Runtime、Workspace、状态连续性、治理到评测闭环，理解 Agent Harness 为什么演化成完整执行系统。
+- [06｜Agent Harness：从最小执行循环到工程化运行环境](docs/06-agent-harness-evolution.md) — 用修复认证测试的例子理解模型、工具与执行循环，再按实际问题选择上下文、工作环境、权限、恢复和验收能力。
 - [07｜Agent 的授权边界：Principal、Capability、Delegation、Approval、Credential 与 Revocation](docs/07-agent-authorization-semantics.md) — 从 Principal、Policy、Capability、Credential 到 Approval、Delegation 与 Revocation，建立 Agent 行动授权的统一工程模型。
 
 ### [03 · Agent 框架](agent-framework/index.md)
