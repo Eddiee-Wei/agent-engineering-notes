@@ -35,7 +35,7 @@
 - [02｜Agent 架构如何塑造 Prompt Cache](notes/agent-architecture-shapes-prompt-cache.md) — 对比 Claude Code、Codex、Gemini CLI、OpenCode、Pi Agent 与 DeepSeek Harness 的上下文布局和缓存策略。
 - [03｜Agent 为什么会读这些 Markdown：从 AGENTS.md、SOUL.md 到 SKILL.md](notes/agent-markdown-files-context-loading.md) — 逐一拆解 AGENTS.md、CLAUDE.md、GEMINI.md、SOUL.md、MEMORY.md、SKILL.md 与普通 xx.md，理解它们怎样被发现、加载并进入模型请求。
 - [04｜工具结果太大怎么办：把上下文预算与文件生命周期分开](notes/tool-results-context-and-lifecycle.md) — 从一次工具输出过大的方案推演，理解按需文件化、Workspace 生命周期、共享会话与结果失效的工程边界。
-- [05｜Harness、Plugin、Tool、Skill 与 MCP：从接入能力到控制执行](notes/harness-plugin-tool-skill-boundaries.md) — 从两个插件为什么只有一个工具的困惑出发，厘清扩展、协议与执行层，并讨论 Codex、DeepSeek Harness 和 tRPC-Agent-Go 的接入取舍。
+- [05｜从 Tool 到 Harness：逐步理解 MCP、Skill 与 Plugin](notes/harness-plugin-tool-skill-boundaries.md) — 用修复 Issue 的假想场景，从可调用动作逐步理解接入协议、任务方法、插件生命周期与完整执行系统，再讨论三种框架的复用取舍。
 
 ### [02 · Agent 基础](agent/index.md)
 
